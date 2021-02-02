@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>    
+
+    <!--Inherit the Partner View-->
+         
+        <record id="view_partner_form_inherit_cso" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.cso</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="nip_check" position="after">
+                    <button name="show_cso" string="Fetch data from CSO" type="object" />
+                </field>
+            </field>    
+         </record>
+   
+    
+        <record id="view_lacan_cso_form" model="ir.ui.view">
+            <field name="name">view.lacan.cso.form</field>
+            <field name="model">lacan.cso</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string = "Create CSO" col="8"  >
+                    <field name="name" colspan="8"/>
+                    <field name="picture" widget="image" colspan="4"/>
+                    <button  name="reload_captcha" string="Reload Captcha" type="object" colspan="4" />
+                    <field name="captcha" colspan="8"/>
+                    <button  name="fetch_nip" string="Fetch data from CSO" type="object" context = "{'captcha':captcha,'nip_number':name}"  colspan="8"/>
+                </form>
+            </field>
+        </record>
+            
+        <record id="view_lacan_cso_next_form" model="ir.ui.view">
+            <field name="name">view.lacan.cso.next.form</field>
+            <field name="model">lacan.cso</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string = "CSO Information" col="8"  >
+                    <group col="1" colspan="8" fill="0">
+                        <field name="partner_id" readonly="1" />
+                        <field name="address_id" domain="[('partner_id','=',partner_id)]"/>
+                        <field name="partner_name"/>
+                        <field name="street"/>
+                        <field name="city"/>
+                        <field name="state_id"/>
+                        <field name="zip"/>
+                    </group>
+                    <group col="2" colspan="8" fill="0">
+                        <field name="description" nolabel="1" readonly="1" />
+                    </group>
+                    <group col="3" colspan="8" fill="0">
+                        <button icon="gtk-ok" name="update_record" string="Update Address" type="object"/>
+                        <button icon="gtk-ok" name="create_record" string="Create Address" type="object"/>
+                        <button icon="gtk-close" special="cancel" string="Cancel" type="object"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+            
+    </data>
+</openerp>
