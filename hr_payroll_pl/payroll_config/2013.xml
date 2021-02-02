@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>    
+    <data noupdate="1" nodelete="0">
+    	<!-- Zaliczka PIT dla umów cywilnoprawnych -->
+    	
+    	<record id="zaliczka_PIT_cywilnoprawne_2103" model="lacan.configuration.value">
+      		<field name="config_id" ref="zaliczka_PIT_cywilnoprawne"/>
+      		<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">18</field>
+			<field name="type">float</field>
+			<field eval="18" name="value_float"/>
+      	</record> 
+    	<!-- Progi podatkowe -->
+    	
+    	<record id="konfiguracja_progow_podatkowych_obiekt2013" model="hr2.config.prog.podatkowy">
+			<field name="year">2013</field>
+		</record>
+		
+		<record id="pierwszy_prog2013" model="hr2.config.prog.podatkowy.line">
+			<field name="prog_id" ref = "konfiguracja_progow_podatkowych_obiekt2013"/>
+			<field name="percent">18</field>
+			<field name="value_from">0</field>
+		</record>
+		
+		<record id="drugi_prog2013" model="hr2.config.prog.podatkowy.line">
+			<field name="prog_id" ref = "konfiguracja_progow_podatkowych_obiekt2013"/>
+			<field name="percent">32</field>
+			<field name="value_from">85529</field>
+		</record>
+		
+		<record id="konfiguracja_progow_2013_value" model="lacan.configuration.value">
+			<field name="config_id" ref="Konfiguracja_progow_podatkowych"/>
+			<field name="value_m2o" eval="'hr2.config.prog.podatkowy,%d' % ref('konfiguracja_progow_podatkowych_obiekt2013')"/>
+			<field name="value_universal">Konfiguracja progów 2013</field>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="type">many2one</field>
+		</record>
+		
+		
+    	<!-- Minimalna pensja brutto -->
+    	<record id="minimalna_pensja_brutto_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="minimalna_pensja_brutto"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">1680</field>
+			<field name="type">float</field>
+			<field eval="1680" name="value_float"/>
+		</record>
+		
+		<record id="minimalna_pensja_brutto_1rok_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="minimalna_pensja_brutto_1rok"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">1344</field>
+			<field name="type">float</field>
+			<field eval="1344" name="value_float"/>
+		</record>
+
+        <record id="minimalna_pensja_netto_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="minimalna_pensja_netto"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">1237.2</field>
+			<field name="type">float</field>
+			<field eval="1237.2" name="value_float"/>
+		</record>
+
+        <record id="minimalna_emerytura_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="minimalna_emerytura"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">831.15</field>
+			<field name="type">float</field>
+			<field eval="831.15" name="value_float"/>
+		</record>
+		
+    	<!-- STAWKI ZUS -->    	
+    	
+        <record id="Stawka_Emerytalna_(Pracownik)_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_Emerytalna_(Pracownik)"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0976</field>
+			<field name="type">float</field>
+			<field eval="0.0976" name="value_float"/>
+		</record>
+		<record id="Stawka_Emerytalna_(Pracodawca)_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_Emerytalna_(Pracodawca)"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0976</field>
+			<field name="type">float</field>
+			<field eval="0.0976" name="value_float"/>
+		</record>
+		<record id="Stawka_Rentowa_(Pracownik)_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_Rentowa_(Pracownik)"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.015</field>
+			<field name="type">float</field>
+			<field eval="0.015" name="value_float"/>
+		</record>
+		<record id="Stawka_Rentowa_(Pracodawca)_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_Rentowa_(Pracodawca)"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.065</field>
+			<field name="type">float</field>
+			<field eval="0.065" name="value_float"/>
+		</record>
+		<record id="Stawka_Chorobowa_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_Chorobowa"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0245</field>
+			<field name="type">float</field>
+			<field eval="0.0245" name="value_float"/>
+		</record>
+		<record id="Stawka_Wypadkowa_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_Wypadkowa"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0193</field>
+			<field name="type">float</field>
+			<field eval="0.0193" name="value_float"/>
+		</record>
+		<record id="Stawka_FP_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_FP"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0245</field>
+			<field name="type">float</field>
+			<field eval="0.0245" name="value_float"/>
+		</record>
+		<record id="Stawka_FGSP_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_FGSP"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.001</field>
+			<field name="type">float</field>
+			<field eval="0.001" name="value_float"/>
+		</record>
+		<record id="Max_rocz_podstawa_dla_ubezp_emr_rent_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Max_rocz_podstawa_dla_ubezp_emr_rent"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">112380</field>
+			<field name="type">float</field>
+			<field eval="112380" name="value_float"/>
+		</record>
+		
+		
+		<!-- Zwolnienia lekarskie -->
+		
+		<record id="Granica_il_dni_zwol_lek_fin_przez_pracodaw_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Granica_il_dni_zwol_lek_fin_przez_pracodaw"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">50</field>
+			<field name="type">float</field>
+			<field eval="50" name="value_int"/>
+			<field eval="50" name="value_float"/>
+		</record>
+		<record id="Dni_zwol_lek_fin_przez_pracodaw_ponizej_granicy_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Dni_zwol_lek_fin_przez_pracodaw_ponizej_granicy"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">33</field>
+			<field name="type">integer</field>
+			<field eval="33" name="value_int"/>
+		</record>
+		<record id="Dni_zwol_lek_fin_przez_pracodaw_powyzej_granicy_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Dni_zwol_lek_fin_przez_pracodaw_powyzej_granicy"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">14</field>
+			<field name="type">integer</field>
+			<field eval="14" name="value_int"/>
+		</record>
+		
+		
+		<!-- NFZ, PIT -->
+		
+		<record id="Stawka_zdrowotna_pracownik_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_zdrowotna_pracownik"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0125</field>
+			<field name="type">float</field>
+			<field eval="0.0125" name="value_float"/>
+		</record>
+		<record id="Stawka_zdrowotna_PIT_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_zdrowotna_PIT"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.0775</field>
+			<field name="type">float</field>
+			<field eval="0.0775" name="value_float"/>
+		</record>
+    	<record id="Granica_kwoty_umowy_cywilpraw_do_podatku_zryczalt_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Granica_kwoty_umowy_cywilpraw_do_podatku_zryczalt"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">200</field>
+			<field name="type">float</field>
+			<field eval="200" name="value_float"/>
+		</record>
+		<record id="Stawka_podatku_ryczalt_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Stawka_podatku_ryczalt"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">0.18</field>
+			<field name="type">float</field>
+			<field eval="0.18" name="value_float"/>
+		</record>
+		<record id="Miesieczna_kwota_wolna_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Miesieczna_kwota_wolna"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">46.33</field>
+			<field name="type">float</field>
+			<field eval="46.33" name="value_float"/>
+		</record>
+		<record id="Koszty_uzyskania_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Koszty_uzyskania"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">111.25</field>
+			<field name="type">float</field>
+			<field eval="111.25" name="value_float"/>
+		</record>
+		<record id="Koszty_uzyskania_podwyzszone_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Koszty_uzyskania_podwyzszone"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">139.06</field>
+			<field name="type">float</field>
+			<field eval="139.06" name="value_float"/>
+		</record>
+		<record id="Limit_podwyzszonych_kosztow_2013" model="lacan.configuration.value">
+			<field name="config_id" ref="Limit_podwyzszonych_kosztow"/>
+			<field name="start">2013-01-01</field>
+			<field name="stop">2013-12-31</field>
+			<field name="value_universal">42764.00</field>
+			<field name="type">float</field>
+			<field eval="42764.00" name="value_float"/>
+		</record>
+    </data>
+</openerp>

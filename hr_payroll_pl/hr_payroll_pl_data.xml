@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Creating payslip line types for future use -->
+
+		<record id="hr2_payslip_line_type_addition" model="hr2.payslip.line.type">
+			<field name="name">Addition</field>
+			<field name="application">addition</field>
+			<field name="company_id"/>
+		</record>
+		<record id="hr2_payslip_line_type_work_time" model="hr2.payslip.line.type">
+			<field name="name">Work time</field>
+			<field name="application">work_time</field>
+			<field name="company_id"/>
+		</record>
+		<record id="hr2_payslip_line_type_absence" model="hr2.payslip.line.type">
+			<field name="name">Absence</field>
+			<field name="application">absence</field>
+			<field name="company_id"/>
+		</record>
+		<record id="hr2_payslip_line_type_sick_pay" model="hr2.payslip.line.type">
+			<field name="name">Sick pay</field>
+			<field name="application">absence</field>
+			<field name="company_id"/>
+		</record>
+		<record id="hr2_payslip_line_type_sick_benefit" model="hr2.payslip.line.type">
+			<field name="name">Sick benefit</field>
+			<field name="application">absence</field>
+            <field name="is_benefit">True</field>
+            <field name="company_id"/>
+		</record>
+		<record id="hr2_payslip_line_type_child_care" model="hr2.payslip.line.type">
+			<field name="name">Child care</field>
+			<field name="application">absence</field>
+            <field name="is_benefit">True</field>
+            <field name="company_id"/>
+		</record>
+		<record id="hr2_payslip_line_type_supplement" model="hr2.payslip.line.type">
+			<field name="name">Uzupełnienie do pensji minimalnej</field>
+			<field name="application">addition</field>
+			<field name="company_id"/>
+		</record>
+
+        <record id="hr2_payslip_line_type_correctionP" model="hr2.payslip.line.type">
+            <field name="name">Korekta za poprzedni miesiąc / wynagrodzenie</field>
+            <field name="application">correction</field>
+            <field name="company_id"/>
+        </record>
+
+        <record id="hr2_payslip_line_type_correctionZ" model="hr2.payslip.line.type">
+            <field name="name">Korekta za poprzedni miesiąc / zasiłek</field>
+            <field name="application">correction</field>
+            <field name="is_benefit">True</field>
+            <field name="company_id"/>
+        </record>
+    
+	    <!-- Podstawowe typy dodatków -->
+
+		<record id="hr2_salary_addition_type_miesieczna" model="hr2.salary.addition.type">
+			<field name="name">Premia miesięczna</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="True"/>
+			<field name="co_ile_powtarzac" eval="1"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+			<field name="wlicz_do_pdst_chor" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_kwartalna" model="hr2.salary.addition.type">
+			<field name="name">Premia kwartalna</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="True"/>
+			<field name="co_ile_powtarzac" eval="3"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+			<field name="wlicz_do_pdst_chor" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_polroczna" model="hr2.salary.addition.type">
+			<field name="name">Premia półroczna</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="True"/>
+			<field name="co_ile_powtarzac" eval="6"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+			<field name="wlicz_do_pdst_chor" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_roczna" model="hr2.salary.addition.type">
+			<field name="name">Premia roczna</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="True"/>
+			<field name="co_ile_powtarzac" eval="12"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+			<field name="wlicz_do_pdst_chor" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_nadgodziny" model="hr2.salary.addition.type">
+			<field name="name">Nadgodziny</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="False"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+			<field name="wlicz_do_pdst_chor" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_urlop" model="hr2.salary.addition.type">
+			<field name="name">Ekwiwalent za urlop</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="False"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+		</record>
+        <record id="hr2_salary_addition_type_ekwiwalent" model="hr2.salary.addition.type" forcecreate="True">
+			<field name="name">Ekwiwalent</field>
+			<field name="application">ekwiwalent</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="False"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_ekwiwalent_nienalezny" model="hr2.salary.addition.type" forcecreate="True">
+			<field name="name">Ekwiwalent nienależny za czas nieobecności</field>
+			<field name="application">ekwiwalent</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="True"/>
+			<field name="co_ile_powtarzac">1</field>
+			<field name="nalezny_za_okres_nieobecnosci" eval="False"/>
+		</record>
+		<record id="hr2_salary_addition_type_zkup" model="hr2.salary.addition.type">
+			<field name="name">Premia z kup</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="False"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_uznaniowa" model="hr2.salary.addition.type">
+			<field name="name">Premia uznaniowa</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="False"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="False"/>
+		</record>
+        <record id="hr2_salary_addition_type_swiadczenie_nieodplatne" model="hr2.salary.addition.type">
+			<field name="name">Świadczenie nieodpłatne</field>
+			<field name="application">swiadczenie</field>
+			<field name="licz_kup_jak_podstawa" eval="False"/>
+			<field name="okresowy" eval="True"/>
+            <field name="co_ile_powtarzac" eval="1"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+		</record>
+		<record id="hr2_salary_addition_type_supplement" model="hr2.salary.addition.type" forcecreate="True">
+			<field name="name">Uzupełnienie do pensji minimalnej</field>
+			<field name="application">brutto</field>
+			<field name="licz_kup_jak_podstawa" eval="True"/>
+			<field name="okresowy" eval="True"/>
+			<field name="co_ile_powtarzac" eval="1"/>
+			<field name="nalezny_za_okres_nieobecnosci" eval="True"/>
+			<field name="wlicz_do_pdst_chor" eval="True"/>
+		</record>
+
+
+	    <!-- Tworzenie grup potracen -->
+
+		<record id="hr2_salary_deduction_computation_type_alimenty" model="hr2.salary.deduction.computation.type">
+			<field name="name">Grupa potrąceń alimentacyjnych</field>
+			<field name="percent_normal" eval="60"/>
+			<field name="percent_special_1" eval="60"/>
+			<field name="percent_special_2" eval="60"/>
+			<field name="special_1_additions" eval="[(4, ref('hr2_salary_addition_type_nadgodziny'))]"/>
+			<field name="amount_free" eval="0"/>
+			<field name="percent_ZUS" eval="60"/>
+			<field name="percent_ZUS_free" eval="50"/>
+		</record>
+		<record id="hr2_salary_deduction_computation_type_inne" model="hr2.salary.deduction.computation.type">
+			<field name="name">Grupa potrąceń innych niż alimentacjne</field>
+			<field name="percent_normal" eval="50"/>
+			<field name="percent_special_1" eval="0"/>
+			<field name="percent_special_2" eval="100"/>
+			<field name="amount_free" eval="100"/>
+			<field name="percent_ZUS" eval="50"/>
+			<field name="percent_ZUS_free" eval="50"/>
+		</record>
+		<record id="hr2_salary_deduction_computation_type_zaliczka" model="hr2.salary.deduction.computation.type">
+			<field name="name">Grupa potrąceń zaliczki pieniężnej</field>
+			<field name="percent_normal" eval="50"/>
+			<field name="percent_special_1" eval="0"/>
+			<field name="percent_special_2" eval="100"/>
+			<field name="amount_free" eval="75"/>
+			<field name="percent_ZUS" eval="50"/>
+			<field name="percent_ZUS_free" eval="50"/>
+		</record>
+		<record id="hr2_salary_deduction_computation_type_kara" model="hr2.salary.deduction.computation.type">
+			<field name="name">Grupa finansowych kar porządkowych</field>
+			<field name="percent_normal" eval="100"/>
+			<field name="percent_special_1" eval="0"/>
+			<field name="percent_special_2" eval="100"/>
+			<field name="amount_free" eval="0"/>
+			<field name="percent_ZUS" eval="100"/>
+			<field name="percent_ZUS_free" eval="0"/>
+		</record>
+		<record id="hr2_salary_deduction_computation_type_bezograniczen" model="hr2.salary.deduction.computation.type">
+			<field name="name">Bez ograniczeń</field>
+			<field name="percent_normal" eval="100"/>
+			<field name="percent_special_1" eval="0"/>
+			<field name="percent_special_2" eval="100"/>
+			<field name="amount_free" eval="0"/>
+			<field name="percent_ZUS" eval="100"/>
+			<field name="percent_ZUS_free" eval="0"/>
+		</record>
+
+
+		<!-- Tworzenie podstawowych typow potracen -->
+		
+		<record id="hr2_salary_deduction_type_alimenty" model="hr2.salary.deduction.type">
+			<field name="name">Alimenty</field>
+			<field name="deduction_computation_type_id" ref="hr2_salary_deduction_computation_type_alimenty"/>
+			<field name="priority" eval="1"/>
+		</record>
+		<record id="hr2_salary_deduction_type_komornik" model="hr2.salary.deduction.type">
+			<field name="name">Komornik</field>
+			<field name="deduction_computation_type_id" ref="hr2_salary_deduction_computation_type_inne"/>
+			<field name="priority" eval="2"/>
+		</record>
+		<record id="hr2_salary_deduction_type_zaliczka" model="hr2.salary.deduction.type">
+			<field name="name">Potrącenie zaliczki pieniężnej</field>
+			<field name="deduction_computation_type_id" ref="hr2_salary_deduction_computation_type_zaliczka"/>
+			<field name="priority" eval="3"/>
+		</record>
+		<record id="hr2_salary_deduction_type_ubezpieczenie" model="hr2.salary.deduction.type">
+			<field name="name">Ubezpieczenie dobrowolne</field>
+			<field name="deduction_computation_type_id" ref="hr2_salary_deduction_computation_type_bezograniczen"/>
+			<field name="priority" eval="4"/>
+		</record>
+		<record id="hr2_salary_deduction_type_kara" model="hr2.salary.deduction.type">
+			<field name="name">Kara finansowa</field>
+			<field name="deduction_computation_type_id" ref="hr2_salary_deduction_computation_type_kara"/>
+			<field name="priority" eval="5"/>
+		</record>
+		<record id="hr2_salary_deduction_type_inne" model="hr2.salary.deduction.type">
+			<field name="name">Inne</field>
+			<field name="deduction_computation_type_id" ref="hr2_salary_deduction_computation_type_inne"/>
+			<field name="priority" eval="6"/>
+		</record>
+	
+	</data>
+
+    <data noupdate="1">
+        <record id="dzial_testowy" model="hr2.dzial">
+			<field name="name">Dział testowy</field>
+		</record>
+	</data>
+
+    <data noupdate="0">
+		<!-- Benefits codes  -->
+
+		<record id="hr_benefit_codes_111" model="hr2.benefit.codes">
+			<field name="description">Urlop bezpłatny</field>
+			<field name="name">111</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_121" model="hr2.benefit.codes">
+			<field name="description">Urlop wychowawczy udzielony na podstawie art. 186 § 1 ustawy z dnia 26 czerwca 1974r. - Kodeksu pracy (Dz.U. z 1998 r. Nr 21, poz. 94, z późn. zm.)</field>
+			<field name="name">121</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_122" model="hr2.benefit.codes">
+			<field name="description">Urlop wychowawczy udzielony na podstawie art. 186 § 2 Kodeksu pracy</field>
+			<field name="name">122</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_151" model="hr2.benefit.codes">
+			<field name="description">Okres usprawiedliwionej nieobecności w pracy, bez prawa do wynagrodzenia lub zasiłku</field>
+			<field name="name">151</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_152" model="hr2.benefit.codes">
+			<field name="description">Okres nieusprawiedliwionej nieobecności w pracy</field>
+			<field name="name">152</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_212" model="hr2.benefit.codes">
+			<field name="description">Zasiłek wyrównawczy z ubezpieczenia chorobowego</field>
+			<field name="name">212</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_214" model="hr2.benefit.codes">
+			<field name="description">Zasiłek wyrównawczy z ubezpieczenia wypadkowego</field>
+			<field name="name">214</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_215" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku wyrównawczego z ubezpieczenia chorobowego</field>
+			<field name="name">215</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_216" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku wyrównawczego z ubezpieczenia wypadkowego</field>
+			<field name="name">216</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_311" model="hr2.benefit.codes">
+			<field name="description">Zasiłek macierzyński z ubezpieczenia chorobowego za okres ustalony jako okres urlopu macierzyńskiego lub urlopu na warunkach urlopu macierzyńskiego</field>
+			<field name="name">311</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_312" model="hr2.benefit.codes">
+			<field name="description">Zasiłek opiekuńczy z ubezpieczenia chorobowego</field>
+			<field name="name">312</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_313" model="hr2.benefit.codes">
+			<field name="description">Zasiłek chorobowy z ubezpieczenia chorobowego</field>
+			<field name="name">313</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_314" model="hr2.benefit.codes">
+			<field name="description">Zasiłek chorobowy z ubezpieczenia wypadkowego</field>
+			<field name="name">314</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_315" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku macierzyńskiego z ubezpieczenia chorobowego za okres ustalony jako okres urlopu macierzyńskiego lub urlopu na warunkach urlopu macierzyńskiego</field>
+			<field name="name">315</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_316" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku opiekuńczego z ubezpieczenia chorobowego</field>
+			<field name="name">316</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_317" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku chorobowego z ubezpieczenia chorobowego</field>
+			<field name="name">317</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_318" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku chorobowego z ubezpieczenia wypadkowego</field>
+			<field name="name">318</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_319" model="hr2.benefit.codes">
+			<field name="description">Zasiłek macierzyński z ubezpieczenia chorobowego za okres ustalony jako okres urlopu rodzicielskiego</field>
+			<field name="name">319</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_320" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku macierzyńskiego z ubezpieczenia chorobowego za okres ustalony jako okres urlopu rodzicielskiego</field>
+			<field name="name">320</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_321" model="hr2.benefit.codes">
+			<field name="description">Świadczenie rehabilitacyjne z ubezpieczenia chorobowego</field>
+			<field name="name">321</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_322" model="hr2.benefit.codes">
+			<field name="description">Świadczenie rehabilitacyjne z ubezpieczenia wypadkowego</field>
+			<field name="name">322</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_323" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie świadczenia rehabilitacyjnego z ubezpieczenia chorobowego</field>
+			<field name="name">323</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_324" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie świadczenia rehabilitacyjnego z ubezpieczenia wypadkowego</field>
+			<field name="name">324</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_325" model="hr2.benefit.codes">
+			<field name="description">Zasiłek macierzyński z ubezpieczenia chorobowego za okres ustalony jako okres dodatkowego urlopu macierzyńskiego lub dodatkowego urlopu na warunkach urlopu macierzyńskiego</field>
+			<field name="name">325</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_326" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku macierzyńskiego z ubezpieczenia chorobowego za okres ustalony jako okres dodatkowego urlopu macierzyńskiego lub dodatkowego urlopu na warunkach urlopu macierzyńskiego</field>
+			<field name="name">326</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_327" model="hr2.benefit.codes">
+			<field name="description">Zasiłek macierzyński z ubezpieczenia chorobowego za okres ustalony jako okres urlopu ojcowskiego</field>
+			<field name="name">327</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_328" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie zasiłku macierzyńskiego z ubezpieczenia chorobowego za okres ustalony jako okres urlopu ojcowskiego</field>
+			<field name="name">328</field>
+			<field name="is_benefit" eval="True"/>
+		</record>
+ 		<record id="hr_benefit_codes_331" model="hr2.benefit.codes">
+			<field name="description">Wynagrodzenie za czas niezdolności do pracy z powodu choroby, finansowane ze środków pracodawcy</field>
+			<field name="name">331</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_332" model="hr2.benefit.codes">
+			<field name="description">Wynagrodzenie za czas niezdolności do pracy z powodu choroby, finansowane ze środków Funduszu Gwarantowanych Świadczeń Pracowniczych</field>
+			<field name="name">332</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_335" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie wynagrodzenia za czas niezdolności do pracyz powodu choroby, finansowane ze środków pracodawcy</field>
+			<field name="name">335</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_336" model="hr2.benefit.codes">
+			<field name="description">Wyrównanie wynagrodzenia za czas niezdolności do pracy z powodu choroby, finansowane ze środków Funduszu Gwarantowanych Świadczeń Pracowniczych</field>
+			<field name="name">336</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+ 		<record id="hr_benefit_codes_350" model="hr2.benefit.codes">
+			<field name="description">Inne świadczenia/przerwy</field>
+			<field name="name">350</field>
+			<field name="is_benefit" eval="False"/>
+		</record>
+	</data>
+
+    <data noupdate="0">
+		<!-- Insurance codes  -->
+
+		<record id="hr_insurance_codes_0110" model="hr2.insurance.codes">
+			<field name="description">Pracownik podlegający ubezpieczeniom społecznym i ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0110</field>
+		</record>
+		<record id="hr_insurance_codes_0111" model="hr2.insurance.codes">
+			<field name="description">Pracownik podlegający ubezpieczeniom społecznym i z mocy przepisów szczególnych niepodlegający ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0111</field>
+		</record>
+		<record id="hr_insurance_codes_0112" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca świadczenie szkoleniowe wypłacane po ustaniu zatrudnienia</field>
+			<field name="name">0112</field>
+		</record>
+		<record id="hr_insurance_codes_0120" model="hr2.insurance.codes">
+			<field name="description">Pracownik młodociany</field>
+			<field name="name">0120</field>
+		</record>
+		<record id="hr_insurance_codes_0124" model="hr2.insurance.codes">
+			<field name="description">Były pracownik mianowany lub były urzędnik służby cywilnej, z którym został rozwiązany stosunek pracy, pobierający świadczenie pieniężne za okres po ustaniu zatrudnienia</field>
+			<field name="name">0124</field>
+		</record>
+		<record id="hr_insurance_codes_0125" model="hr2.insurance.codes">
+			<field name="description">Pracownik podlegający ubezpieczeniom społecznym i ubezpieczeniu zdrowotnemu, opłacający składki na własne ubezpieczenia w przypadku określonym w art. 109 rozporządzenia Rady (EWG) nr 574/72 z dnia 21 marca 1972 r. w sprawie wykonywania rozporządzenia Rady (EWG) nr 1408/71 w sprawie stosowania systemów zabezpieczenia społecznego do pracowników najemnych, osób prowadzących działalność na własny rachunek i do członków ich rodzin przemieszczających się we Wspólnocie (Dz. Urz. WE L 74 z 27.03.1972, str. 1 z późn. zm. Dz.Urz.UE Polskie wydanie specjalne, rozdz.05,t.1,str.35), zwanego dalej "rozporządzeniem Rady (EWG) nr 574/72"</field>
+			<field name="name">0125</field>
+		</record>
+		<record id="hr_insurance_codes_0126" model="hr2.insurance.codes">
+			<field name="description">Pracownik podlegający ubezpieczeniom społecznym i z mocy przepisów szczególnych niepodlegający ubezpieczeniu zdrowotnemu, opłacający składki na własne ubezpieczenia w przypadku określonym w art. 109 rozporządzenia Rady (EWG) nr 574/72</field>
+			<field name="name">0126</field>
+		</record>
+		<record id="hr_insurance_codes_0200" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca pracę nakładczą</field>
+			<field name="name">0200</field>
+		</record>
+		<record id="hr_insurance_codes_0310" model="hr2.insurance.codes">
+			<field name="description">Członek rolniczej spółdzielni produkcyjnej, spółdzielni kółek rolniczych lub innej spółdzielni zajmującej się produkcją rolną</field>
+			<field name="name">0310</field>
+		</record>
+		<record id="hr_insurance_codes_0320" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca pracę w spółdzielni lub w gospodarstwie rolnym spółdzielni na innej podstawie niż stosunek pracy, niebędąca jej członkiem i wynagradzana według zasad obowiązujących członków spółdzielni, w tym kandydat na członka spółdzielni</field>
+			<field name="name">0320</field>
+		</record>
+		<record id="hr_insurance_codes_0411" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca umowę agencyjną, umowę zlecenia lub umowę o świadczenie usług</field>
+			<field name="name">0411</field>
+		</record>
+		<record id="hr_insurance_codes_0417" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca umowę agencyjną, umowę zlecenia lub umowę o świadczenie usług, z mocy przepisów szczególnych niepodlegająca ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0417</field>
+		</record>
+		<record id="hr_insurance_codes_0421" model="hr2.insurance.codes">
+			<field name="description">Osoba współpracująca z osobą wykonującą umowę agencyjną, umowę zlecenia lub umowę o świadczenie usług</field>
+			<field name="name">0421</field>
+		</record>
+		<record id="hr_insurance_codes_0424" model="hr2.insurance.codes">
+			<field name="description">Osoba współpracująca z osobą wykonującą umowę agencyjną, umowę zlecenia lub umowę o świadczenie usług z mocy przepisów szczególnych niepodlegająca ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0424</field>
+		</record>
+		<record id="hr_insurance_codes_0426" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca umowę agencyjną, umowę zlecenia lub umowę o świadczenie usług, opłacająca składki na własne ubezpieczenia w przypadku określonym w art. 109 rozporządzenia Rady (EWG) nr 574/72</field>
+			<field name="name">0426</field>
+		</record>
+		<record id="hr_insurance_codes_0428" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca umowę agencyjną, umowę zlecenia lub umowę o świadczenie usług, z mocy przepisów szczególnych niepodlegająca ubezpieczeniu zdrowotnemu, opłacająca składki na własne ubezpieczenia w przypadku określonym w art. 109 rozporządzenia Rady (EWG) nr 574/72</field>
+			<field name="name">0428</field>
+		</record>
+		<record id="hr_insurance_codes_0430" model="hr2.insurance.codes">
+			<field name="description">Osoba sprawująca opiekę nad dziećmi na podstawie umowy uaktywniającej w rozumieniu ustawy z dnia 4 lutego 2011r. o opiece nad dziećmi w wieku do lat 3 (Dz. U. nr 45, poz. 235), dla której podstawę wymiaru składek na ubezpieczenia stanowi kwota nie wyższa niż wysokość minimalnego wynagrodzenia za pracę.</field>
+			<field name="name">0430</field>
+		</record>
+		<record id="hr_insurance_codes_0431" model="hr2.insurance.codes">
+			<field name="description">Osoba sprawująca opiekę nad dziećmi na podstawie umowy uaktywniającej w rozumieniu ustawy z dnia 4 lutego 2011r. o opiece nad dziećmi w wieku do lat 3 (Dz. U. nr 45, poz. 235), dla której podstawę wymiaru składek na ubezpieczenia stanowi nadwyżka ponad kwotę minimalnego wynagrodzenia za pracę.</field>
+			<field name="name">0431</field>
+		</record>
+		<record id="hr_insurance_codes_0510" model="hr2.insurance.codes">
+			<field name="description">Osoba prowadząca pozarolniczą działalność gospodarczą na podstawie przepisów o działalności gospodarczej lub innych przepisów szczególnych , niemająca ustalonego prawa do renty z tytułu niezdolności do pracy, dla której podstawę wymiaru składek na ubezpieczenia społeczne stanowi zadeklarowana kwota nie niższa niż 60% kwoty przeciętnego miesięcznego wynagrodzenia, oraz osoba prowadząca niepubliczną szkołę, placówkę lub ich zespół, na podstawie przepisów o systemie oświaty</field>
+			<field name="name">0510</field>
+		</record>
+		<record id="hr_insurance_codes_0511" model="hr2.insurance.codes">
+			<field name="description">Osoba współpracująca z osobą prowadzącą pozarolniczą działalność</field>
+			<field name="name">0511</field>
+		</record>
+		<record id="hr_insurance_codes_0512" model="hr2.insurance.codes">
+			<field name="description">Osoba prowadząca pozarolniczą działalność gospodarczą na podstawie przepisów o działalności gospodarczej lub innych przepisów szczególnych mająca ustalone prawo do renty z tytułu niezdolności do pracy, dla której podstawę wymiaru składek na ubezpieczenia społeczne stanowi zadeklarowana kwota nie niższa niż 60% kwoty przeciętnego miesięcznego wynagrodzenia</field>
+			<field name="name">0512</field>
+		</record>
+		<record id="hr_insurance_codes_0520" model="hr2.insurance.codes">
+			<field name="description">Twórca</field>
+			<field name="name">0520</field>
+		</record>
+		<record id="hr_insurance_codes_0530" model="hr2.insurance.codes">
+			<field name="description">Artysta</field>
+			<field name="name">0530</field>
+		</record>
+		<record id="hr_insurance_codes_0540" model="hr2.insurance.codes">
+			<field name="description">Osoba prowadząca pozarolniczą działalność w zakresie wolnego zawodu</field>
+			<field name="name">0540</field>
+		</record>
+		<record id="hr_insurance_codes_0543" model="hr2.insurance.codes">
+			<field name="description">Wspólnik jednoosobowej spółki z ograniczoną odpowiedzialnością oraz wspólnicy spółki jawnej, komandytowej lub partnerskiej</field>
+			<field name="name">0543</field>
+		</record>
+		<record id="hr_insurance_codes_0544" model="hr2.insurance.codes">
+			<field name="description">Osoba prowadząca pozarolniczą działalność, z mocy przepisów szczególnych niepodlegająca ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0544</field>
+		</record>
+		<record id="hr_insurance_codes_0545" model="hr2.insurance.codes">
+			<field name="description">Osoba współpracujaca z osobą prowadząca pozarolniczą działalność, z mocy przepisów szczególnych niepodlegająca ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0545</field>
+		</record>
+		<record id="hr_insurance_codes_0570" model="hr2.insurance.codes">
+			<field name="description">Osoba prowadząca pozarolniczą działalność gospodarczą niemająca ustalonego prawa do renty z tytułu niezdolności do pracy, dla której podstawę wymiaru składek na ubezpieczenia społeczne stanowi zadeklarowana kwota nie niższa niż 30% kwoty minimalnego wynagrodzenia</field>
+			<field name="name">0570</field>
+		</record>
+		<record id="hr_insurance_codes_0572" model="hr2.insurance.codes">
+			<field name="description">Osoba prowadząca pozarolniczą działalność gospodarczą mająca ustalone prawo do renty z tytułu niezdolności do pracy, dla której podstawę wymiaru składek na ubezpieczenia społeczne stanowi zadeklarowana kwota nie niższa niż 30% kwoty minimalnego wynagrodzenia</field>
+			<field name="name">0572</field>
+		</record>
+		<record id="hr_insurance_codes_0610" model="hr2.insurance.codes">
+			<field name="description">Poseł lub senator pobierający uposażenie</field>
+			<field name="name">0610</field>
+		</record>
+		<record id="hr_insurance_codes_0710" model="hr2.insurance.codes">
+			<field name="description">Stypendysta sportowy pobierający stypendium podlegający z tego tytułu ubezpieczeniom społecznym oraz ubezpieczeniu zdrowotnemu albo wyłącznie ubezpieczeniu zdrowotnemu</field>
+			<field name="name">0710</field>
+		</record>
+		<record id="hr_insurance_codes_0720" model="hr2.insurance.codes">
+			<field name="description">Stypendysta sportowy pobierający stypendium podlegający z tego tytułu wyłącznie ubezpieczeniom społecznym</field>
+			<field name="name">0720</field>
+		</record>
+		<record id="hr_insurance_codes_0800" model="hr2.insurance.codes">
+			<field name="description">Osoba wykonująca odpłatnie pracę na podstawie skierowania do pracy, w czasie odbywania kary pozbawienia wolności lub tymczasowego aresztowania</field>
+			<field name="name">0800</field>
+		</record>
+		<record id="hr_insurance_codes_0910" model="hr2.insurance.codes">
+			<field name="description">Osoba bezrobotna pobierająca zasiłek dla bezrobotnych, osoba pobierająca świadczenie integracyjne oraz osoba pobierająca stypendium w okresie odbywania studiów podyplomowych i niepozostawania w zatrudnieniu</field>
+			<field name="name">0910</field>
+		</record>
+		<record id="hr_insurance_codes_0911" model="hr2.insurance.codes">
+			<field name="description">Osoba bezrobotna niepobierająca zasiłku dla bezrobotnych lub stypendium</field>
+			<field name="name">0911</field>
+		</record>
+		<record id="hr_insurance_codes_0920" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca stypendium w okresie odbywania szkolenia, stażu lub przygotowania zawodowego dorosłych, na które została skierowana przez powiatowy urząd pracy lub inny niż powiatowy urząd pracy podmiot kierujący</field>
+			<field name="name">0920</field>
+		</record>
+		<record id="hr_insurance_codes_0940" model="hr2.insurance.codes">
+			<field name="description">Osoba zamieszkała w Rzeczypospolitej Polskiej pobierająca zasiłek przedemerytalny lub świadczenie przedemerytalne</field>
+			<field name="name">0940</field>
+		</record>
+		<record id="hr_insurance_codes_0941" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca zasiłek przedemerytalny lub świadczenie przedemerytalne, zamieszkała w innym niż Rzeczpospolita Polska państwie członkowskim Unii Europejskiej lub państwie członkowskim Europejskiego Porozumienia o Wolnym Handlu (EFTA)</field>
+			<field name="name">0941</field>
+		</record>
+		<record id="hr_insurance_codes_1010" model="hr2.insurance.codes">
+			<field name="description">Duchowny, nieprowadzący pozarolniczej działalności gospodarczej, opłacający składkę od minimalnej podstawy wymiaru</field>
+			<field name="name">1010</field>
+		</record>
+		<record id="hr_insurance_codes_1012" model="hr2.insurance.codes">
+			<field name="description">Duchowny, nieprowadzący pozarolniczej działalności gospodarczej, opłacający składkę od zadeklarowanej nadwyżki ponad minimalną podstawę wymiaru</field>
+			<field name="name">1012</field>
+		</record>
+		<record id="hr_insurance_codes_1020" model="hr2.insurance.codes">
+			<field name="description">Duchowny, nieprowadzący pozarolniczej działalności gospodarczej, będący członkiem zakonu kontemplacyjno - klauzurowego lub misjonarzem, opłacający składkę od minimalnej podstawy wymiaru</field>
+			<field name="name">1020</field>
+		</record>
+		<record id="hr_insurance_codes_1050" model="hr2.insurance.codes">
+			<field name="description">Alumn seminarium duchownego, nowicjusz, postulant i juniorysta, podlegający ubezpieczeniu zdrowotnemu</field>
+			<field name="name">1050</field>
+		</record>
+		<record id="hr_insurance_codes_1110" model="hr2.insurance.codes">
+			<field name="description">Żołnierz niezawodowy w służbie czynnej</field>
+			<field name="name">1110</field>
+		</record>
+		<record id="hr_insurance_codes_1111" model="hr2.insurance.codes">
+			<field name="description">Osoba odbywająca służbę zastępczą</field>
+			<field name="name">1111</field>
+		</record>
+		<record id="hr_insurance_codes_1112" model="hr2.insurance.codes">
+			<field name="description">Osoba odbywająca nadterminową zasadniczą służbę wojskową</field>
+			<field name="name">1112</field>
+		</record>
+		<record id="hr_insurance_codes_1113" model="hr2.insurance.codes">
+			<field name="description">Osoba odbywająca okresową służbę wojskową</field>
+			<field name="name">1113</field>
+		</record>
+		<record id="hr_insurance_codes_1114" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz w służbie kandydackiej oraz kandydat na żołnierza zawodowego</field>
+			<field name="name">1114</field>
+		</record>
+		<record id="hr_insurance_codes_1120" model="hr2.insurance.codes">
+			<field name="description">Żołnierz zawodowy</field>
+			<field name="name">1120</field>
+		</record>
+		<record id="hr_insurance_codes_1130" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Policji</field>
+			<field name="name">1130</field>
+		</record>
+		<record id="hr_insurance_codes_1131" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Agencji Bezpieczeństwa Wewnętrznego i Agencji Wywiadu</field>
+			<field name="name">1131</field>
+		</record>
+		<record id="hr_insurance_codes_1132" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Straży Granicznej</field>
+			<field name="name">1132</field>
+		</record>
+		<record id="hr_insurance_codes_1133" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Państwowej Straży Pożarnej</field>
+			<field name="name">1133</field>
+		</record>
+		<record id="hr_insurance_codes_1134" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Służby Celnej</field>
+			<field name="name">1134</field>
+		</record>
+		<record id="hr_insurance_codes_1135" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Centralnego Biura Antykorupcyjnego, Służby Kontrwywiadu Wojskowego, Służby Wywiadu Wojskowego albo Biura Ochrony Rządu</field>
+			<field name="name">1135</field>
+		</record>
+		<record id="hr_insurance_codes_1140" model="hr2.insurance.codes">
+			<field name="description">Funkcjonariusz Służby Więziennej</field>
+			<field name="name">1140</field>
+		</record>
+		<record id="hr_insurance_codes_1150" model="hr2.insurance.codes">
+			<field name="description">Osoba w stanie spoczynku pobierająca uposażenie</field>
+			<field name="name">1150</field>
+		</record>
+		<record id="hr_insurance_codes_1151" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca uposażenie rodzinne</field>
+			<field name="name">1151</field>
+		</record>
+		<record id="hr_insurance_codes_1152" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca uposażenie po zwolnieniu ze służby lub świadczenia pieniężne o takim samym charakterze</field>
+			<field name="name">1152</field>
+		</record>
+		<record id="hr_insurance_codes_1153" model="hr2.insurance.codes">
+			<field name="description">Żołnierz lub funkcjonariusz, za którego jest obowiązek opłacenia składek na ubezpieczenia emerytalne i rentowe w związku ze zwolnieniem ze służby lub utratą prawa do emerytury bądź renty</field>
+			<field name="name">1153</field>
+		</record>
+		<record id="hr_insurance_codes_1211" model="hr2.insurance.codes">
+			<field name="description">Osoba przebywająca na urlopie wychowawczym</field>
+			<field name="name">1211</field>
+		</record>
+		<record id="hr_insurance_codes_1240" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca zasiłek macierzyński</field>
+			<field name="name">1240</field>
+		</record>
+		<record id="hr_insurance_codes_1310" model="hr2.insurance.codes">
+			<field name="description">Osoba, która na podstawie odrębnych przepisów lub układów zbiorowych pracy pobiera świadczenie socjalne wypłacane w czasie urlopu innego niż kolejowy</field>
+			<field name="name">1310</field>
+		</record>
+		<record id="hr_insurance_codes_1320" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca zasiłek socjalny na czas przekwalifikowania zawodowego i poszukiwania nowego zatrudnienia</field>
+			<field name="name">1320</field>
+		</record>
+		<record id="hr_insurance_codes_1321" model="hr2.insurance.codes">
+			<field name="description">Osoba, która na podstawie odrębnych przepisów lub układów zbiorowych pracy pobiera świadczenie socjalne wypłacane w czasie urlopu kolejowego</field>
+			<field name="name">1321</field>
+		</record>
+		<record id="hr_insurance_codes_1322" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca świadczenie socjalne w okresie zwolnienia z obowiązku świadczenia pracy</field>
+			<field name="name">1322</field>
+		</record>
+		<record id="hr_insurance_codes_1422" model="hr2.insurance.codes">
+			<field name="description">Świadczeniobiorca, za którego jednostka organizacyjna pomocy społecznej albo wójt, burmistrz lub prezydent miasta ma obowiązek opłacać składki</field>
+			<field name="name">1422</field>
+		</record>
+		<record id="hr_insurance_codes_1811" model="hr2.insurance.codes">
+			<field name="description">Student lub uczestnik studiów doktoranckich, za którego szkoła wyższa lub jednostka organizacyjna prowadząca studia doktoranckie jest zobowiązana do opłacania składek na ubezpieczenie zdrowotne</field>
+			<field name="name">1811</field>
+		</record>
+		<record id="hr_insurance_codes_1830" model="hr2.insurance.codes">
+			<field name="description">Słuchacz Krajowej Szkoły Administracji Publicznej</field>
+			<field name="name">1830</field>
+		</record>
+		<record id="hr_insurance_codes_1900" model="hr2.insurance.codes">
+			<field name="description">Osoba podlegająca dobrowolnie ubezpieczeniom emerytalnemu i rentowym, na podstawie art. 7 ustawy o systemie ubezpieczeń społecznych</field>
+			<field name="name">1900</field>
+		</record>
+		<record id="hr_insurance_codes_1910" model="hr2.insurance.codes">
+			<field name="description">Osoba podlegająca dobrowolnie ubezpieczeniom emerytalnemu i rentowym w okresie zawieszenia wykonywania działalności gospodarczej</field>
+			<field name="name">1910</field>
+		</record>
+		<record id="hr_insurance_codes_2010" model="hr2.insurance.codes">
+			<field name="description">Sędzia</field>
+			<field name="name">2010</field>
+		</record>
+		<record id="hr_insurance_codes_2020" model="hr2.insurance.codes">
+			<field name="description">Prokurator, ławnik sądowy, aplikant Krajowej Szkoły Sądownictwa i Prokuratury</field>
+			<field name="name">2020</field>
+		</record>
+		<record id="hr_insurance_codes_2030" model="hr2.insurance.codes">
+			<field name="description">Sędzia lub prokurator, za którego jest obowiązek opłacenia składek na ubezpieczenia społeczne, w związku z rozwiązaniem lub wygaśnięciem stosunku służbowego</field>
+			<field name="name">2030</field>
+		</record>
+		<record id="hr_insurance_codes_2110" model="hr2.insurance.codes">
+			<field name="description">Dziecko lub uczeń nie podlegający ubezpieczeniu zdrowotnemu z innego tytułu</field>
+			<field name="name">2110</field>
+		</record>
+		<record id="hr_insurance_codes_2120" model="hr2.insurance.codes">
+			<field name="description">Słuchacz zakładu kształcenia nauczycieli nie podlegający ubezpieczeniu zdrowotnemu z innego tytułu</field>
+			<field name="name">2120</field>
+		</record>
+		<record id="hr_insurance_codes_2210" model="hr2.insurance.codes">
+			<field name="description">Kombatant, za którego składki na ubezpieczenie zdrowotne ma obowiązek opłacać Urząd do Spraw Kombatantów i Osób Represjonowanych</field>
+			<field name="name">2210</field>
+		</record>
+		<record id="hr_insurance_codes_2230" model="hr2.insurance.codes">
+			<field name="description">Osoba podlegająca ubezpieczeniu zdrowotnemu z tytułu uprawnienia do świadczeń alimentacyjnych na podstawie ugody sądowej lub prawomocnego orzeczenia sądu</field>
+			<field name="name">2230</field>
+		</record>
+		<record id="hr_insurance_codes_2240" model="hr2.insurance.codes">
+			<field name="description">Członek rady nadzorczej, podlegający z tego tytułu ubezpieczeniu zdrowotnemu</field>
+			<field name="name">2240</field>
+		</record>
+		<record id="hr_insurance_codes_2410" model="hr2.insurance.codes">
+			<field name="description">Osoba objęta dobrowolnym ubezpieczeniem zdrowotnym lub wolontariusz, niepodlegający ubezpieczeniu zdrowotnemu z innego tytułu, za którego składkę na ubezpieczenie zdrowotne dobrowolnie finansuje korzystający, o którym mowa w przepisach o działalności pożytku publicznego i o wolontariacie</field>
+			<field name="name">2410</field>
+		</record>
+		<record id="hr_insurance_codes_2500" model="hr2.insurance.codes">
+			<field name="description">Emeryt lub rencista zamieszkały w Rzeczypospolitej Polskiej, którego składka na ubezpieczenie zdrowotne finansowana jest przez świadczeniobiorcę</field>
+			<field name="name">2500</field>
+		</record>
+		<record id="hr_insurance_codes_2501" model="hr2.insurance.codes">
+			<field name="description">Emeryt lub rencista zamieszkały w innym niż Rzeczpospolita Polska państwie członkowskim Unii Europejskiej lub państwie członkowskim Europejskiego Porozumienia o Wolnym Handlu (EFTA), którego składka na ubezpieczenie zdrowotne finansowana jest przez świadczeniobiorcę</field>
+			<field name="name">2501</field>
+		</record>
+		<record id="hr_insurance_codes_2510" model="hr2.insurance.codes">
+			<field name="description">Emeryt lub rencista zamieszkały w Rzeczypospolitej Polskiej, którego składka na ubezpieczenie zdrowotne finansowana jest z budżetu państwa</field>
+			<field name="name">2510</field>
+		</record>
+		<record id="hr_insurance_codes_2511" model="hr2.insurance.codes">
+			<field name="description">Emeryt lub rencista zamieszkały w innym niż Rzeczpospolita Polska państwie członkowskim Unii Europejskiej lub państwie członkowskim Europejskiego Porozumienia o Wolnym Handlu (EFTA), którego składka na ubezpieczenie zdrowotne finansowana jest z budżetu państwa</field>
+			<field name="name">2511</field>
+		</record>
+		<record id="hr_insurance_codes_2600" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca nauczycielskie świadczenie kompensacyjne zamieszkała w Rzeczypospolitej Polskiej</field>
+			<field name="name">2600</field>
+		</record>
+		<record id="hr_insurance_codes_2601" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca nauczycielskie świadczenie kompensacyjne zamieszkała w innym niż Rzeczypospolita Polska państwie członkowskim Unii Europejskiej lub państwie członkowskim Europejskiego Porozumienia o Wolnym Handlu (EFTA)</field>
+			<field name="name">2601</field>
+		</record>
+		<record id="hr_insurance_codes_2700" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca emeryturę pomostową zamieszkała w Rzeczypospolitej Polskiej</field>
+			<field name="name">2700</field>
+		</record>
+		<record id="hr_insurance_codes_2701" model="hr2.insurance.codes">
+			<field name="description">Osoba pobierająca emeryturę pomostową zamieszkała w innym niż Rzeczypospolita Polska państwie członkowskim Unii Europejskiej lub państwie członkowskim Europejskiego Porozumienia o Wolnym Handlu (EFTA)</field>
+			<field name="name">2701</field>
+		</record>
+		<record id="hr_insurance_codes_3000" model="hr2.insurance.codes">
+			<field name="description">Osoba, za którą należy rozliczyć i opłacić składki lub należne świadczenia w dokumentach rozliczeniowych składanych nie wcześniej niż za następny miesiąc, po ustaniu tytułu do ubezpieczeń</field>
+			<field name="name">3000</field>
+		</record>
+		<record id="hr_insurance_codes_5000" model="hr2.insurance.codes">
+			<field name="description">Inny tytuł do ubezpieczeń</field>
+			<field name="name">5000</field>
+		</record>
+    </data>
+    
+    <!-- Oddziały NFZ -->
+    
+    <data noupdate="1">
+    	<record id="hr2_nfz_01" model="hr2.nfz">
+			<field name="name">01R</field>
+		</record>
+		<record id="hr2_nfz_02" model="hr2.nfz">
+			<field name="name">02R</field>
+		</record>
+		<record id="hr2_nfz_03" model="hr2.nfz">
+			<field name="name">03R</field>
+		</record>
+		<record id="hr2_nfz_04" model="hr2.nfz">
+			<field name="name">04R</field>
+		</record>
+		<record id="hr2_nfz_05" model="hr2.nfz">
+			<field name="name">05R</field>
+		</record>
+		<record id="hr2_nfz_06" model="hr2.nfz">
+			<field name="name">06R</field>
+		</record>
+		<record id="hr2_nfz_07" model="hr2.nfz">
+			<field name="name">07R</field>
+		</record>
+		<record id="hr2_nfz_08" model="hr2.nfz">
+			<field name="name">08R</field>
+		</record>
+		<record id="hr2_nfz_09" model="hr2.nfz">
+			<field name="name">09R</field>
+		</record>
+		<record id="hr2_nfz_10" model="hr2.nfz">
+			<field name="name">10R</field>
+		</record>
+		<record id="hr2_nfz_11" model="hr2.nfz">
+			<field name="name">11R</field>
+		</record>
+		<record id="hr2_nfz_12" model="hr2.nfz">
+			<field name="name">12R</field>
+		</record>
+		<record id="hr2_nfz_13" model="hr2.nfz">
+			<field name="name">13R</field>
+		</record>
+		<record id="hr2_nfz_14" model="hr2.nfz">
+			<field name="name">14R</field>
+		</record>
+		<record id="hr2_nfz_15" model="hr2.nfz">
+			<field name="name">15R</field>
+		</record>
+		<record id="hr2_nfz_16" model="hr2.nfz">
+			<field name="name">16R</field>
+		</record>
+    </data>
+    
+    <!-- Przyczyny wyrejestrowania -->
+    
+    <data noupdate="1">
+    	<record id="hr2_obsolete_reason_100" model="hr2.obsolete.reason">
+			<field name="name">100</field>
+			<field name="description">ustanie tytułu do ubezpieczeń/ubezpieczenia</field>
+		</record>
+		<record id="hr2_obsolete_reason_500" model="hr2.obsolete.reason">
+			<field name="name">500</field>
+			<field name="description">zgon osoby ubezpieczonej</field>
+		</record>
+		<record id="hr2_obsolete_reason_600" model="hr2.obsolete.reason">
+			<field name="name">600</field>
+			<field name="description">inna przyczyna wyrejestrowania</field>
+		</record>
+    </data>
+	
+	<!-- Nowe pole na res.company -->
+	<data noupdate="1">
+		<record id="base.main_company" model="res.company">
+        	<field name="short_name">Skrócona nazwa</field>
+        </record>
+	</data>
+</openerp>

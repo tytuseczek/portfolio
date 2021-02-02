@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	
+	<data noupdate="1" nodelete="0">
+	
+	<!-- Configuration -->    
+        
+    <record id="configuration_type_payroll" model="lacan.configuration.type">
+        <field name="name">Parametry Płacowe</field>
+    </record>        
+    
+    	<!-- Progi podatkowe -->
+    	
+    	<record id="Konfiguracja_progow_podatkowych" model="lacan.configuration" forcecreate="True">
+			<field name="name">Konfiguracja progów podatkowych</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">many2one</field>
+			<field name="model_id" model="ir.model" search="[('model','=','hr2.config.prog.podatkowy')]" />
+			<field name="state">confirmed</field>
+		</record>
+
+		<!-- Progi kwoty wolnej -->
+
+    	<record id="konfiguracja_progow_kwoty_wolnej" model="lacan.configuration" forcecreate="True">
+			<field name="name">Konfiguracja progów kwoty wolnej</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">many2one</field>
+			<field name="model_id" model="ir.model" search="[('model','=','hr2.config.kwota.wolna')]" />
+			<field name="state">confirmed</field>
+		</record>
+		
+		<!-- Zaliczka PIT dla umów cywilnoprawnych -->  	
+		
+		<record id="zaliczka_PIT_cywilnoprawne" model="lacan.configuration" forcecreate="True">
+      		<field name="name">Domyślny procent zaliczki PIT dla umów cywilnoprawnych</field>
+      		<field eval="1" name="level"/>
+      		<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+      		<field name="type">float</field>
+      		<field name="state">confirmed</field>
+      	</record> 
+      	
+      	<!-- Minimalna pensja brutto -->
+
+      	<record id="minimalna_pensja_brutto" model="lacan.configuration" forcecreate="True">
+      		<field name="name">Minimalna pensja brutto</field>
+      		<field eval="1" name="level"/>
+      		<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+      		<field name="type">float</field>
+      		<field name="state">confirmed</field>
+      	</record> 
+
+        <record id="minimalna_emerytura" model="lacan.configuration" forcecreate="True">
+      		<field name="name">Minimalna emerytura netto</field>
+      		<field eval="1" name="level"/>
+      		<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+      		<field name="type">float</field>
+      		<field name="state">confirmed</field>
+      	</record>
+
+        <record id="minimalna_pensja_netto" model="lacan.configuration" forcecreate="True">
+      		<field name="name">Minimalna pensja netto</field>
+      		<field eval="1" name="level"/>
+      		<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+      		<field name="type">float</field>
+      		<field name="state">confirmed</field>
+      	</record>
+
+        <record id="minimalna_pensja_brutto_1rok" model="lacan.configuration" forcecreate="True">
+      		<field name="name">Minimalna pensja brutto dla 1 roku pracy</field>
+      		<field eval="1" name="level"/>
+      		<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+      		<field name="type">float</field>
+      		<field name="state">confirmed</field>
+      	</record>
+
+        <record id="Dzien_wyplaty_wynagrodzen" model="lacan.configuration" forcecreate="True">
+			<field name="name">Dzień wypłaty wynagrodzeń (względem końca bieżącego miesiąca)</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+
+		<record id="Dzien_wyplaty_wynagrodzen_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Dzien_wyplaty_wynagrodzen"/>
+			<field name="value_universal">-1</field>
+			<field name="type">integer</field>
+			<field eval="-1" name="value_int"/>
+        </record>
+
+
+        <!-- ZUS -->
+             
+        <record id="Stawka_Emerytalna_(Pracownik)" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka Emerytalna (Pracownik)</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_Emerytalna_(Pracodawca)" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka Emerytalna (Pracodawca)</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_Rentowa_(Pracownik)" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka Rentowa (Pracownik)</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_Rentowa_(Pracodawca)" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka Rentowa (Pracodawca)</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_Chorobowa" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka Chorobowa</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_Wypadkowa" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka Wypadkowa</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_FP" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka FP</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_FGSP" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka FGŚP</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Max_rocz_podstawa_dla_ubezp_emr_rent" model="lacan.configuration" forcecreate="True">
+			<field name="name">Maks. roczna podstawa wymiaru dla ubezp. emer. i rent.</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+
+        <record id="Dzien_wyplaty_ZUS" model="lacan.configuration" forcecreate="True">
+			<field name="name">Dzień miesiąca do zapłaty ZUS</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Dzien_wyplaty_ZUS_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Dzien_wyplaty_ZUS"/>
+			<field name="value_universal">15</field>
+			<field name="type">integer</field>
+			<field eval="15" name="value_int"/>
+		</record>
+		
+
+		<!-- Zwolnienia lekarskie --> 
+		
+		<record id="Granica_il_dni_zwol_lek_fin_przez_pracodaw" model="lacan.configuration" forcecreate="True">
+			<field name="name">Wiek granicy ilosci dni zwol. lekarskiego fin. przez pracodawce</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Dni_zwol_lek_fin_przez_pracodaw_ponizej_granicy" model="lacan.configuration" forcecreate="True">
+			<field name="name">Dni zwol. lekarskiego fin. przez pracodawce ponizej granicy</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Dni_zwol_lek_fin_przez_pracodaw_powyzej_granicy" model="lacan.configuration" forcecreate="True">
+			<field name="name">Dni zwol. lekarskiego fin. przez pracodawce powyzej granicy</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+
+		
+		<!-- NFZ, PIT -->
+		
+		<record id="Stawka_zdrowotna_pracownik" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka składki zdrowotnej pracownika</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_zdrowotna_PIT" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka składki zdrowotnej PIT</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Granica_kwoty_umowy_cywilpraw_do_podatku_zryczalt" model="lacan.configuration" forcecreate="True">
+			<field name="name">Granica kwoty umowy cywilnoprawnej do podatku zryczaltowanego</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Stawka_podatku_ryczalt" model="lacan.configuration" forcecreate="True">
+			<field name="name">Stawka podatku do zryczałtowanej umowy cywilnoprawnej</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Miesieczna_kwota_wolna" model="lacan.configuration" forcecreate="True">
+			<field name="name">Miesięczna kwota wolna od podatku</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Koszty_uzyskania" model="lacan.configuration" forcecreate="True">
+			<field name="name">Koszty uzyskania</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Koszty_uzyskania_podwyzszone" model="lacan.configuration" forcecreate="True">
+			<field name="name">Koszty uzyskania podwyższone</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="Limit_podwyzszonych_kosztow" model="lacan.configuration" forcecreate="True">
+			<field name="name">Roczny limit kosztów uzyskania od praw autorskich</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr_payroll_pl.configuration_type_payroll"/>
+			<field name="type">float</field>
+			<field name="state">confirmed</field>
+		</record>
+
+
+		<!-- Konta przelewów -->
+
+		<record id="Konto_przelewow_dla_pracownikow" model="lacan.configuration" forcecreate="True">
+			<field name="name">Konto przelewów wychodzących dla pracowników</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">many2one</field>
+			<field name="model_id" model="ir.model" search="[('model','=','res.partner.bank')]" />
+			<field name="state">confirmed</field>
+		</record>
+		<record id="partner_bank_payout" model="res.partner.bank" forcecreate="True">
+            <field name="acc_number">Zmień mnie.</field>
+			<field name="correctness_acc_number">True</field>
+			<field name="state">bank</field>
+			<field name="partner_id" ref="base.main_company"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="type">partner</field>
+			<field name="acc_currency" ref="base.PLN"/>
+			<field name="sequence">10</field>
+        </record>
+		<record id="Konto_przelewow_dla_pracownikow_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Konto_przelewow_dla_pracownikow"/>
+			<field name="value_m2o" eval="'res.partner.bank,%d' % ref('partner_bank_payout')"/>
+			<field name="value_universal">Konto przelewow wychodzących dla pracownikow</field>
+			<field name="type">many2one</field>
+		</record>
+
+
+		<record id="Konto_przelewow_do_US" model="lacan.configuration" forcecreate="True">
+			<field name="name">Konto przelewów wychodzących do US</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">many2one</field>
+			<field name="model_id" model="ir.model" search="[('model','=','res.partner.bank')]" />
+			<field name="state">confirmed</field>
+		</record>
+		<record id="partner_bank_US" model="res.partner.bank" forcecreate="True">
+            <field name="acc_number">Zmień mnie.</field>
+			<field name="correctness_acc_number">True</field>
+			<field name="state">bank</field>
+			<field name="partner_id" ref="base.main_company"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="type">partner</field>
+			<field name="acc_currency" ref="base.PLN"/>
+			<field name="sequence">10</field>			
+        </record>
+		<record id="Konto_przelewow_do_US_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Konto_przelewow_do_US"/>
+			<field name="value_m2o" eval="'res.partner.bank,%d' % ref('partner_bank_US')"/>
+			<field name="value_universal">Konto przelewów do US</field>
+			<field name="type">many2one</field>
+		</record>
+
+		<record id="Konto_przelewow_do_ZUS" model="lacan.configuration" forcecreate="True">
+			<field name="name">Konto przelewów wychodzących do ZUS</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">many2one</field>
+			<field name="model_id" model="ir.model" search="[('model','=','res.partner.bank')]" />
+			<field name="state">confirmed</field>
+		</record>
+		<record id="partner_bank_ZUS" model="res.partner.bank" forcecreate="True">
+            <field name="acc_number">Zmień mnie.</field>
+			<field name="correctness_acc_number">True</field>
+			<field name="state">bank</field>
+			<field name="partner_id" ref="base.main_company"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="type">partner</field>
+			<field name="acc_currency" ref="base.PLN"/>
+			<field name="sequence">10</field>			
+        </record>
+		<record id="Konto_przelewow_do_ZUS_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Konto_przelewow_do_ZUS"/>
+			<field name="value_m2o" eval="'res.partner.bank,%d' % ref('partner_bank_ZUS')"/>
+			<field name="value_universal">Konto przelewów do ZUS</field>
+			<field name="type">many2one</field>
+		</record>
+
+
+            <!-- Konfiguracja kadr -->
+        <record id="Pracodawca_sam_wyplaca_zasilki" model="lacan.configuration" forcecreate="True">
+			<field name="name">Czy pracodawca sam wyplaca zasilki z ubezp. spol.</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">boolean</field>
+			<field name="state">confirmed</field>
+		</record>
+        <record id="Pracodawca_sam_wyplaca_zasilki_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Pracodawca_sam_wyplaca_zasilki"/>
+			<field name="value_universal">True</field>
+			<field name="type">boolean</field>
+			<field eval="True" name="value_bool"/>
+		</record>
+        <record id="Ograniczenie_skladki_do_wysokosci_zaliczki" model="lacan.configuration" forcecreate="True">
+            <field name="name">Czy ograniczyć składkę zdrowotną do wysokości zaliczki PIT</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">boolean</field>
+			<field name="state">confirmed</field>
+        </record>
+        <record id="Ograniczenie_skladki_do_wysokosci_zaliczki_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Ograniczenie_skladki_do_wysokosci_zaliczki"/>
+			<field name="value_universal">True</field>
+			<field name="type">boolean</field>
+			<field eval="True" name="value_bool"/>
+		</record>
+
+		<record id="Rodzaj_obowiazku_podatkowego_platnika" model="lacan.configuration" forcecreate="True">
+			<field name="name">Rodzaj obowiązku podatkowego płatnika</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+			<field name="description">1. nieograniczony obowiązek podatkowy (rezydent)
+2. ograniczony obowiązek podatkowy (nierezydent)</field>
+		</record>
+        <record id="Rodzaj_obowiazku_podatkowego_platnika_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Rodzaj_obowiazku_podatkowego_platnika"/>
+			<field name="value_universal">1</field>
+			<field name="type">integer</field>
+			<field eval="1" name="value_int"/>
+		</record>
+
+		<!-- Numeracje -->
+
+		<record id="seq_type_hr_payment_register" model="ir.sequence.type" forcecreate="True">
+            <field name="name">Payment register</field>
+            <field name="code">hr2.payment.register</field>
+        </record>
+
+        <record id="seq_hr_payment_register" model="ir.sequence" forcecreate="True">
+            <field name="name">Payment register</field>
+            <field name="code">hr2.payment.register</field>
+            <field name="padding">4</field>
+            <field name="prefix">%(year)s/%(month)s/</field>
+            <field name="number_increment">1</field>
+            <field name="type">month</field>
+            <field name="active" eval="1" />
+			<field name="res_model" eval="ref('hr_payroll_pl.model_hr2_payment_register')"/>
+        </record>
+
+		<record id="Numeracja_rejestr_wyplat" model="lacan.configuration" forcecreate="True">
+			<field name="name">Numeracja rejestru wypłat</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">many2one</field>
+			<field name="model_id" model="ir.model" search="[('model','=','ir.sequence')]" />
+			<field name="state">confirmed</field>
+		</record>
+
+		<record id="Numeracja_rejestr_wyplat_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Numeracja_rejestr_wyplat"/>
+			<field name="value_m2o" eval="'ir.sequence,%d' % ref('seq_hr_payment_register')"/>
+			<field name="value_universal">Numeracja rejestru wypłat</field>
+			<field name="type">many2one</field>
+		</record>
+
+		<!-- Specjalne liczenie małych umów -->
+		<record id="liczenie_malych_umow" model="lacan.configuration" forcecreate="True">
+			<field name="name">Specjalne liczenie małych umów cywilno-prawnych</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">boolean</field>
+			<field name="state">confirmed</field>
+		</record>
+		<record id="liczenie_malych_umow_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="liczenie_malych_umow"/>
+			<field name="value_universal">1</field>
+			<field name="type">boolean</field>
+			<field eval="1" name="value_bool"/>
+        </record>
+    </data>
+    
+    <data noupdate="1">
+    
+    	<record id="Okres_rozliczania_nadgodzin" model="lacan.configuration" forcecreate="True">
+			<field name="name">Okres rozliczania nadgodzin</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+		
+		<record id="Okres_rozliczania_nadgodzin_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Okres_rozliczania_nadgodzin"/>
+			<field name="value_universal">1</field>
+			<field name="type">integer</field>
+			<field eval="1" name="value_int"/>
+		</record>
+   
+    </data>
+    
+    <data noupdate="1">
+    
+    	<record id="Liczba_miesiecy_do_wyliczenia_podstawy_urlopu" model="lacan.configuration" forcecreate="True">
+			<field name="name">Liczba miesięcy do wyliczenia podstawy urlopu</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+		
+		<record id="Liczba_miesiecy_do_wyliczenia_podstawy_urlopu_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Liczba_miesiecy_do_wyliczenia_podstawy_urlopu"/>
+			<field name="value_universal">3</field>
+			<field name="type">integer</field>
+			<field eval="3" name="value_int"/>
+		</record>
+    
+    </data>
+    
+    <data noupdate="1">
+    
+    	<record id="Uproszczone_naliczanie_nadgodzin" model="lacan.configuration" forcecreate="True">
+			<field name="name">Uproszczone naliczanie nadgodzin</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">boolean</field>
+			<field name="state">confirmed</field>
+		</record>
+		
+		<record id="Uproszczone_naliczanie_nadgodzin_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Uproszczone_naliczanie_nadgodzin"/>
+			<field name="value_bool">False</field>
+			<field name="type">boolean</field>
+			<field eval="False" name="value_bool"/>
+		</record>
+    
+    	<record id="Liczba_miesiecy_do_wyliczenia_podstawy_urlopu" model="lacan.configuration">
+			<field name="name">Liczba miesięcy do wyliczenia podstawy urlopu</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">integer</field>
+			<field name="state">confirmed</field>
+		</record>
+		
+		<record id="Liczba_miesiecy_do_wyliczenia_podstawy_urlopu_value" model="lacan.configuration.value">
+			<field name="config_id" ref="Liczba_miesiecy_do_wyliczenia_podstawy_urlopu"/>
+			<field name="value_universal">3</field>
+			<field name="type">integer</field>
+			<field eval="3" name="value_int"/>
+		</record>
+
+        <record id="Obowiazkowy_eksport_bankowego_rejestru_wyplat" model="lacan.configuration" forcecreate="True">
+            <field name="name">Obowiązkowy eksport bankowego rejestru wypłat</field>
+			<field eval="1" name="level"/>
+			<field name="typ_id" ref="hr.configuration_type_kadry"/>
+			<field name="type">boolean</field>
+			<field name="state">confirmed</field>
+        </record>
+        <record id="Obowiazkowy_eksport_bankowego_rejestru_wyplat_value" model="lacan.configuration.value" forcecreate="True">
+			<field name="config_id" ref="Obowiazkowy_eksport_bankowego_rejestru_wyplat"/>
+			<field name="value_universal">False</field>
+			<field name="type">boolean</field>
+			<field eval="False" name="value_bool"/>
+		</record>
+
+    </data>
+</openerp>

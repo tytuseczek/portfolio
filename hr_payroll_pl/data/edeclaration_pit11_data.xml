@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="pit11_23" model="lacan.edeclaration.version">
+			<field name="name">PIT-11</field>
+			<field name="version">23</field>
+			<field name="tax_payer_type">employee</field>
+            <field name="period_type">year</field>
+            <field name="header"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>]]></field>
+            <field name="template"><![CDATA[
+<Deklaracja xmlns="http://crd.gov.pl/wzor/2016/01/11/3066/" xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2011/06/21/eD/DefinicjeTypy/" >
+  <Naglowek>
+    <KodFormularza kodSystemowy="PIT-11 (23)" kodPodatku="PIT" rodzajZobowiazania="Z" wersjaSchemy="1-0E">PIT-11</KodFormularza>
+    <WariantFormularza>23</WariantFormularza>
+    <CelZlozenia poz="P_6">${d['6']}</CelZlozenia>
+    <Rok>${d.get('year', False) and d['year'] or ''}</Rok>
+    <KodUrzedu>${d['5']}</KodUrzedu>
+  </Naglowek>
+  
+  <Podmiot1 rola="Płatnik">
+    <OsobaNiefizyczna>
+  		<etd:NIP>${d['1']}</etd:NIP>
+  		<etd:PelnaNazwa>${d['8'].split(',')[0]}</etd:PelnaNazwa>
+  		<etd:REGON>${d['8'].split(',')[1]}</etd:REGON>
+  	</OsobaNiefizyczna>
+  </Podmiot1>
+  <Podmiot2 rola="Podatnik">
+    <OsobaFizyczna>
+      <NIP>${d.get('11nip', '')}</NIP>
+      <PESEL>${d.get('11pesel', '')}</PESEL>
+      <ImiePierwsze>${d['16']}</ImiePierwsze>
+      <Nazwisko>${d['15']}</Nazwisko>
+      <DataUrodzenia>${d['17']}</DataUrodzenia>
+      <NrId poz="P_12">${d['12']}</NrId>
+      <RodzajNrId poz="P_13">${d['13']}</RodzajNrId>
+      <KodKrajuWydania poz="P_14A">${d['14']}</KodKrajuWydania>
+    </OsobaFizyczna>
+    <AdresZamieszkania rodzajAdresu="RAD">
+      <KodKraju poz="P_18A">${d['18']}</KodKraju>
+      <Wojewodztwo>${d['19']}</Wojewodztwo>
+      <Powiat>${d['20']}</Powiat>
+      <Gmina>${d['21']}</Gmina>
+      <Ulica poz="P_22">${d['22']}</Ulica>
+      <NrDomu poz="P_23">${d['23']}</NrDomu>
+      <NrLokalu poz="P_24">${d['24']}</NrLokalu>
+      <Miejscowosc poz="P_25">${d['25']}</Miejscowosc>
+      <KodPocztowy poz="P_26">${d['26']}</KodPocztowy>
+      <Poczta>${d['27']}</Poczta>
+    </AdresZamieszkania>
+  </Podmiot2>
+  
+  <PozycjeSzczegolowe>
+    <P_10>${d['10']}</P_10>
+    <P_28>${d['28']}</P_28>
+	<P_29>${d['29']}</P_29>
+	<P_30>${d['30']}</P_30>
+	<P_31>${d['31']}</P_31>
+    <P_32/>
+	<P_33>${d['33']}</P_33>
+	<P_34>${d['34']}</P_34>
+	<P_35>${d['35']}</P_35>
+    <P_36/>
+    <P_37/>
+    <P_38/>
+    <P_39/>
+    <P_40/>
+    <P_41/>
+    <P_42/>
+    <P_43/>
+    <P_44/>
+    <P_45/>
+    <P_46/>
+    <P_47/>
+    <P_48/>
+	<P_49>${d['49']}</P_49>
+	<P_50>${d['50']}</P_50>
+	<P_51>${d['51']}</P_51>
+	<P_52>${d['52']}</P_52>
+    <P_53/>
+    <P_54/>
+    <P_55/>
+    <P_56/>
+    <P_57>${d['57']}</P_57>
+    <P_58>${d['58']}</P_58>
+    <P_59>${d['59']}</P_59>
+    <P_60>${d['60']}</P_60>
+    <P_61>${d['61']}</P_61>
+    <P_62/>
+    <P_63/>
+    <P_64/>
+    <P_65/>
+    <P_66>${d['66']}</P_66>
+    <P_67>${d['67']}</P_67>
+    <P_68/>
+    <P_69>${d['69']}</P_69>
+    <P_70>${d['70']}</P_70>
+    <P_71/>
+    <P_72>${d['72']}</P_72>
+    <P_73/>
+    <P_74/>
+    <P_75/>
+    <P_76>${d['76']}</P_76>
+  </PozycjeSzczegolowe>
+  <Pouczenie>${d['pouczenie']}</Pouczenie>
+</Deklaracja>
+            ]]></field>
+        </record>
+
+<record id="hr_declaration_form" model="ir.ui.view">
+            <field name="name">company.tax.declaration.form</field>
+            <field name="model">tax.declaration</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form>
+                <group col="2" colspan="2">
+                    <field name="tax_payer_type" readonly="True"/>
+                    <field name="partner_id" readonly="True" invisible="context.get('type_employee', False)"/>
+                    <field name="tax_payer" invisible="1" readonly="True"/>
+                </group>
+                <group col="2" colspan="2">
+                    <field name="name" readonly="True"/>
+                    <field name="version" readonly="True"/>
+                    <field name="period" readonly="True" invisible="context.get('type_year', False)"/>
+                    <field name="year" readonly="True"/>
+                    <field name="date"/>
+                </group>
+                <newline/>
+                <group col="4" colspan="4">
+                <field name="declaration_data_id" nolabel="1" height="600">
+                    <tree string="Tax declaration data">
+                        <field name="field_id"/>
+                        <field name="field_name"/>
+                        <field name="field_type" invisible="1"/>
+                        <field name="field_view" />
+                    </tree>
+                </field>
+                </group>
+            </form>
+            </field>
+        </record>
+	</data>	
+</openerp>

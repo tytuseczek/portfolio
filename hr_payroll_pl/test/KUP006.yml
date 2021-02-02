@@ -1,0 +1,221 @@
+#ftp://fileserver.lacan.com.pl/department/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/KUP.ods
+#Przypadek limit KUP 50% od praw autorskich
+-
+  Tworzę listę płac na marzec
+-
+  !record {model: hr2.payroll.register, id: hr_register_marzec_kup6}:
+    name: Payroll1
+    register_month: 3
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-03-01"
+-
+  Wyliczam listę płac na marzec
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_marzec_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_marzec_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_marzec_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_marzec_kup6")],context=context)
+-
+  Tworzę listę płac na kwiecien
+-
+  !record {model: hr2.payroll.register, id: hr_register_kwiecien_kup6}:
+    name: Payroll1
+    register_month: 4
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-04-01"
+-
+  Wyliczam listę płac na kwiecien
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_kwiecien_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_kwiecien_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_kwiecien_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_kwiecien_kup6")],context=context)
+-
+  Tworzę listę płac na maj
+-
+  !record {model: hr2.payroll.register, id: hr_register_maj_kup6}:
+    name: Payroll1
+    register_month: 5
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-05-01"
+-
+  Wyliczam listę płac na maj
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_maj_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_maj_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_maj_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_maj_kup6")],context=context)
+-
+  Tworzę listę płac na czerwiec
+-
+  !record {model: hr2.payroll.register, id: hr_register_czerwiec_kup6}:
+    name: Payroll1
+    register_month: 6
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-06-01"
+-
+  Wyliczam listę płac na czerwiec
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_czerwiec_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_czerwiec_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_czerwiec_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_czerwiec_kup6")],context=context)
+-
+  Tworzę listę płac na lipiec
+-
+  !record {model: hr2.payroll.register, id: hr_register_lipiec_kup6}:
+    name: Payroll1
+    register_month: 7
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-07-01"
+-
+  Wyliczam listę płac na lipiec
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_lipiec_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_lipiec_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_lipiec_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_lipiec_kup6")],context=context)
+-
+  Tworzę listę płac na sierpien
+-
+  !record {model: hr2.payroll.register, id: hr_register_sierpien_kup6}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-08-01"
+-
+  Wyliczam listę płac na sierpien
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_sierpien_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_sierpien_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_sierpien_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_sierpien_kup6")],context=context)
+-
+  Tworzę listę płac na wrzesien
+-
+  !record {model: hr2.payroll.register, id: hr_register_wrzesien_kup6}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-09-01"
+-
+  Wyliczam listę płac na wrzesien
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_wrzesien_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_wrzesien_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_wrzesien_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_wrzesien_kup6")],context=context)
+-
+  Sprawdzam poprawność wyliczeń dla września
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.hr_pracownik_kup6")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.date','=','2014-09-01')] ,context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania_autorskie == 4659.66, "Koszty uzyskania przychodu powinny wynosić 4659.66, a wynoszą %s" % payslip_obj.koszty_uzyskania
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 5584.00, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 5584.00, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 958.79, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 958.79, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 156.00, "Zaliczka na podatek dochodowy powinna wynosić 156.00, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 9266.87, "Wypłata powinna wynosić 9266.87, a wynosi %s" % payslip_obj.do_wyplaty
+-
+  Tworzę listę płac na październik
+-
+  !record {model: hr2.payroll.register, id: hr_register_pazdziernik_kup6}:
+    name: Payroll1
+    register_month: 10
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-10-01"
+-
+  Wyliczam listę płac na październik
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_pazdziernik_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_pazdziernik_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_pazdziernik_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_pazdziernik_kup6")],context=context)
+-
+  Sprawdzam poprawność wyliczeń dla października
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.hr_pracownik_kup6")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.date','=','2014-10-01')],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania_autorskie == 827.06, "Koszty uzyskania przychodu powinny wynosić 827.06, a wynoszą %s" % payslip_obj.koszty_uzyskania_autorskie
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 10275, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 10275, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1803.17, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 1803.17, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 934, "Zaliczka na podatek dochodowy powinna wynosić 846.05, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 9269.66, "Wypłata powinna wynosić 9269.66, a wynosi %s" % payslip_obj.do_wyplaty
+-
+  Tworzę listę płac na listopad
+-
+  !record {model: hr2.payroll.register, id: hr_register_listopad_kup6}:
+    name: Payroll1
+    register_month: 11
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_kup1_config
+    date: "2014-11-01"
+-
+  Wyliczam listę płac na listopad
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_listopad_kup6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_listopad_kup6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_listopad_kup6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_listopad_kup6")],context=context)
+-
+  Sprawdzam poprawność wyliczeń dla listopada
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.hr_pracownik_kup6")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.date','=','2014-11-01')],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania_autorskie == 0, "Koszty uzyskania przychodu powinny wynosić 0, a wynoszą %s" % payslip_obj.koszty_uzyskania_autorskie
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 11595, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 11595, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 2040.77, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 2040.77, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 1134, "Zaliczka na podatek dochodowy powinna wynosić 1134, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 9518.46, "Wypłata powinna wynosić 9518.46, a wynosi %s" % payslip_obj.do_wyplaty

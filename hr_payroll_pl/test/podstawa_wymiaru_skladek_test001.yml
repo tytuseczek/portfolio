@@ -1,0 +1,96 @@
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_podstawa}:
+    name: Jan Testowy
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie 2100 zł
+-
+ !record {model: hr2.etat, id: hr_etat_podstawa1}:
+    name: Jan Testowy
+    employee_id: hr_pracownik_podstawa
+    sign_date: "2014-08-01"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu
+-
+ !record {model: hr2.etat.data, id: hr_etat_podstawa1_data1}:
+    name: etat1_podstawa_data
+    etat_id: hr_etat_podstawa1
+    date_from: "2014-08-01"
+    month_pay: 60000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+
+ !record {model: hr2.etat.data, id: hr_etat_podstawa1_data2}:
+    name: etat1_podstawa_data
+    etat_id: hr_etat_podstawa1
+    date_from: "2014-09-01"
+    month_pay: 60000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config,id: hr_etat_podstawa1_config}:
+    name: Tylko etaty
+    use_post_only: True
+    sequence: 1
+-
+ Tworzę pierwszą listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_podstawa1}:
+    name: Payroll_podstawa1
+    register_month: 8
+    register_year: 2014
+    config: hr_etat_podstawa1_config
+    date: "2014-09-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    print self.compute_payroll(cr,uid,[ref("hr_register_podstawa1")],context=context)
+-
+ Tworzę drugą listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_podstawa2}:
+    name: Payroll_podstawa1
+    register_month: 9
+    register_year: 2014
+    config: hr_etat_podstawa1_config
+    date: "2014-09-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    print self.compute_payroll(cr,uid,[ref("hr_register_podstawa2")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik1")
+    print employee_id
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.do_wyplaty == 1449.69, "Wypłata powinna wynosić 1449.69, a wynosi %s" % payslip_obj.do_wyplaty
+    assert payslip_obj.chor_pracownik == 48.63, "Składka chorobowa pracownika powinna wynosić 48.63, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.emr_pracownik == 193.74, "Składka emerytalna pracownika powinna wynosić 193.74, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 29.78, "Składka rentowa pracownika powinna wynosić 29.78, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.emr_pracodawca == 193.74, "Składka emerytalna pracodawcy powinna wynosić 193.74, a wynosi %s" % payslip_obj.emr_pracodawca
+    assert payslip_obj.rent_pracodawca == 129.03, "Składka rentowa pracodawcy powinna wynosić 129.03, a wynosi %s" % payslip_obj.rent_pracodawca
+    assert payslip_obj.fp == 48.63, "Fundusz pracy powinien wynosić 48.63, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 1.99, "Fundusz gwarantowanych świadczeń pracownika powinien wynosić 1.99, a wynosi %s" % payslip_obj.fgsp
+    assert payslip_obj.skladka_zdrowotna_odliczona == 132.75, "Składka zdrowotna odliczona powinna wynosić 132.75, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert payslip_obj.skladka_zdrowotna_od_netto == 21.41, "Składka zdrowotna od netto powinna wynosić 21.41, a wynosi %s" % payslip_obj.skladka_zdrowotna_od_netto

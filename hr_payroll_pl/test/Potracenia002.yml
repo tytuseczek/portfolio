@@ -1,0 +1,111 @@
+#ftp://fileserver.lacan.com.pl/department/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/potracania.ods
+#Przypadek z_choroba_i_premiami
+-
+  Tworzę listę płac na wrzesień
+-
+  !record {model: hr2.payroll.register, id: hr_register_potracenie2_wrzesien}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_etat_potracenie1_config
+    date: "2014-09-20"
+-
+  Wyliczam listę płac na wrzesień
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_potracenie2_wrzesien")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_potracenie2_wrzesien")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_potracenie2_wrzesien")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_potracenie2_wrzesien")],context=context)
+-
+  Tworzę listę płac na październik
+-
+  !record {model: hr2.payroll.register, id: hr_register_potracenie2_pazdziernik}:
+    name: Payroll1
+    register_month: 10
+    register_year: 2014
+    config: hr_etat_potracenie1_config
+    date: "2014-10-01"
+-
+  Wyliczam listę płac na październik
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_potracenie2_pazdziernik")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_potracenie2_pazdziernik")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_potracenie2_pazdziernik")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_potracenie2_pazdziernik")],context=context)
+-
+  Sprawdzam poprawność wyliczeń na październik
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_pracownik_potracenie2")
+    register_id = ref("hr_register_potracenie2_pazdziernik")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.do_wyplaty == 2999.4, "Wypłata powinna wynosić 2999.4, a wynosi %s" % payslip_obj.do_wyplaty
+-
+ Tworzę konto konfiguracyjne dla typu dodatku Nadgodziny
+-
+  !record {model: hr2.payslip.config.accounts, id: hr_payslip_config_account2}:
+    account_id: account.D_761-01
+    type: "cost"
+    side: "debit"
+-
+ Podpinam utworzone konto konfiguracyjne do typu dodatku Nadgodziny
+-
+  !python {model: hr2.salary.addition.type}: |
+    self.write(cr, uid, [ref("hr2_salary_addition_type_nadgodziny")], {'account_id':ref("hr_payslip_config_account2")}, context=context)
+-
+ Dodaję konto księgowe w konfiguracji listy płac dla Potrąceń
+-
+  !python {model: hr2.payslip.config.accounts}: |
+    account = self.search(cr, uid, [('config_id','=',ref("hr_etat_potracenie1_config")),('type','=','deduction')], context=context)
+    self.write(cr, uid, account, {'account_id': ref("account.D_765-01")}, context=context)
+-
+  Księguję wypłaty
+-
+  !python {model: hr2.payroll.register}: |
+    self.post_payroll(cr, uid, [ref("hr_register_potracenie2_pazdziernik")], context=context)
+-
+  Sprawdzam rozwiązania
+-
+  !python {model: account.move.line}:  |
+
+    name = self.pool.get('hr2.payroll.register').read(cr, uid, ref("hr_register_potracenie2_pazdziernik"), ['name'], context=context)['name']
+    move_lines = self.search(cr, uid, [('name','=',name)], context=context)
+    move_line_datas = self.read(cr, uid, move_lines, ['journal_id','account_id','debit','credit'], context=context)
+    
+    check_data = {
+                  ref("account.a_expense"): [0.0, 500.0],
+                  ref("account_account_D_404-04"): [165.75, 0.0],
+                  ref("account_account_D_404-02"): [2578.29, 0.0],
+                  ref("account_account_D_404-03"): [1312.0, 0.0],
+                  ref("account_account_D_404-01"): [3927.3, 0.0],
+                  ref("account_account_D_404-05"): [0.0, 3504.1],
+                  ref("account.D_765-01"): [3816.8, 0.0],
+                  ref("account.D_761-01"): [0.0, 1000.0],
+                  ref("account.D_765-02"): [722.0, 0.0],
+                  ref("account.dd_other_expanses2"): [158.20, 0.0], 
+                  }
+
+    
+    for move_line_data in move_line_datas:
+      assert move_line_data['journal_id'] and move_line_data['journal_id'][0] == ref("account.bank_journal"), "Pozycja zapisu powstała w niewłaściwym dzienniku!"
+    
+      account_id = move_line_data['account_id'] and move_line_data['account_id'][0]
+      
+      if not account_id:
+        assert False, "Wyglada na to, że linia zapisu księgowego powstała bez podania konta - coś takiego nie powinno nigdy sie zdarzyć!"
+      
+      else:
+        if account_id in check_data.keys():
+          assert move_line_data['credit'] == check_data[account_id][0], "Strona credit pozycji zapisu nieprawidłowa: %s a powinno być %s" %(move_line_data['credit'],check_data[account_id][0])
+          assert move_line_data['debit'] == check_data[account_id][1], "Strona debit pozycji zapisu nieprawidłowa: %s a powinno być %s" %(move_line_data['debit'],check_data[account_id][1])
+        else:
+          assert False, "Linia zapisu księgowego powstała na niewłaściwym koncie: %s" %move_line_data['account_id'][1]
+   

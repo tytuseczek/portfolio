@@ -1,0 +1,73 @@
+#ftp://fileserver.lacan.com.pl/department/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/KUP.ods
+#Przypadek KUP standardowe gdy długa choroba
+-
+  Tworzę listę płac na sierpien 2014
+-
+  !record {model: hr2.payroll.register, id: hr_register_kup8sierpien}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2014
+    config: 1
+    date: "2014-08-01"
+-
+  Wyliczam listę płac na sierpień
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_kup8sierpien")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_kup8sierpien")],context=context)
+-
+  Tworzę listę płac na wrzesień 2014
+-
+  !record {model: hr2.payroll.register, id: hr_register_kup8wrzesien}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: 1
+    date: "2014-09-01"
+-
+  Wyliczam listę płac na wrzesień
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_kup8wrzesien")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_kup8wrzesien")],context=context)
+-
+  Sprawdzam poprawność wyliczeń na sierpień
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.pracownik_kup8")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania == 111.25, "Koszty uzyskania przychodu powinny wynosić 111.25, a wynoszą %s" % payslip_obj.koszty_uzyskania
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 1377, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 1377, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 201.53, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 201.52, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 86, "Zaliczka na podatek dochodowy powinna wynosić 86, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 1268.08, "Wypłata powinna wynosić 1268.08, a wynosi %s" % payslip_obj.do_wyplaty
+-
+  Sprawdzam poprawność wyliczeń na wrzesień
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.pracownik_kup8")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania == 96, "Koszty uzyskania przychodu powinny wynosić 96, a wynoszą %s" % payslip_obj.koszty_uzyskania
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 1344, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 1344, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 195.59, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 195.59, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 188, "Zaliczka na podatek dochodowy powinna wynosić 188, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 1243.36, "Wypłata powinna wynosić 1243.36, a wynosi %s" % payslip_obj.do_wyplaty
+-
+  Usuwam liste plac
+-
+  self.pool.get('hr2.etat').unlink(cr, uid, ref("hr_register_kup8sierpien"), context=context)
+  self.pool.get('hr2.etat').unlink(cr, uid, ref("hr_register_kup8sierpien"), context=context)

@@ -1,0 +1,94 @@
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_pelnyetat1}:
+    name: Jan5 Kowalski
+    department_id: dzial_annex
+    birthday: 1985-01-01
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik1_pelnyetat1_data}:
+    employee_name: Jan5
+    surname: Kowalski
+    employee_id: hr_pracownik_pelnyetat1
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie przed aneksem - 12 000 zł. Po aneksie - 10 000.
+-
+ !record {model: hr2.etat, id: hr_pelnyetat1}:
+    name: Jan5 Kowalski
+    employee_id: hr_pracownik_pelnyetat1
+    sign_date: "2014-08-01"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu (część 1)
+-
+ !record {model: hr2.etat.data, id: hr_pelnyetat1_data}:
+    name: Jan5 Kowalski
+    etat_id: hr_pelnyetat1
+    date_from: "2014-08-01"
+    month_pay: 12000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworze dane etatu (część 2)
+-
+ !record {model: hr2.etat.data, id: hr_pelnyetat2_data}:
+    name: Jan5 Kowalski
+    etat_id: hr_pelnyetat1
+    date_from: "2014-09-10"
+    month_pay: 10000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config,id: hr_pelnyetat1_config}:
+    name: Tylko etaty
+    use_post_only: True
+    sequence: 1
+    department: [dzial_annex]
+-
+ Tworzę listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_pelnyetat1}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_pelnyetat1_config
+    date: "2014-10-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_pelnyetat1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_pelnyetat1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_pelnyetat1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_pelnyetat1")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_pelnyetat1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 711.30, "Składka zdrowotna odliczona powinna wynosić 711,30, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert payslip_obj.emr_pracownik == 1038.11, "Składka emerytalna pracownika powinna wynosić 1038,11, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 159.55, "Składka rentowa pracownika powinna wynosić 159,55, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 260.59, "Składka chorobowa pracownika powinna wynosić 260,59, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.skladka_zdrowotna_odliczona == 711.30, "Składka zdrowotna do odliczenia od podatku powinna wynosić 711,30, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1585.73, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 1585,73, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    assert payslip_obj.koszty_uzyskania == 111.25, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    assert payslip_obj.do_wyplaty == 7478.08, "Wypłata powinna wynosić 7478,08, a wynosi %s" % payslip_obj.do_wyplaty
+    print "Test wykonany poprawnie. Życzymy powodzenia przy kolejnych testach."
+    

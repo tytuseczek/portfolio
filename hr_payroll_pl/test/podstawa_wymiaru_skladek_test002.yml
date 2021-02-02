@@ -1,0 +1,11 @@
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_payroll_pl.pracownik_skladki")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.date','=',"2014-10-01")],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    suma_skladek = payslip_obj.emr_pracownik + payslip_obj.rent_pracownik
+    assert suma_skladek == 155.39, "Suma składek emerytalnej i rentowej pracownika powinna wynosić 155.39, a wynosi %s" % suma_skladek
+    assert payslip_obj.chor_pracownik == 269.50, "Składka chorobowa pracownika powinna wynosić 269.50, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.do_wyplaty == 8605.35, "Wypłata powinna wynosić 1449.69, a wynosi %s" % payslip_obj.do_wyplaty

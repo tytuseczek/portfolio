@@ -1,0 +1,12 @@
+#uzupelnic
+#niepełny etat i zatrudnienie w trakcie miesiąca
+-
+  Sprawdzam poprawność wyliczeń na wrzesień
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.pracownik_uzupelnienia2")
+    register_id = ref("hr_payroll_pl.hr_register_uzupelnienia1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.do_wyplaty == 572.83, "Wypłata powinna wynosić 572.83, a wynosi %s" % payslip_obj.do_wyplaty

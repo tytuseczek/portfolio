@@ -1,0 +1,34 @@
+#ftp://fileserver.lacan.com.pl/department/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/KUP.ods
+#Przypadek KUP mieszane 50% i standardowe + premia
+-
+  Sprawdzam poprawność wyliczeń dla września
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = self.pool.get('hr.employee').search(cr,uid,[('code','=','kup10')])[0]
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.date','=','2014-09-01')],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania_autorskie == 5436.27, "Koszty uzyskania przychodu powinny wynosić 5436.27, a wynoszą %s" % payslip_obj.koszty_uzyskania_autorskie
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 6533.00, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 6533, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1129.61, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 1129.61, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 193, "Zaliczka na podatek dochodowy powinna wynosić 193, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 10800.35, "Wypłata powinna wynosić 10800.35, a wynosi %s" % payslip_obj.do_wyplaty
+-
+  Sprawdzam poprawność wyliczeń dla października
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = self.pool.get('hr.employee').search(cr,uid,[('code','=','kup10')])[0]
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.date','=','2014-10-01')],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania_autorskie == 5436.27, "Koszty uzyskania przychodu powinny wynosić 5436.27, a wynoszą %s" % payslip_obj.koszty_uzyskania_autorskie
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 6533.0, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 6533, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1129.61, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 1129.61, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 193.0, "Zaliczka na podatek dochodowy powinna wynosić 193.0, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 10800.35, "Wypłata powinna wynosić 10800.35, a wynosi %s" % payslip_obj.do_wyplaty

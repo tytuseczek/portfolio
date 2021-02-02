@@ -1,0 +1,105 @@
+-
+ Tworzę kalendarz pracownika na 7/8 etatu
+-
+ !record {model: calendar.calendar, id: calendar_78etat}:
+    name: Kalendarz 7/8 etatu
+-
+ Generuję święta i czas pracy od 8 do 15 od poniedziałku do piątku
+-
+ !python {model: calendar.calendar}: |
+    calendar_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'hr_payroll_pl', 'calendar_78etat')[1]
+    self.stworz_swieta(cr, uid, calendar_id, 2014, 2014, True, True, True, True, 8.0, 15.0)
+    working_days_list = self.pool.get('calendar.event').search(cr, uid, [('calendar_id', '=', calendar_id), ('name', '>=', 'Godziny Pracy')])
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_08etat1}:
+    name: Jan7 Kowalski
+    calendar_id: calendar_78etat
+    department_id: dzial_annex
+    birthday: 1985-01-01
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik_08etat1_employee_data}:
+    employee_name: Jan7
+    surname: Kowalski
+    employee_id: hr_pracownik_08etat1
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie przed aneksem - 12 000 zł. Po aneksie - 10 000.
+-
+ !record {model: hr2.etat, id: hr_08etat1}:
+    name: Jan7 Kowalski
+    employee_id: hr_pracownik_08etat1
+    sign_date: "2014-07-01"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu (część 1)
+-
+ !record {model: hr2.etat.data, id: hr_08etat1_data1}:
+    name: Jan7 Kowalski
+    etat_id: hr_08etat1
+    date_from: "2014-07-01"
+    month_pay: 12000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworze dane etatu (część 2)
+-
+ !record {model: hr2.etat.data, id: hr_08etat1_data2}:
+    name: Jan7 Kowalski
+    etat_id: hr_08etat1
+    date_from: "2014-09-10"
+    month_pay: 10000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config,id: hr_08etat1_config}:
+    name: Tylko etaty
+    use_post_only: True
+    sequence: 1
+    department: [dzial_annex]
+-
+ Tworzę listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_08etat1}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_08etat1_config
+    date: "2014-10-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_08etat1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_08etat1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_08etat1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_08etat1")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    e = 0.00001
+    employee_id = ref("hr_pracownik_08etat1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 711.30, "Składka zdrowotna odliczona powinna wynosić 711,30, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert abs((payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik) - 1458.25) < e, "Suma składek pracownika na ubezpieczenia emerytalne, rentowe i chorobowe powinna wynosić 1458.25, a wynosi %s" % (payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik)
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1585.73, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 1585.73, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    assert payslip_obj.koszty_uzyskania == 111.25, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    assert payslip_obj.do_wyplaty == 7478.08, "Wypłata powinna wynosić 7478,08, a wynosi %s" % payslip_obj.do_wyplaty
+    print "Test wykonany poprawnie. Życzymy powodzenia przy kolejnych testach."
+    

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--<report auto="False"-->
+                <!--id="report_payroll_register"-->
+                <!--model="hr2.payroll.register"-->
+                <!--name="payroll.webkit.register"-->
+                <!--file="hr_payroll_pl/report/payroll_report.mako"-->
+                <!--string="Lista płac"-->
+                <!--header="1"-->
+                <!--webkit_header="report_webkit.ir_header_webkit_tabelaryczne"-->
+                <!--report_type="webkit"/>-->
+        <record id="report_payroll_register_payslips" model="ir.actions.report.xml">
+            <field name="multi" eval="1" />
+            <field name="name">Paski listy płac</field>
+            <field name="string">Paski listy płac</field>
+            <field name="auto" eval="0" />
+            <field name="report_name">payslip.webkit.register</field>
+            <field name="webkit_debug" eval="0" />
+            <field name="header" eval="1" />
+            <field name="webkit_header" ref="report_webkit.ir_header_webkit_tabelaryczne" />
+            <field name="report_type">webkit</field>
+            <field name="report_file">hr_payroll_pl/report/payslip_list_report.mako</field>
+            <field name="report_rml">hr_payroll_pl/report/payslip_list_report.mako</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">ir.actions.report.xml</field>
+        </record>
+
+        <record model="ir.values" id="report_payroll3">
+            <field name="model_id" ref="hr_payroll_pl.model_hr2_payslip" />
+            <field name="object" eval="1" />
+            <field name="name">Paski listy płac</field>
+            <field name="key2">client_print_multi</field>
+            <field name="value" eval="'ir.actions.report.xml,' + str(ref('report_payroll_register_payslips'))" />
+            <field name="key">action</field>
+            <field name="model">hr2.payslip</field>
+        </record>
+
+        <record id="report_payroll_register" model="ir.actions.report.xml">
+            <field name="multi" eval="1" />
+            <field name="name">Lista płac</field>
+            <field name="string">Lista płac</field>
+            <field name="auto" eval="0" />
+            <field name="report_name">payroll.webkit.register</field>
+            <field name="webkit_debug" eval="0" />
+            <field name="header" eval="1" />
+            <field name="webkit_header" ref="report_webkit.ir_header_webkit_tabelaryczne" />
+            <field name="report_type">webkit</field>
+            <field name="report_file">hr_payroll_pl/report/payroll_report.mako</field>
+            <field name="report_rml">hr_payroll_pl/report/payroll_report.mako</field>
+            <field name="model">hr2.payroll.register</field>
+            <field name="type">ir.actions.report.xml</field>
+        </record>
+
+        <record model="ir.values" id="report_payroll2">
+            <field name="model_id" ref="hr_payroll_pl.model_hr2_payroll_register" />
+            <field name="object" eval="1" />
+            <field name="name">Lista płac</field>
+            <field name="key2">client_print_multi</field>
+            <field name="value" eval="'ir.actions.report.xml,' + str(ref('report_payroll_register'))" />
+            <field name="key">action</field>
+            <field name="model">hr2.payroll.register</field>
+        </record>
+
+        <record id="report_civil_law_contract" model="ir.actions.report.xml">
+            <field name="multi" eval="1" />
+            <field name="name">Rachunek pracownika do umowy cywilno-prawnej</field>
+            <field name="string">Rachunek pracownika do umowy cywilno-prawnej</field>
+            <field name="auto" eval="0" />
+            <field name="report_name">civil.law.contract</field>
+            <field name="webkit_debug" eval="0" />
+            <field name="header" eval="1" />
+            <field name="webkit_header" ref="report_webkit.ir_header_webkit_oficjalne" />
+            <field name="report_type">webkit</field>
+            <field name="report_file">hr_payroll_pl/report/civil_law_contract_report.mako</field>
+            <field name="report_rml">hr_payroll_pl/report/civil_law_contract_report.mako</field>
+            <field name="model">hr2.payroll.register</field>
+            <field name="type">ir.actions.report.xml</field>
+        </record>
+
+        <record model="ir.values" id="report_civil_law_contract2">
+            <field name="model_id" ref="hr_payroll_pl.model_hr2_payroll_register" />
+            <field name="object" eval="1" />
+            <field name="name">Rachunek pracownika do umowy cywilno-prawnej</field>
+            <field name="key2">client_print_multi</field>
+            <field name="value" eval="'ir.actions.report.xml,' + str(ref('report_civil_law_contract'))" />
+            <field name="key">action</field>
+            <field name="model">hr2.payroll.register</field>
+        </record>
+    </data>
+</openerp>

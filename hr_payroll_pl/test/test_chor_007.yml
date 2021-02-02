@@ -1,0 +1,182 @@
+##############################################################
+# Rozliczenie nieobecności z zeszłego miesiąca.
+# Pracownik 2900 brutto. Miesiące 09.2015 - 11.2015.
+# Zwolnienie chorobowe 02.09.15 żeby mieć podstawę chorobowego 2425,71.
+# Zwolnienie chorobowe 31.10.15 - 01.11.15 rozliczane w październiku.
+##############################################################
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config, id: hr_choroba_zwolnienie_cfg2}:
+    name: Etat ze zwolnieniem z poprzedniego miesiąca
+    use_post_only: True
+    use_contract_only: False
+    sequence: 1
+    department: [hr_payroll_pl.dzial_zwolnienia_chor]
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_choroba_zwolnienie8}:
+    name: Pan Zezwolnieniem
+    department_id: dzial_zwolnienia_chor
+    birthday: "1985-01-01"
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik_choroba_zwolnienie8_data}:
+    employee_name: Pan
+    surname: Zezwolnieniem
+    employee_id: hr_pracownik_choroba_zwolnienie8
+-
+ Tworzę etat (umowa o pracę)
+-
+ !record {model: hr2.etat, id: hr_etat_choroba_zwolnienie8}:
+    name: Pan Zezwolnieniem
+    employee_id: hr_pracownik_choroba_zwolnienie8
+    sign_date: "2015-09-01"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu - Pensja 2900 zł, wielkość etatu 1
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba_zwolnienie_data7}:
+    name: Pan Dużochorujący
+    etat_id: hr_etat_choroba_zwolnienie8
+    date_from: "2015-09-01"
+    month_pay: 2900
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+    koszty_uzyskania: 'inne'
+    inne_koszty: 111.25
+    wynagrodzenie_z_procentowym_kosztem: 80.0
+    procent_uzyskania: 50.0
+-
+ Tworzę nieobecność
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba_absence8_1}:
+    date_from: "2015-09-02 00:00:00"
+    date_to: "2015-09-02 23:59:59"
+    number_of_days_temp: 1
+    employee_id: hr_pracownik_choroba_zwolnienie8
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na wrzesień 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie8_1}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg2
+    date: "2015-09-30"
+-
+ Wyliczam listę płac na wrzesień 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie8_1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie8_1")],context=context)
+-
+ Wprowadzam podstawę chorobowego.
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie8")
+    register_id = ref("hr_register_choroba_zwolnienie8_1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_line_ids = self.pool.get('hr2.payslip').read(cr,uid, payslip_id, ['payslip_line_ids'],context=context)['payslip_line_ids']
+    for line in self.pool.get('hr2.payslip.line').read(cr,uid,payslip_line_ids,context=context):
+      if line['wymaga_korekty']:
+        context['update_absences'] = True
+        self.pool.get('hr2.payslip.line').write(cr, uid, line['id'], {'base': 2425.71,
+                                                                      'wymaga_korekty': False}, context=context)
+-
+ Kończę wyliczać listę płac na wrzesień 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie8_1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie8_1")],context=context)
+-
+ Tworzę listę płac na październik 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie8_2}:
+    name: Payroll1
+    register_month: 10
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg2
+    date: "2015-10-31"
+-
+ Wyliczam listę płac na październik 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie8_2")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie8_2")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie8_2")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie8_2")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie8")
+    register_id = ref("hr_register_choroba_zwolnienie8_2")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_data = self.pool.get('hr2.payslip').read(cr,uid,payslip_id,context=context)
+    assert payslip_data['brutto'] == 2900.0, "Kwota brutto powinna wynosić 2900.0, a wynosi %s" % payslip_data['brutto']
+    assert payslip_data['emr_pracownik'] == 283.04, "Składka zdrowotna powinna wynosić 283.04, a wynosi %s" % payslip_data['emr_pracownik']
+    assert payslip_data['koszty_uzyskania'] == 1112.21, "Kwota KUP powinna wynosić 1112.21, a wynosi %s" % payslip_data['koszty_uzyskania']
+    assert payslip_data['dochod'] == 1390.0, "Dochód powinien wynosić 1390.0, a wynosi %s" % payslip_data['dochod']
+    assert payslip_data['kwota_NFZ'] == 203.87, "Składka zdrowotna powinna wynosić 203.87, a wynosi %s" % payslip_data['kwota_NFZ']
+    assert payslip_data['kwota_US'] == 10.0, "Kwota US powinna wynosić 10.0, a wynosi %s" % payslip_data['kwota_US']
+    assert payslip_data['do_wyplaty'] == 2288.54, "Kwota do wypłaty powinna wynosić 2288.54, a wynosi %s" % payslip_data['do_wyplaty']
+-
+ Tworzę nieobecność
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba_absence8_2}:
+    date_from: "2015-10-31 00:00:00"
+    date_to: "2015-11-01 23:59:59"
+    number_of_days_temp: 2
+    employee_id: hr_pracownik_choroba_zwolnienie8
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na listopad 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie8_3}:
+    name: Payroll2
+    register_month: 11
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg2
+    date: "2015-11-30"
+    process_prev_month: True
+-
+ Wyliczam listę płac na listopad 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie8_3")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie8_3")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie8_3")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie8_3")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie8")
+    register_id = ref("hr_register_choroba_zwolnienie8_3")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_data = self.pool.get('hr2.payslip').read(cr,uid,payslip_id,context=context)
+    assert payslip_data['brutto'] == 2836.04, "Kwota brutto powinna wynosić 2836.04, a wynosi %s" % payslip_data['brutto']
+    assert payslip_data['emr_pracownik'] == 264.17, "Składka zdrowotna powinna wynosić 264.17, a wynosi %s" % payslip_data['emr_pracownik']
+    assert payslip_data['koszty_uzyskania'] == 1045.48, "Kwota KUP powinna wynosić 1045.48, a wynosi %s" % payslip_data['koszty_uzyskania']
+    assert payslip_data['dochod'] == 1420.0, "Dochód powinien wynosić 1420.0, a wynosi %s" % payslip_data['dochod']
+    assert payslip_data['kwota_NFZ'] == 209.27, "Składka zdrowotna powinna wynosić 209.27, a wynosi %s" % payslip_data['kwota_NFZ']
+    assert payslip_data['kwota_US'] == 18.0, "Kwota US powinna wynosić 18.0, a wynosi %s" % payslip_data['kwota_US']
+    assert payslip_data['do_wyplaty'] == 2237.68, "Kwota do wypłaty powinna wynosić 2237.68, a wynosi %s" % payslip_data['do_wyplaty']

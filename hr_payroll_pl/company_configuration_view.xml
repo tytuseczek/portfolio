@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="wizard_new_company_configuration_form_inherit" model="ir.ui.view">
+            <field name="name">New company configuration settings</field>
+            <field name="model">company.configuration</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="smb_account_analytic.wizard_new_company_configuration_form"/>
+            <field name="arch" type="xml">
+                    <field name="new_company_name" position="after">
+                        <field name="new_company_short_name" string="New company's short name"/>
+                    </field>
+            </field>
+        </record>
+    </data>
+</openerp>

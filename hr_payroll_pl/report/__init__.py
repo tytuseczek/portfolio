@@ -1,0 +1,7 @@
+import payroll_report
+import payslip_list_report
+import civil_law_contract_report
+import benefit_card
+import records_of_employment
+import annual_salaries_card
+import kwota_wolna

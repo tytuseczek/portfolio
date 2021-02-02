@@ -1,0 +1,72 @@
+-
+  Sprawdzam poprawność day_type w hr2.employee.date
+-
+  !python {model: hr2.employee.date}: |
+    dates = ['2015-01-05',
+             '2015-01-06',
+             '2015-01-07',
+             '2015-01-08']
+
+    date_id = self.search(cr, uid, [('employee_id', '=', ref('hr_kalendarz_pracownik1')), ('date', '=', dates[0])])[0]
+    date_data = self.browse(cr, uid, date_id)
+    assert date_data.day_type == 'multiple', "Niepoprawny day_type 2015-01-05, " + date_data.day_type + " zamiast 'multiple'."
+
+    date_id = self.search(cr, uid, [('employee_id', '=', ref('hr_kalendarz_pracownik1')), ('date', '=', dates[1])])[0]
+    date_data = self.browse(cr, uid, date_id)
+    assert date_data.day_type == 'absence', "Niepoprawny day_type 2015-01-06, " + date_data.day_type + " zamiast 'absence'."
+
+    date_id = self.search(cr, uid, [('employee_id', '=', ref('hr_kalendarz_pracownik1')), ('date', '=', dates[2])])[0]
+    date_data = self.browse(cr, uid, date_id)
+    assert date_data.day_type == 'absence', "Niepoprawny day_type 2015-01-07, " + date_data.day_type + " zamiast 'absence'."
+
+    date_id = self.search(cr, uid, [('employee_id', '=', ref('hr_kalendarz_pracownik1')), ('date', '=', dates[3])])[0]
+    date_data = self.browse(cr, uid, date_id)
+    assert date_data.day_type == 'multiple', "Niepoprawny day_type 2015-01-08, " + date_data.day_type + " zamiast 'multiple'."
+-
+  Zmieniam typ dnia na indywidualny, zmieniam godziny.
+-
+  !python {model: hr2.employee.date}: |
+    id = self.search(cr, uid, [('date', '=', '2015-01-08'), ('employee_id', '=', ref('hr_kalendarz_pracownik1'))], context=context)
+
+    vals = {
+            'computation_type' : 'individual',
+            'work_hour_start' : 2.0,
+            'work_hour_stop' : 10.0
+          }
+    self.write(cr, uid, id, vals, context=context)
+-
+  Sprawdzam poprawność day_type
+-
+  !python {model: hr2.employee.date}: |
+    date_id = self.search(cr, uid, [('employee_id', '=', ref('hr_kalendarz_pracownik1')), ('date', '=', '2015-01-08')])[0]
+    date_data = self.browse(cr, uid, date_id)
+    assert date_data.day_type == 'absence', "Niepoprawny day_type 2015-01-08, " + date_data.day_type + " zamiast 'absence'."
+-
+  Zmieniam typ dnia na general calendar.
+-
+  !python {model: hr2.employee.date}: |
+    id = self.search(cr, uid, [('date', '=', '2015-01-08'), ('employee_id', '=', ref('hr_kalendarz_pracownik1'))], context=context)
+
+    vals = {
+            'computation_type' : 'from_general_calendar'
+          }
+    self.write(cr, uid, id, vals, context=context)
+#-
+#  Usuwam święto 06.01.2015. ISTOTNE: Kalendarz nie przelicza dla dat wcześniejszych niż pierwszy dzień bieżącego miesiąca.
+#-
+#  !python {model: calendar.event}: |
+#    event_id = self.search(cr, uid, [('name', '=', 'Objawienie Pańskie'), ('date', '=', '2015-01-05 23:00:00')],context=context)
+#    self.unlink(cr, uid, event_id, context=context)
+-
+  Sprawdzam poprawność day_type
+-
+  !python {model: hr2.employee.date}: |
+    date_id = self.search(cr, uid, [('employee_id', '=', ref('hr_kalendarz_pracownik1')), ('date', '=', '2015-01-06')], context=context)[0]
+    date_data = self.browse(cr, uid, date_id)
+    assert date_data.day_type == 'absence', "Niepoprawny day_type 2015-01-06, " + date_data.day_type + " zamiast 'absence'."
+
+#    #Yamle nie posiadają strefy czasowej w kotekście, stąd godziny ustawią się 7-15 zamiast 8-16. To świadome działanie.
+#    assert date_data.work_hour_start == 7.0, "Niepoprawna godzina rozpoczęcia pracy, " + str(date_data.work_hour_start) + " zamiast 7.0."
+#    assert date_data.work_hour_stop == 15.0, "Niepoprawna godzina końca pracy, " + str(date_data.work_hour_stop) + " zamiast 15.0."
+#-
+#  Skoro jestem aż tutaj, to w kalendarzu pracownika wszystko się zgadza i działa prawidłowo. :)

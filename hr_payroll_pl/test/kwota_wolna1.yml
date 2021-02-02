@@ -1,0 +1,53 @@
+-
+  Tworzę listę płac
+-
+  !record {model: hr2.payroll.register, id: hr_register_wolna1}:
+    name: Payroll1
+    register_month: 12
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_wolna1_config
+    date: "2014-12-01"
+-
+  Wyliczam listę płac
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_wolna1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_wolna1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_wolna1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_wolna1")],context=context)
+-
+  Sprawdzam poprawność wyliczeń
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.hr_pracownik_wolna1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.dochod == 1615, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 1615, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 244.37, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 244.37, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 111, "Zaliczka na podatek dochodowy powinna wynosić 111, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 1459.48, "Wypłata powinna wynosić 1459.48, a wynosi %s" % payslip_obj.do_wyplaty
+
+    employee_id = ref("hr_payroll_pl.hr_pracownik_wolna2")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.dochod == 1615, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 1615, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 290.70, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 290,70, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 157, "Zaliczka na podatek dochodowy powinna wynosić 157, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 1413.48, "Wypłata powinna wynosić 1413.48, a wynosi %s" % payslip_obj.do_wyplaty
+
+    employee_id = ref("hr_payroll_pl.hr_pracownik_wolna3")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.dochod == 752, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 752, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 89.03, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 89.03, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 22, "Zaliczka na podatek dochodowy powinna wynosić 22, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 763.24, "Wypłata powinna wynosić 763.24, a wynosi %s" % payslip_obj.do_wyplaty

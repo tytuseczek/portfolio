@@ -1,0 +1,18 @@
+#ftp://fileserver.lacan.com.pl/department/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/KUP.ods
+#Przypadek KUP mieszane 50% i standardowe + urlop
+-
+  Sprawdzam poprawność wyliczeń
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.hr_pracownik_kup7")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id), ('register_id.date','=','2014-09-01')],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.koszty_uzyskania == 3711.9, "Koszty uzyskania przychodu powinny wynosić 3711.9, a wynoszą %s" % payslip_obj.koszty_uzyskania
+    dochod = round(payslip_obj.dochod, 0)
+    assert dochod == 6643, "Podstawa obliczenia zaliczki na podatek dochodowy powinna wynosić 6643.0, a wynosi %s" % payslip_obj.dochod
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1149.41, "Zaliczka na podatek dochodowy przed odliczeniem składki zdrowotnej powinna wynosić 1149.41, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    podatek = payslip_obj.kwota_zaliczki_na_PIT - payslip_obj.skladka_zdrowotna_odliczona
+    podatek = round(podatek, 0)
+    assert podatek == 347.0, "Zaliczka na podatek dochodowy powinna wynosić 347.0, a wynosi %s" % podatek
+    assert payslip_obj.do_wyplaty == 9075.87, "Wypłata powinna wynosić 9075.87, a wynosi %s" % payslip_obj.do_wyplaty

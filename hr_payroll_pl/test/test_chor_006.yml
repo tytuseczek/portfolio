@@ -1,0 +1,181 @@
+#######################################################################################
+# LACAN Technologies Sp. z o.o.
+# Al. Waszyngtona 146
+# 04-076 Warszawa
+#
+# Copyright (C) 2014-2016 Lacan Technologies Sp. z o.o. (<http://www.lacan.com.pl>).
+# All Rights Reserved
+#
+#
+#######################################################################################
+
+##############################################################
+# Zatrudnienie 01.01.2015.
+# Zwolnienie chorobowe od 18.09.2015 do 19.09.2015.
+# Zwolnienie pracownika 19.09.2015.
+# Wynagrodzenie brutto 3000.
+# Podstawa chorobowego na sierpień 2588,7.
+# Premia miesięczna typu brutto, nienależna za czas nieobecności, 500 zł.
+##############################################################
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config, id: hr_choroba_zwolnienie_cfg1}:
+    name: Etat z małym zwolnieniem
+    use_post_only: True
+    use_contract_only: False
+    sequence: 1
+    department: [hr_payroll_pl.dzial_zwolnienia_chor]
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_choroba_zwolnienie6}:
+    name: Pan Małochorujący
+    department_id: dzial_zwolnienia_chor
+    birthday: 1985-01-01
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik_choroba_zwolnienie6_data}:
+    employee_name: Pan
+    surname: Małochorujący
+    employee_id: hr_pracownik_choroba_zwolnienie6
+-
+ Tworzę etat (umowa o pracę)
+-
+ !record {model: hr2.etat, id: hr_etat_choroba_zwolnienie6}:
+    name: Pan Dużochorujący
+    employee_id: hr_pracownik_choroba_zwolnienie6
+    sign_date: "2015-01-01"
+    discharge_date: "2015-09-19"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu - Pensja 3000 zł, wielkość etatu 1
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba_zwolnienie_data6}:
+    name: Pan Dużochorujący
+    etat_id: hr_etat_choroba_zwolnienie6
+    date_from: "2015-01-01"
+    month_pay: 3000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę dodatek.
+-
+ !record {model: hr2.salary.addition.type, id: hr_pracownik_choroba_zwolnienie6_dodatek_typ}:
+    name: Premia nienależna za czas nieobecności
+    licz_kup_jak_podstawa: True
+    co_ile_powtarzac: 1
+    application: brutto
+    okresowy: True
+    nalezny_za_okres_nieobecnosci: False
+    calculate_zus: False
+    wlicz_do_pdst_chor: False
+-
+ Przypisuję dodatek do umowy o pracę.
+-
+ !record {model: hr2.salary.addition, id: hr_pracownik_choroba_zwolnienie6_dodatek}:
+    name: Premia nienależna za czas nieobecności
+    kwota: 500
+    year_start: 2015
+    month_start: 8
+    year_stop: 0
+    month_stop: 0
+    addition_type_id: hr_pracownik_choroba_zwolnienie6_dodatek_typ
+    etat_data_id: hr_etat_choroba_zwolnienie_data6
+-
+ Tworzę nieobecność
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba_absence6_1}:
+    date_from: "2015-08-10 00:00:00"
+    date_to: "2015-08-10 23:59:59"
+    number_of_days_temp: 1
+    employee_id: hr_pracownik_choroba_zwolnienie6
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na sierpień 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie6_1}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg1
+    date: "2015-08-31"
+-
+ Wyliczam listę płac na sierpień 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie6_1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie6_1")],context=context)
+-
+ Wprowadzam podstawę chorobowego.
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie6")
+    register_id = ref("hr_register_choroba_zwolnienie6_1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_line_ids = self.pool.get('hr2.payslip').read(cr,uid, payslip_id, ['payslip_line_ids'],context=context)['payslip_line_ids']
+    for line in self.pool.get('hr2.payslip.line').read(cr,uid,payslip_line_ids,context=context):
+      if line['wymaga_korekty']:
+        context['update_absences'] = True
+        self.pool.get('hr2.payslip.line').write(cr, uid, line['id'], {'base': 2588.7,
+                                                                      'wymaga_korekty': False}, context=context)
+-
+ Kończę wyliczanie listy płac na sierpień 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie6_1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie6_1")],context=context)
+-
+ Tworzę nieobecność
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba_absence6_2}:
+    date_from: "2015-09-18 00:00:00"
+    date_to: "2015-09-19 23:59:59"
+    number_of_days_temp: 2
+    employee_id: hr_pracownik_choroba_zwolnienie6
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na wrzesień 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie6_2}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg1
+    date: "2015-09-30"
+-
+ Wyliczam listę płac na wrzesień 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie6_2")],context=context)        
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie6_2")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie6_2")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie6_2")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie6")
+    register_id = ref("hr_register_choroba_zwolnienie6_2")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_line_ids = self.pool.get('hr2.payslip').read(cr,uid, payslip_id, ['payslip_line_ids'],context=context)['payslip_line_ids']
+    for line in self.pool.get('hr2.payslip.line').read(cr,uid,payslip_line_ids,context=context):
+      if line['type_id'][1] == 'Work time':
+        assert line['value'] == 2209.09, "Wartość czasu pracy powinna wynosić 2209.09, a wynosi %s" % line['value']
+      elif line['type_id'][1] == 'Sick pay':
+        assert line['value'] == 138.06, "Wartość wynagrodzenia chorobowego powinna wynosić 138.06, a wynosi %s" % line['value']
+# Wartości work time zmienione w związku z nową interpretacją znacznika nienależny za czas nieobecności, na 2068.18 przywrócić po
+# dodaniu parametru zmniejszania wartości bazowej proporcjonalnie do czasu nieobecności.

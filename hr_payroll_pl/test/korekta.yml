@@ -1,0 +1,97 @@
+#smb://samba.lacan.com.pl/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/zwolnienie_lekarskie_na_przelomie_miesiaca.ods 
+-
+  Tworzę listę płac na styczen
+-
+  !record {model: hr2.payroll.register, id: hr_register_korekty_styczen}:
+    name: Payroll1
+    register_month: 1
+    register_year: 2014
+    config: hr_payroll_pl.hr_korekty_config
+    date: "2014-01-01"
+-
+  Wyliczam listę płac na styczen
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_korekty_styczen")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_korekty_styczen")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_korekty_styczen")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_korekty_styczen")],context=context)
+-
+  Tworzę listę płac na luty
+-
+  !record {model: hr2.payroll.register, id: hr_register_luty_korekty}:
+    name: Payroll1
+    register_month: 2
+    register_year: 2014
+    config: hr_payroll_pl.hr_korekty_config
+    date: "2014-02-01"
+-
+  Wyliczam listę płac na luty
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_luty_korekty")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_luty_korekty")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_luty_korekty")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_luty_korekty")],context=context)
+-
+  Tworzę listę płac na marzec
+-
+  !record {model: hr2.payroll.register, id: hr_register_marzec_korekty}:
+    name: Payroll1
+    register_month: 3
+    register_year: 2014
+    config: hr_payroll_pl.hr_korekty_config
+    date: "2014-03-01"
+-
+  Wyliczam listę płac na marzec
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_marzec_korekty")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_marzec_korekty")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_marzec_korekty")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_marzec_korekty")],context=context)
+-
+  Tworzę nieobecność na przełomie marca i kwietnia
+-
+   !record {model: hr2.absence, id: hr2_nieobecnosc_korekty}:
+    date_from: "2014-03-26 00:00:00"
+    date_to: "2014-04-04 23:59:59"
+    employee_id: hr_payroll_pl.pracownik_korekty
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    number_of_days_temp: 10
+    state: validate
+-
+  Tworzę listę płac na kwiecien
+-
+  !record {model: hr2.payroll.register, id: hr_register_kwiecien_korekty}:
+    name: Payroll1
+    register_month: 4
+    register_year: 2014
+    config: hr_payroll_pl.hr_korekty_config
+    date: "2014-04-01"
+    process_prev_month: True
+-
+  Wyliczam listę płac na kwiecien
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_kwiecien_korekty")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_kwiecien_korekty")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_kwiecien_korekty")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_kwiecien_korekty")],context=context)
+-
+  Sprawdzam poprawność wyliczeń
+-
+  !python {model: hr2.payslip}: |
+    employee_id = ref("hr_payroll_pl.pracownik_korekty")
+    register_id = ref("hr_register_kwiecien_korekty")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.do_wyplaty == 2407.40, "Wypłata powinna wynosić 2407.40, a wynosi %s" % payslip_obj.do_wyplaty

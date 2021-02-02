@@ -1,0 +1,44 @@
+-
+ Tworzę listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_nierezydent1}:
+    name: Lista płac nierezydentów
+    register_month: 6
+    register_year: 2015
+    config: hr_nierezydent_config
+    date: "2015-06-30"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_nierezydent1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_nierezydent1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_nierezydent1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_nierezydent1")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("pracownik_nierezydent1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.do_wyplaty == 2749.60, "Wypłata powinna wynosić 2749.60, a wynosi %s" % payslip_obj.do_wyplaty
+    assert payslip_obj.chor_pracownik == 0, "Składka chorobowa pracownika powinna wynosić 0, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.emr_pracownik == 390.40, "Składka emerytalna pracownika powinna wynosić 390.40, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 60.00, "Składka rentowa pracownika powinna wynosić 60.00, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.kwota_US == 800.00, "Podatek do US pracownika powinien wynosić 800.00, a wynosi %s" % payslip_obj.kwota_US
+
+    employee_id = ref("pracownik_nierezydent2")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.do_wyplaty == 66.83, "Wypłata powinna wynosić 66.83, a wynosi %s" % payslip_obj.do_wyplaty
+    assert payslip_obj.chor_pracownik == 0, "Składka chorobowa pracownika powinna wynosić 0, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.emr_pracownik == 10.74, "Składka emerytalna pracownika powinna wynosić 10.74, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 1.65, "Składka rentowa pracownika powinna wynosić 1.65, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.emr_pracodawca == 10.74, "Składka emerytalna pracodawcy powinna wynosić 10.74, a wynosi %s" % payslip_obj.emr_pracodawca
+    assert payslip_obj.rent_pracodawca == 7.15, "Składka rentowa pracodawcy powinna wynosić 7.15, a wynosi %s" % payslip_obj.rent_pracodawca
+    assert payslip_obj.wyp_pracodawca == 1.98, "Składka wypadkowa pracodawcy powinna wynosić 1.98, a wynosi %s" % payslip_obj.wyp_pracodawca
+    assert payslip_obj.kwota_US == 22.00, "Podatek do US pracownika powinien wynosić 22.00, a wynosi %s" % payslip_obj.kwota_US
+    assert float(payslip_obj.skladka_zdrowotna_odliczona) + float(payslip_obj.skladka_zdrowotna_od_netto) == 8.78, "Składka zdrowotna powinna wynosić 8.78, a wynosi %s" % str(float(payslip_obj.skladka_zdrowotna_odliczona) + float(payslip_obj.skladka_zdrowotna_od_netto))

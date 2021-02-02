@@ -1,0 +1,201 @@
+-
+  Przystępuję do obliczeń
+-
+  !python {model: hr2.payroll.register}: |
+
+    # ##### ##### ##### ##### #####
+    #
+    # Test sprawdza poprawność wykonywania wyliczeń listy płac.
+    # Niezależnie od modułu testuje samą metodę calculate_salary_PL. 
+    # Wszystkie parametry normalnie pobierane z modułu są hardcoded w teście.
+    # 
+    # Pracownik posiada umowę o pracę, 2500 PLN brutto.
+    # Wszystkie składki. 3 nieobecności w aktualnym miesiącu. Kolejno:
+    # 1. 2 dni urlopu.
+    # 2. 1 dzień bezpłatnego urlopu.
+    # 3. 15 dni zwolnienia chorobowego.
+    # 
+    # ##### ##### ##### ##### #####
+
+    from datetime import datetime
+
+    ########## DANE WEJŚCIOWE ##########
+    conf = {
+    'ilosc_dni_zwol_lek_wynagr_pracodawca_norm' : 33,
+    'ilosc_dni_zwol_lek_wynagr_pracodawca_pow50' : 14,
+    'stawka_zdr_pracownik' : 0.0125,
+    'stawka_zdr_PIT' : 0.0775,
+    'stawka_chor_pracownik' : 0.0245,
+    'stawka_rent_pracownik' : 0.015,
+    'stawka_rent_pracodawca' : 0.065,
+    'stawka_emr_pracownik' : 0.0976,
+    'stawka_emr_pracodawca' : 0.0976,
+    'ubezpieczenie_wpadkowe' : 0.0193,
+    'stawka_FP' : 0.0245,
+    'stawka_FGSP' : 0.001,
+    'granica_kwoty_um_cywilpraw_do_podat_zrycz' : 200,
+    'maks_rocz_pdstwa_wymiaru_dla_ubzp_emr_i_rent' : 112380,
+    'czy_pracodawca_wyplaca_zasil_z_ubezp_spol' : True,
+    'stawka_podatku_ryczalt' : 0.18
+    }
+
+    #OGÓLNE
+    wynagrodzenie_z_umowy = 2500                        #float
+    wyplata = True                                      #bool
+    typ_umowy = 'e'                                     #e - etat, c-cywilnoprawna
+    umowa_cywilnoprawna_z_wlasnym_pracownikiem = False  #bool
+
+    #DODATKI
+    suma_skladnikow_nie_naleznych_za_czas_choroby = 0   #float
+    suma_skladnikow_naleznych_za_czas_choroby = 0       #float
+
+    #NIEOBECNOŚCI
+    nieobecnosci = [[],
+                    [
+                    {
+                    'settled' : False,
+                    'type' : 'holidays',
+                    'date_from' : datetime(2014,11,03),
+                    'date_to' : datetime(2014,11,04),
+                    'hours' : 14,
+                    'paid_leave_rate' : 1
+                    },
+                    {
+                    'settled' : False,
+                    'type' : 'holidays',
+                    'date_from' : datetime(2014,11,05),
+                    'date_to' : datetime(2014,11,05),
+                    'hours' : 7,
+                    'paid_leave_rate' : 0
+                    },
+                    {
+                    'settled' : False,
+                    'type' : 'sick_leave',
+                    'date_from' : datetime(2014,11,12),
+                    'date_to' : datetime(2014,11,26),
+                    'hours' : 77,
+                    'paid_leave_rate' : 0.8
+                    }]]
+    srednia_stawka_godzinowa_ze_skladnikami_za_czas_nieobecnosci = 0
+    poprzedni_miesiac = {}
+    liczba_godzin_roboczych_w_miesiacu = 133
+    ilosc_dni_zwolnienia_lekarskiego_od_poczatku_roku = 0       #float
+    miesiac = 11
+    ilosc_dni_zwolnienia_lekarskiego_za_ktore_wynagrodzenie_finansuje_pracodawca = 33    #float
+    brutto_z_poprzedniego_miesiaca = 2500
+    podstawa_chorobowego = 2157.25
+    czy_zwolnienie_nieprzerwanie_od_90_dni_kalendarzowych = False   #bool
+    nierozliczone_dni_zwolnienia = 0
+    czy_posiada_ubezpieczenie_chorobowe = True                      #bool
+
+    #ZUS
+    podstawa_wymiaru_skladek_od_pocz_roku = 16291.26 #float
+    naliczac_FP = True                          #bool
+    naliczac_FGSP = True                        #bool
+    naliczac_emr = True                         #bool
+    naliczac_rent = True                        #bool
+    naliczac_chor = True                        #bool
+    naliczac_wyp = True                         #bool
+
+    #PIT, NFZ
+    rozliczac_kwote_wolna = True                                #bool
+    progi_podatkowe = [[0, 0.18], [85528, 0.32]]                #lista [[kwota od/próg PLN, % podatku], ... ]
+    dochod_PIT_od_poczatku_roku = 20977.21                      #float
+    koszty_uzyskania_przychodu = [1, 111.25, 0]                 #lista [% wypłaty, KUP kwota, KUP %]
+    ograniczenie_skladki_do_wysokosci_zaliczki = True           #bool
+    miesieczna_kwota_wolna_od_podatku = 46.33                   #float
+    ilosc_dni_do_przepracowania = 19                            #float
+
+    #DO WYPŁATY
+    suma_potracen  = 0      #bool
+    suma_kup_50_ten_rok = 0
+    limit_kup_50 = 42764.00
+    elements = {'sick_benefit': 0,
+                'total_absence_days': 15,
+                'korekta_reczna': False,
+                'sick_pay': 862.95,
+                'holidays_payment': 263.16,
+                'value3': 855.26,
+                'sick_days': 15
+                }
+    ########## WYWOŁANIE FUNKCJI ##########
+    a = self.calculate_salary_PL(conf,
+                                elements,
+                                wyplata, #bool
+                                typ_umowy, #char - etat/cywilnoprawna (e/c)
+                                umowa_cywilnoprawna_z_wlasnym_pracownikiem, #bool
+
+                                #ABSENCES
+                                nieobecnosci,
+                                poprzedni_miesiac,
+                                ilosc_dni_zwolnienia_lekarskiego_od_poczatku_roku,
+                                #paid_leave_rate,
+                                ilosc_dni_zwolnienia_lekarskiego_za_ktore_wynagrodzenie_finansuje_pracodawca,
+
+                            podstawa_wymiaru_skladek_od_pocz_roku,
+                            naliczac_FP,
+                            naliczac_FGSP,
+                            naliczac_emr,
+                            naliczac_rent,
+                            naliczac_chor,
+                            naliczac_wyp,
+                            0,
+
+                            rozliczac_kwote_wolna,
+                            progi_podatkowe,
+                            dochod_PIT_od_poczatku_roku,
+                            koszty_uzyskania_przychodu,
+                            ograniczenie_skladki_do_wysokosci_zaliczki,
+                            miesieczna_kwota_wolna_od_podatku,
+                            ilosc_dni_do_przepracowania,
+
+                            suma_potracen,
+                            suma_kup_50_ten_rok, #float
+                            limit_kup_50 #float
+                            )
+
+
+    ########## PRZEWIDYWANE DANE WYJŚCIOWE ##########
+    wartosc3 = 1981.37
+    koszty_uzyskania_przychodu = 111.25
+    ilosc_godzin_przepracowana = 0
+    podatek_PIT8A = 0
+    uaktualniona_podstawa_wymiaru_skladek = 17409.68
+    skladka_zdrowotna = 164.52
+    skladka_zdrowotna_odliczona = 141.67
+    skladka_zdrowotna_od_netto = 22.85
+    kwota_zaliczki_na_PIT = 262.73
+    do_wyplaty = 1542.51
+    netto = 1542.51
+    kwota_NFZ = 164.52
+    kwota_US = 121
+    chor_pracownik = 27.4
+    emr_pracownik = 109.16
+    rent_pracownik = 16.78
+    emr_pracodawca = 109.16
+    rent_pracodawca = 72.7
+    FP = 27.4
+    FGSP = 1.12
+    dochod = 1716.78
+
+    ########## PORÓWNYWANIE WARTOŚCI ##########
+    assert a['brutto'] == wartosc3, 'Nieprawidłowa wartosc3! %s != %s' % (a['brutto'], wartosc3)
+    assert a['dochod'] == dochod, 'Nieprawidłowy dochod! %s != %s' % (a['dochod'], dochod)
+    assert a['koszty_uzyskania_przychodu'] == koszty_uzyskania_przychodu, 'Nieprawidłowe koszty uzyskania przychodu! %s != %s' % (a['koszty_uzyskania_przychodu'], koszty_uzyskania_przychodu)
+    assert a['podatek_PIT8A'] == podatek_PIT8A, 'Nieprawidłowy podatek PIT8A! %s != %s' % (a['podatek_PIT8A'], podatek_PIT8A)
+    assert a['podstawa_wymiaru_skladek'] == uaktualniona_podstawa_wymiaru_skladek, 'Nieprawidłowa podstawa wymiaru skaldek! %s != %s' % (a['podstawa_wymiaru_skladek'], uaktualniona_podstawa_wymiaru_skladek)
+    assert a['skladka_zdrowotna'] == skladka_zdrowotna, 'Nieprawidłowa skladka zdrowotna! %s != %s' % (a['skladka_zdrowotna'], skladka_zdrowotna)
+    assert a['skladka_zdrowotna_odliczona'] == skladka_zdrowotna_odliczona, 'Nieprawidłowa skladka zdrowotna odliczona! %s != %s' % (a['skladka_zdrowotna_odliczona'], skladka_zdrowotna_odliczona)
+    assert a['skladka_zdrowotna_od_netto'] == skladka_zdrowotna_od_netto, 'Nieprawidłowa skladka zdrowotna od netto! %s != %s' % (a['skladka_zdrowotna_od_netto'], skladka_zdrowotna_od_netto)
+    assert a['kwota_zaliczki_na_PIT'] == kwota_zaliczki_na_PIT, 'Nieprawidłowa kwota zaliczki na PIT! %s != %s' % (a['kwota_zaliczki_na_PIT'], kwota_zaliczki_na_PIT)
+    assert a['do_wyplaty'] == do_wyplaty, 'Nieprawidłowa wartosc do wyplaty! %s != %s' % (a['do_wyplaty'], do_wyplaty)
+    assert a['netto'] == netto ,'Nieprawidłowe netto! %s != %s' % (a['netto'], netto)
+    assert a['kwota_NFZ'] == kwota_NFZ, 'Nieprawidłowe kwota NFZ! %s != %s' % (a['kwota_NFZ'], kwota_NFZ)
+    assert a['kwota_US'] == kwota_US, 'Nieprawidłowe kwota US! %s != %s' % (a['kwota_US'], kwota_US)
+    assert a['chor_pracownik'] == chor_pracownik, 'Nieprawidłowe chor pracownik! %s != %s' % (a['chor_pracownik'], chor_pracownik)
+    assert a['emr_pracownik'] == emr_pracownik, 'Nieprawidłowe emr pracownik! %s != %s' % (a['emr_pracownik'], emr_pracownik)
+    assert a['rent_pracownik'] == rent_pracownik, 'Nieprawidłowe rent pracownik! %s != %s' % (a['rent_pracownik'], rent_pracownik)
+    assert a['emr_pracodawca'] == emr_pracodawca, 'Nieprawidłowe emr pracodawca! %s != %s' % (a['emr_pracodawca'], emr_pracodawca)
+    assert a['rent_pracodawca'] == rent_pracodawca, 'Nieprawidłowe rent pracodawca! %s != %s' % (a['rent_pracodawca'], rent_pracodawca)
+    assert a['FP'] == FP, 'Nieprawidłowe FP! %s != %s' % (a['FP'], FP)
+    assert a['FGSP'] == FGSP, 'Nieprawidłowe FGSP! %s != %s' % (a['FGSP'], FGSP)

@@ -1,0 +1,728 @@
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config, id: hr_choroba4_zwolnienie_config}:
+    name: Tylko etaty zwolnień chorobowych
+    use_post_only: True
+    use_contract_only: True
+    sequence: 1
+    department: [hr_payroll_pl.dzial_zwolnienia_chor]
+-
+ Tworzę pracownika - 36 lat
+-
+ !record {model: hr.employee, id: hr_pracownik_choroba4}:
+    name: Jan36 Kowalski
+    department_id: hr_payroll_pl.dzial_zwolnienia_chor
+-
+ Przydzielam limit urlopowy pracownikowi na 2013 rok - zaczynam od urlopu wypoczynkowego
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba4_przydzielenie_urlopu1}:
+    number_of_days_temp: 60
+    date_from: "2013-01-01 00:00:00"
+    type: "add"
+    state: "validate"
+    employee_id: hr_pracownik_choroba4
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+-
+ Przechodzę do limitów urlopu bezpłatnego
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba4_przydzielenie_urlopu2}:
+    number_of_days_temp: 60
+    date_from: "2013-01-01 00:00:00"
+    type: "add"
+    state: "validate"
+    employee_id: hr_pracownik_choroba4
+    holiday_status_id: hr.hr2_absence_type_urlopbezpatny0
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik_choroba4_data}:
+    employee_name: Jan36
+    surname: Kowalski
+    employee_id: hr_pracownik_choroba4
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie 2500 PLN
+-
+ !record {model: hr2.etat, id: hr_choroba4}:
+    name: Jan36 Kowalski
+    employee_id: hr_pracownik_choroba4
+    sign_date: "2013-02-01"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu - Pensja 2500 zł, wielkość etatu 1
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba4_data1}:
+    name: Jan36 Kowalski
+    etat_id: hr_choroba4
+    date_from: "2013-02-01"
+    month_pay: 2500
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę dodatki na luty
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba4_salary_addition1}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_polroczna
+    procent_podstawy: 10
+    year_start: 2013
+    month_start: 2
+    etat_data_id: hr_etat_choroba4_data1
+-
+ Tworzę listę płac na luty 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_1}:
+    name: Payroll1
+    register_month: 2
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-03-01"
+-
+ Wyliczam listę płac na luty 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_1")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 244.00, "Składka emerytalna pracownika powinna wynosić 244,00, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 37.50, "Składka rentowa pracownika powinna wynosić 37,50, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 61.25, "Składka chorobowa pracownika powinna wynosić 61,25, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 61.25, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 61,25, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.50, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,50, a wynosi %s" % payslip_obj.fgsp
+    print "Luty 2013 wyliczony prawidłowo"
+-
+ Tworzę nieobecności na marzec - opieka nad dzieckiem
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba4_absence1}:
+    date_from: "2013-03-18 00:00:00"
+    date_to: "2013-03-23 23:59:59"
+    number_of_days_temp: 5
+    employee_id: hr_pracownik_choroba4
+    holiday_status_id: hr.hr2_absence_type_child_care
+    state: validate
+-
+ Tworzę nieobecności na marzec - urlop chorobowy
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba4_absence2}:
+    date_from: "2013-03-07 00:00:00"
+    date_to: "2013-03-11 23:59:59"
+    employee_id: hr_pracownik_choroba4
+    number_of_days_temp: 5
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na marzec 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_2}:
+    name: Payroll1
+    register_month: 3
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-04-01"
+-
+ Wyliczam listę płac na marzec 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_2")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_2")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_2")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_2")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_2")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 162.67, "Składka emerytalna pracownika powinna wynosić 162,67, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 25.00, "Składka rentowa pracownika powinna wynosić 25,00, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 40.83, "Składka chorobowa pracownika powinna wynosić 40,83, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 40.83, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 40,83, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 1.67, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 1,67, a wynosi %s" % payslip_obj.fgsp
+    sick_type_list = [ref("hr2_payslip_line_type_sick_pay"), ref("hr2_payslip_line_type_sick_benefit")]
+    payslip_sick_lines = self.pool.get('hr2.payslip.line').search(cr, uid, [('payslip_id','=',payslip_id),('type_id','in',sick_type_list)])
+    podstawa_chorobowego = self.pool.get('hr2.payslip.line').read(cr, uid, payslip_sick_lines[0], ['base'])['base']
+    assert podstawa_chorobowego == 2157.25, "Podstawa chorobowego powinna wynosić 2157,25, a wynosi %s" % podstawa_chorobowego
+    print "Marzec 2013 wyliczony prawidłowo"
+-
+ Tworzę listę płac na kwiecień 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_3}:
+    name: Payroll1
+    register_month: 4
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-05-01"
+-
+ Wyliczam listę płac na kwiecień 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_3")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_3")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_3")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_3")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_3")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 244.00, "Składka emerytalna pracownika powinna wynosić 244,00, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 37.50, "Składka rentowa pracownika powinna wynosić 37,50, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 61.25, "Składka chorobowa pracownika powinna wynosić 61,25, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 61.25, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 61,25, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.50, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,50, a wynosi %s" % payslip_obj.fgsp
+    print "Kwiecień 2013 wyliczony prawidłowo"
+-
+ Tworzę nieobecności na maj
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba4_absence3}:
+    date_from: "2013-05-06 00:00:00"
+    date_to: "2013-05-07 23:59:59"
+    number_of_days_temp: 2
+    employee_id: hr_pracownik_choroba4
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę listę płac na maj 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_4}:
+    name: Payroll1
+    register_month: 5
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-06-01"
+-
+ Wyliczam listę płac na maj 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_4")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_4")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_4")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_4")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_4")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 244.00, "Składka emerytalna pracownika powinna wynosić 244,00, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 37.50, "Składka rentowa pracownika powinna wynosić 37,50, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 61.25, "Składka chorobowa pracownika powinna wynosić 61,25, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 61.25, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 61,25, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.50, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,50, a wynosi %s" % payslip_obj.fgsp
+    print "Maj 2013 wyliczony prawidłowo"
+-
+ Tworzę aneks do umowy na czerwiec (podwyżka do 2750 zł)
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba4_data2}:
+    name: Jan36 Kowalski
+    etat_id: hr_choroba4
+    date_from: "2013-06-10"
+    month_pay: 2750
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę umowę o dzieło na czerwiec
+-
+ !record {model: hr2.contract, id: hr_etat_choroba4_contract2}:
+    name: Jan36 Kowalski
+    employee_id: hr_pracownik_choroba4
+    date_start: "2013-06-01"
+    date_to: "2013-06-30"
+    miesiac_rozliczenia: 6
+    rok_rozliczenia: 2013
+    month_pay: 500
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: False
+    calculate_wyp: True
+    czy_rozliczona: False
+    contract_type_id: hr_payroll_pl.hr_contract_type
+-
+ Tworzę listę płac na czerwiec 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_5}:
+    name: Payroll1
+    register_month: 6
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-07-01"
+-
+ Wyliczam listę płac na czerwiec 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_5")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_5")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_5")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_5")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_5")
+    payslip_ids = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)
+    emr_pracownik = 0
+    rent_pracownik = 0
+    chor_pracownik = 0
+    fp = 0
+    fgsp = 0
+    for payslip in payslip_ids:
+        payslip_data = payslip_pool.read(cr, uid, payslip, ['chor_pracownik', 'emr_pracownik', 'rent_pracownik', 'fp', 'fgsp'])
+        emr_pracownik += payslip_data['emr_pracownik']
+        chor_pracownik += payslip_data['chor_pracownik']
+        rent_pracownik += payslip_data['rent_pracownik']
+        fp += payslip_data['fp']
+        fgsp += payslip_data['fgsp']
+    assert emr_pracownik == 311.10, "Składka emerytalna pracownika powinna wynosić 311,10, a wynosi %s" % emr_pracownik
+    assert rent_pracownik == 47.81, "Składka rentowa pracownika powinna wynosić 47,81, a wynosi %s" % rent_pracownik
+    assert chor_pracownik == 65.84, "Składka chorobowa pracownika powinna wynosić 65,84, a wynosi %s" % chor_pracownik
+    assert fp == 78.09, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 78,09, a wynosi %s" % fp
+    assert fgsp == 3.19, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 3,19, a wynosi %s" % fgsp
+    print "Czerwiec 2013 wyliczony prawidłowo"
+-
+ Tworzę dodatki na lipiec
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba4_salary_addition2}:
+    name: Premia okresowa półroczna
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_polroczna
+    procent_podstawy: 10
+    year_start: 2013
+    month_start: 2
+    etat_data_id: hr_etat_choroba4_data2
+-
+ Tworzę listę płac na lipiec 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_6}:
+    name: Payroll1
+    register_month: 7
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-09-01"
+-
+ Wyliczam listę płac na lipiec 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_6")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_6")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_6")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_6")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_6")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 268.40, "Składka emerytalna pracownika powinna wynosić 268,40, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 41.25, "Składka rentowa pracownika powinna wynosić 41,25, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 67.38, "Składka chorobowa pracownika powinna wynosić 67,38, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 67.38, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 67,38, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.75, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,75, a wynosi %s" % payslip_obj.fgsp
+    print "Lipiec 2013 wyliczony prawidłowo"
+-
+ Tworzę nieobecności na sierpień
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba4_absence4}:
+    date_from: "2013-08-01 00:00:00"
+    date_to: "2013-08-14 23:59:59"
+    employee_id: hr_pracownik_choroba4
+    number_of_days_temp: 10
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę dodatki na sierpień - premia uznaniowa
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba4_salary_addition3}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_uznaniowa
+    kwota: 150
+    year_start: 2013
+    year_stop: 0
+    month_start: 8
+    etat_data_id: hr_etat_choroba4_data2
+-
+ Tworzę dodatki na sierpień - nadgodziny
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba4_salary_addition4}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_nadgodziny
+    kwota: 75
+    year_start: 2013
+    year_stop: 0
+    month_start: 8
+    etat_data_id: hr_etat_choroba4_data2
+-
+ Tworzę listę płac na sierpień 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_7}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-09-01"
+-
+ Wyliczam listę płac na sierpień 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_7")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_7")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_7")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_7")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_7")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 290.36, "Składka emerytalna pracownika powinna wynosić 290,36, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 44.63, "Składka rentowa pracownika powinna wynosić 44,63, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 72.89, "Składka chorobowa pracownika powinna wynosić 72,89, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 72.89, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 72,89, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.98, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,98, a wynosi %s" % payslip_obj.fgsp
+    print "Sierpień 2013 wyliczony prawidłowo"
+-
+ Tworzę listę płac na wrzesień 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_8}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-10-01"
+-
+ Wyliczam listę płac na wrzesień 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_8")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_8")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_8")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_8")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_8")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 268.40, "Składka emerytalna pracownika powinna wynosić 268,40, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 41.25, "Składka rentowa pracownika powinna wynosić 41,25, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 67.38, "Składka chorobowa pracownika powinna wynosić 67,38, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 67.38, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 67,38, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.75, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,75, a wynosi %s" % payslip_obj.fgsp
+    print "Wrzesień 2013 wyliczony prawidłowo"
+-
+ Tworzę listę płac na październik 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_9}:
+    name: Payroll1
+    register_month: 10
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-11-01"
+-
+ Wyliczam listę płac na październik 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_9")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_9")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_9")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_9")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_9")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 268.40, "Składka emerytalna pracownika powinna wynosić 268,40, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 41.25, "Składka rentowa pracownika powinna wynosić 41,25, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 67.38, "Składka chorobowa pracownika powinna wynosić 67,38, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 67.38, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 67,38, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 2.75, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 2,75, a wynosi %s" % payslip_obj.fgsp
+    print "Październik 2013 wyliczony prawidłowo"
+-
+ Tworzę nieobecności na listopad - zwolnienie chorobowe (20 dni)
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba4_absence5}:
+    date_from: "2013-11-01 00:00:00"
+    date_to: "2013-11-20 23:59:59"
+    number_of_days_temp: 20
+    employee_id: hr_pracownik_choroba4
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na listopad 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_10}:
+    name: Payroll1
+    register_month: 11
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2013-12-01"
+-
+ Wyliczam listę płac na listopad 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_10")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_10")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_10")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_10")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_10")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 89.47, "Składka emerytalna pracownika powinna wynosić 89,47, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 13.75, "Składka rentowa pracownika powinna wynosić 13,75, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 22.46, "Składka chorobowa pracownika powinna wynosić 22,46, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 22.46, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 22,46, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 0.92, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0,92, a wynosi %s" % payslip_obj.fgsp
+    sick_type_list = [ref("hr2_payslip_line_type_sick_pay"), ref("hr2_payslip_line_type_sick_benefit")]
+    payslip_sick_lines = self.pool.get('hr2.payslip.line').search(cr, uid, [('payslip_id','=',payslip_id),('type_id','in',sick_type_list)])
+    podstawa_chorobowego = self.pool.get('hr2.payslip.line').read(cr, uid, payslip_sick_lines[0], ['base'])['base']
+    assert podstawa_chorobowego == 2303.92, "Podstawa chorobowego powinna wynosić 2303,92, a wynosi %s" % podstawa_chorobowego
+    print "Listopad 2013 wyliczony prawidłowo"
+-
+ Tworzę dodatki na grudzień - premia uznaniowa
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba4_salary_addition5}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_uznaniowa
+    kwota: 350
+    year_start: 2013
+    year_stop: 0
+    month_start: 12
+    etat_data_id: hr_etat_choroba4_data2
+-
+ Tworzę listę płac na grudzień 2013
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_11}:
+    name: Payroll1
+    register_month: 12
+    register_year: 2013
+    config: hr_choroba4_zwolnienie_config
+    date: "2014-01-01"
+-
+ Wyliczam listę płac na grudzień 2013
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_11")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_11")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_11")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_11")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_11")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 302.56, "Składka emerytalna pracownika powinna wynosić 302,56, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 46.50, "Składka rentowa pracownika powinna wynosić 46,50, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 75.95, "Składka chorobowa pracownika powinna wynosić 75,95, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 75.95, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 75,95, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 3.10, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 3,10, a wynosi %s" % payslip_obj.fgsp
+    print "Grudzień 2013 wyliczony prawidłowo"
+-
+ Tworzę aneks do umowy na styczeń 2014 (podwyżka do 4500)
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba4_data3}:
+    name: Jan36 Kowalski
+    etat_id: hr_choroba4
+    date_from: "2014-01-02"
+    month_pay: 3300
+    calculate_fp: False
+    calculate_fgsp: False
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę nieobecności na styczeń
+-
+ Tworzę dodatki na styczeń - premia uznaniowa
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba4_salary_addition6}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_uznaniowa
+    kwota: 165
+    year_start: 2014
+    year_stop: 0
+    month_start: 1
+    etat_data_id: hr_etat_choroba4_data3
+-
+ Tworzę listę płac na styczeń 2014
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_12}:
+    name: Payroll1
+    register_month: 1
+    register_year: 2014
+    config: hr_choroba4_zwolnienie_config
+    date: "2014-02-01"
+-
+ Wyliczam listę płac na styczeń 2014
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_12")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_12")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_12")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_12")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_12")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 338.18, "Składka emerytalna pracownika powinna wynosić 338.18, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 51.98, "Składka rentowa pracownika powinna wynosić 51.98, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 84.89, "Składka chorobowa pracownika powinna wynosić 84.69, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 0, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 0, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0, a wynosi %s" % payslip_obj.fgsp
+    print "Styczeń 2014 wyliczony prawidłowo"
+-
+ Tworzę listę płac na luty 2014
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_13}:
+    name: Payroll1
+    register_month: 2
+    register_year: 2014
+    config: hr_choroba4_zwolnienie_config
+    date: "2014-03-01"
+-
+ Wyliczam listę płac na luty 2014
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_13")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_13")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_13")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_13")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_13")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 322.08, "Składka emerytalna pracownika powinna wynosić 322,08, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 49.50, "Składka rentowa pracownika powinna wynosić 49,50, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 80.85, "Składka chorobowa pracownika powinna wynosić 80,85, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 0, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 0, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0, a wynosi %s" % payslip_obj.fgsp
+    print "Luty 2014 wyliczony prawidłowo"
+-
+ Tworzę nieobecności na marzec 2014
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba4_absence6}:
+    date_from: "2014-02-03 00:00:00"
+    date_to: "2014-02-03 23:59:59"
+    employee_id: hr_pracownik_choroba4
+    number_of_days_temp: 1
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę listę płac na marzec 2014
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba4_zwolnienie1_14}:
+    name: Payroll1
+    register_month: 3
+    register_year: 2014
+    config: hr_choroba4_zwolnienie_config
+    date: "2014-04-01"
+-
+ Wyliczam listę płac na marzec 2014
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba4_zwolnienie1_14")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba4_zwolnienie1_14")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba4_zwolnienie1_14")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba4_zwolnienie1_14")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    payslip_pool = self.pool.get('hr2.payslip')
+    employee_id = ref("hr_pracownik_choroba4")
+    register_id = ref("hr_register_choroba4_zwolnienie1_14")
+    payslip_id = payslip_pool.search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.emr_pracownik == 322.08, "Składka emerytalna pracownika powinna wynosić 322,08, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 49.50, "Składka rentowa pracownika powinna wynosić 49,50, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 80.85, "Składka chorobowa pracownika powinna wynosić 80,85, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.fp == 0, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0, a wynosi %s" % payslip_obj.fp
+    assert payslip_obj.fgsp == 0, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 0, a wynosi %s" % payslip_obj.fgsp
+    print "Marzec 2014 wyliczony prawidłowo"

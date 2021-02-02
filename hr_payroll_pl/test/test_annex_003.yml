@@ -1,0 +1,108 @@
+-
+ Tworzę pracownika
+-
+ !record {model: hr.employee, id: hr_pracownik_urlop_bezplatny}:
+    name: Jan Kowalski
+    department_id: dzial_annex
+    birthday: 1985-01-01
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik1_urlop_bezplatny_data}:
+    employee_name: Jan
+    surname: Kowalski
+    employee_id: hr_pracownik_urlop_bezplatny
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie 12 000. Praca od 01.08.2014
+-
+ !record {model: hr2.etat, id: hr_urlop_bezplatny_etat}:
+    name: Jan Kowalski
+    employee_id: hr_pracownik_urlop_bezplatny
+    sign_date: "2014-08-01"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu
+-
+ !record {model: hr2.etat.data, id: hr_urlop_bezplatny_data}:
+    name: Jan Kowalski
+    etat_id: hr_urlop_bezplatny_etat
+    date_from: "2014-08-01"
+    month_pay: 12000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę listę płac na sierpień
+-
+ !record {model: hr2.payroll.register, id: hr_register_urlop_bezplatny1}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2014
+    config: hr_payroll_pl.hr_urlop_wypoczynkowy_config
+    date: "2014-09-01"
+-
+ Przydzielam limit urlopowy pracownikowi na 2014 rok - urlop bezplatny
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba_przydzielenie_urlopu1}:
+    number_of_days_temp: 60
+    date_from: "2014-01-01 00:00:00"
+    type: "add"
+    state: "validate"
+    employee_id: hr_pracownik_urlop_bezplatny
+    holiday_status_id: hr.hr2_absence_type_urlopbezpatny0
+-
+ Tworzę urlop bezpłatny na wrzesień
+-
+ !record {model: hr2.absence, id: hr2_pracownik_bezplatny_absence1}:
+    date_from: "2014-09-13 00:00:00"
+    date_to: "2014-09-21 23:59:59"
+    number_of_days_temp: 5
+    employee_id: hr_pracownik_urlop_bezplatny
+    holiday_status_id: hr.hr2_absence_type_urlopbezpatny0
+    state: validate
+-
+ Wyliczam i zatwierdzam listę płac (sierpień)
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_urlop_bezplatny1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_urlop_bezplatny1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_urlop_bezplatny1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_urlop_bezplatny1")],context=context)
+-
+ Tworzę listę płac na wrzesień
+-
+ !record {model: hr2.payroll.register, id: hr_register_urlop_bezplatny2}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_payroll_pl.hr_urlop_wypoczynkowy_config
+    date: "2014-10-01"
+-
+ Wyliczam i zatwierdzam listę płac (wrzesień)
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_urlop_bezplatny2")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_urlop_bezplatny2")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_urlop_bezplatny2")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_urlop_bezplatny2")],context=context)
+-
+ Sprawdzam poprawność wyliczeń z września
+-
+ !python {model: hr2.payslip}: |
+    e = 0.00001
+    employee_id = ref("hr_payroll_pl.hr_pracownik_urlop_bezplatny")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id.register_month','=',9), ('register_id.register_year','=',2014)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 620.11, "Składka zdrowotna odliczona powinna wynosić 620,11, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert abs((payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik) - 1271.29) < e, "Suma składek pracownika na ubezpieczenia emerytalne, rentowe i chorobowe powinna wynosić 1271.29, a wynosi %s" % (payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik)
+    assert payslip_obj.do_wyplaty == 6527.31, "Wypłata powinna wynosić 6257,31, a wynosi %s" % payslip_obj.do_wyplaty
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1373.87, "Zaliczka na podatek dochodowy przed odliczeniem składki powinna wynosić 1373.87, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    assert payslip_obj.koszty_uzyskania == 111.25, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    print "Obliczenia z września prawidłowe"

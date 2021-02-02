@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+	<record model="ir.rule" id="multicompany_hr2_payslip">
+    	<field name="name">multicompany_hr2_payslip</field>
+    	<field name="model_id" ref="model_hr2_payslip"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payslip_line_type">
+    	<field name="name">multicompany_hr2_payslip_line_type</field>
+    	<field name="model_id" ref="model_hr2_payslip_line_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">['|',('company_id','=',user.company_id.id),('company_id','=',False)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+	
+	<record model="ir.rule" id="multicompany_hr2_payslip_line">
+    	<field name="name">multicompany_hr2_payslip_line</field>
+    	<field name="model_id" ref="model_hr2_payslip_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payslip_line_line">
+    	<field name="name">multicompany_hr2_payslip_line_line</field>
+    	<field name="model_id" ref="model_hr2_payslip_line_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payslip_config">
+    	<field name="name">multicompany_hr2_payslip_config</field>
+    	<field name="model_id" ref="model_hr2_payslip_config"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payroll_register">
+    	<field name="name">multicompany_hr2_payroll_register</field>
+    	<field name="model_id" ref="model_hr2_payroll_register"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_salary_addition_type">
+    	<field name="name">multicompany_hr2_salary_addition_type</field>
+    	<field name="model_id" ref="model_hr2_salary_addition_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_salary_addition">
+    	<field name="name">multicompany_hr2_salary_addition</field>
+    	<field name="model_id" ref="model_hr2_salary_addition"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_salary_deduction_computation_type">
+    	<field name="name">multicompany_hr2_salary_deduction_computation_type</field>
+    	<field name="model_id" ref="model_hr2_salary_deduction_computation_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_salary_deduction_type">
+    	<field name="name">multicompany_hr2_salary_deduction_type</field>
+    	<field name="model_id" ref="model_hr2_salary_deduction_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_salary_deduction">
+    	<field name="name">multicompany_hr2_salary_deduction</field>
+    	<field name="model_id" ref="model_hr2_salary_deduction"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payslip_deduction">
+    	<field name="name">multicompany_hr2_payslip_deduction</field>
+    	<field name="model_id" ref="model_hr2_payslip_deduction"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payment_register">
+    	<field name="name">multicompany_hr2_payment_register</field>
+    	<field name="model_id" ref="model_hr2_payment_register"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payment_register_line">
+    	<field name="name">multicompany_hr2_payment_register_line</field>
+    	<field name="model_id" ref="model_hr2_payment_register_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_payment_register_payment_line">
+    	<field name="name">multicompany_hr2_payment_register_payment_line</field>
+    	<field name="model_id" ref="model_hr2_payment_register_payment_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_edeclaration_choice">
+    	<field name="name">multicompany_edeclaration_choice</field>
+    	<field name="model_id" ref="model_edeclaration_choice"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_config_prog_podatkowy">
+    	<field name="name">multicompany_hr2_config_prog_podatkowy</field>
+    	<field name="model_id" ref="model_hr2_config_prog_podatkowy"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_hr2_config_prog_podatkowy_line">
+    	<field name="name">multicompany_hr2_config_prog_podatkowy_line</field>
+    	<field name="model_id" ref="model_hr2_config_prog_podatkowy_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+    	<field eval="1" name="perm_unlink"/>
+        <field eval="1" name="perm_write"/>
+        <field eval="0" name="perm_read"/>
+        <field eval="1" name="perm_create"/>    	
+	</record>
+				
+	<!-- Permission to read the records from child companies -->			
+				
+	<record model="ir.rule" id="multicompany_read_hr2_payslip">
+    	<field name="name">multicompany_read_hr2_payslip</field>
+    	<field name="model_id" ref="model_hr2_payslip"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payslip_line_type">
+    	<field name="name">multicompany_read_hr2_payslip_line_type</field>
+    	<field name="model_id" ref="model_hr2_payslip_line_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">['|',('company_id','child_of', user.company_id.id),('company_id','=',False)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+	
+	<record model="ir.rule" id="multicompany_read_hr2_payslip_line">
+    	<field name="name">multicompany_read_hr2_payslip_line</field>
+    	<field name="model_id" ref="model_hr2_payslip_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payslip_line_line">
+    	<field name="name">multicompany_read_hr2_payslip_line_line</field>
+    	<field name="model_id" ref="model_hr2_payslip_line_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payslip_config">
+    	<field name="name">multicompany_read_hr2_payslip_config</field>
+    	<field name="model_id" ref="model_hr2_payslip_config"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payroll_register">
+    	<field name="name">multicompany_read_hr2_payroll_register</field>
+    	<field name="model_id" ref="model_hr2_payroll_register"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_salary_addition_type">
+    	<field name="name">multicompany_read_hr2_salary_addition_type</field>
+    	<field name="model_id" ref="model_hr2_salary_addition_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_salary_addition">
+    	<field name="name">multicompany_read_hr2_salary_addition</field>
+    	<field name="model_id" ref="model_hr2_salary_addition"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_salary_deduction_computation_type">
+    	<field name="name">multicompany_read_hr2_salary_deduction_computation_type</field>
+    	<field name="model_id" ref="model_hr2_salary_deduction_computation_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_salary_deduction_type">
+    	<field name="name">multicompany_read_hr2_salary_deduction_type</field>
+    	<field name="model_id" ref="model_hr2_salary_deduction_type"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_salary_deduction">
+    	<field name="name">multicompany_read_hr2_salary_deduction</field>
+    	<field name="model_id" ref="model_hr2_salary_deduction"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payslip_deduction">
+    	<field name="name">multicompany_read_hr2_payslip_deduction</field>
+    	<field name="model_id" ref="model_hr2_payslip_deduction"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payment_register">
+    	<field name="name">multicompany_read_hr2_payment_register</field>
+    	<field name="model_id" ref="model_hr2_payment_register"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payment_register_line">
+    	<field name="name">multicompany_read_hr2_payment_register_line</field>
+    	<field name="model_id" ref="model_hr2_payment_register_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_payment_register_payment_line">
+    	<field name="name">multicompany_read_hr2_payment_register_payment_line</field>
+    	<field name="model_id" ref="model_hr2_payment_register_payment_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_edeclaration_choice">
+    	<field name="name">multicompany_read_edeclaration_choice</field>
+    	<field name="model_id" ref="model_edeclaration_choice"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_config_prog_podatkowy">
+    	<field name="name">multicompany_read_hr2_config_prog_podatkowy</field>
+    	<field name="model_id" ref="model_hr2_config_prog_podatkowy"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+	<record model="ir.rule" id="multicompany_read_hr2_config_prog_podatkowy_line">
+    	<field name="name">multicompany_read_hr2_config_prog_podatkowy_line</field>
+    	<field name="model_id" ref="model_hr2_config_prog_podatkowy_line"/>
+    	<field name="group_ids" eval="[(6, 0, ['hr.group_hr_manager', 'hr.group_hr_recruiter', 'base.group_user'])]"/>
+    	<field name="domain_force">[('company_id','child_of', user.company_id.id)]</field>
+    	<field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>    	
+	</record>
+
+
+								
+</data>
+</openerp>

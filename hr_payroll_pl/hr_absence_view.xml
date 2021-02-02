@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+<!--[[[ This file contains views connected to calendar and absences ]]]-->
+
+		<!-- Kalendarz pracownika -->
+
+		<record id="view_hr_payroll_employee_calendar_tree" model="ir.ui.view">
+            <field name="name">hr.payroll.employee.calendar.tree</field>
+            <field name="model">hr2.employee.date</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                	<field name="employee_id" string="Employee" />
+                	<field name="date" />
+					<field name="computation_type" />
+					<field name="day_type" />
+					<field name="work_hour_start" widget="float_time" />
+					<field name="work_hour_stop" widget="float_time" />
+					<field name="calendar_start" invisible="1" />
+					<field name="calendar_stop" invisible="1" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_payroll_employee_calendar_form" model="ir.ui.view">
+            <field name="name">hr.payroll.employee.calendar.form</field>
+            <field name="model">hr2.employee.date</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<form>
+					<group col="4" colspan="4">
+						<field name="employee_id" string="Employee" readonly="1"/>
+						<field name="company_id" groups="base.group_multi_company"/>
+						<field name="date" readonly="1"/>
+						<field name="computation_type" colspan="2" on_change="on_change_computation_type(computation_type, context)"/>
+						<field name="day_type" attrs="{'readonly':['|', ('computation_type','=','from_general_calendar'), ('absence_id', '!=', False)]}"/>
+						<field name="work_hour_start" widget="float_time" attrs="{'readonly':[('computation_type','=','from_general_calendar')]}" />
+						<field name="work_hour_stop" widget="float_time" attrs="{'readonly':[('computation_type','=','from_general_calendar')]}" />
+						<group col="4" colspan="4">
+							<field name="absence_id" hide_items="open"/>
+							<group col="2" colspan="2">
+								<button string="Add absence" name="employee_calendar_add_absence" type="object" colspan="2" icon="gtk-add" attrs="{'invisible':[('absence_id', '!=', False)]}"/>
+								<button string="Remove absence" name="employee_calendar_remove_absence" confirm="Are you sure you want to remove this absence?" type="object" colspan="1" icon="gtk-remove" attrs="{'invisible':[('absence_id', '=', False)]}"/>
+								<button string="Edit absence" name="employee_calendar_add_absence" type="object" colspan="1" icon="gtk-edit" attrs="{'invisible':[('absence_id', '=', False)]}"/>
+							</group>
+							<newline/>
+							<field name="overtime_id" hide_items="open"/>
+							<group col="2" colspan="2">
+								<button string="Add overtime hours" name="employee_calendar_add_overtime" type="object" colspan="2" icon="gtk-add" attrs="{'invisible':['|',('day_type', '=', 'multiple'),('overtime_id','!=',False)]}"/>
+								<button string="Remove overtime" name="employee_calendar_remove_overtime" confirm="Are you sure you want to remove this overtime?" type="object" colspan="1" icon="gtk-remove" attrs="{'invisible':[('overtime_id', '=', False)]}"/>
+								<button string="Edit overtime" name="employee_calendar_add_overtime" type="object" colspan="1" icon="gtk-edit" attrs="{'invisible':[('overtime_id', '=', False)]}"/>
+							</group>
+						</group>
+						<field name="calendar_start" invisible="1" />
+						<field name="calendar_stop" invisible="1" />
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<act_window
+        id="hr_payroll_employee_calendar"
+        name="Kalendarz pracownika"
+        res_model="hr2.employee.date"
+        src_model="hr.employee"
+        view_type="form"
+        view_mode="form,calendar"
+		groups = "hr.group_hr_manager"
+        domain="[('employee_id', '=', active_id)]"/>
+
+		<record id="view_hr_payroll_employee_calendar_calendar" model="ir.ui.view">
+            <field name="name">Calendar</field>
+            <field name="model">hr2.employee.date</field>
+            <field name="type">calendar</field>
+            <field name="compatibility">1-gtk</field>
+            <field name="arch" type="xml">
+                <calendar version="7.0" string="Events" date_start="calendar_start" color="day_type" date_stop="calendar_stop" create="False"
+						colors="lightgreen: working; orange: not_working; red: absence; blue: holiday">
+                    <field name="calendar_name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_hr_payroll_employee_calendar_calendar_web" model="ir.ui.view">
+            <field name="name">Calendar</field>
+            <field name="model">hr2.employee.date</field>
+            <field name="type">calendar</field>
+            <field name="compatibility">3-web</field>
+            <field name="alternative_view_id" ref="view_hr_payroll_employee_calendar_calendar"/>
+            <field name="arch" type="xml">
+                <calendar version="7.0" date_start="calendar_start" date_stop="calendar_stop" string="Events"
+                        color="day_type" colors="light_green: working; orange: not_working; red: absence; blue: holiday" cal_readonly="true">
+                    <field name="calendar_name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_hr_payroll_employee_calendar_calendar" model="ir.ui.view">
+            <field name="alternative_view_id" ref="view_hr_payroll_employee_calendar_calendar_web"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="view_hr_payroll_employee_calendar">
+		    <field eval="0" name="sequence"/>
+		    <field name="view_mode">calendar</field>
+		    <field name="view_id" ref="view_hr_payroll_employee_calendar_calendar"/>
+		    <field name="act_window_id" ref="hr_payroll_employee_calendar"/>
+		</record>
+
+        <record model="ir.actions.act_window.view" id="view_hr_employee_form">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="view_hr_payroll_employee_calendar_form"/>
+		    <field name="act_window_id" ref="hr_payroll_employee_calendar"/>
+		</record>
+
+		<record id="view_hr_payroll_employee_calendar_search" model="ir.ui.view">
+			<field name="name">hr.payroll.employee.calendar.search</field>
+			<field name="model">hr2.employee.date</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="employee_id" string="Employee" />
+					<field name="date" />
+					<field name="computation_type" />
+					<field name="day_type" />
+				</search>
+			</field>
+		</record>
+
+		<record id="menu_hr_payroll_employee_calendar_action" model="ir.actions.act_window">
+            <field name="name">Kalendarz Pracownika</field>
+            <field name="res_model">hr2.employee.date</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_hr_payroll_employee_calendar_search"/>
+        </record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_employee_calendar_action_tree_view">
+		    <field eval="0" name="sequence"/>
+		    <field name="view_mode">tree</field>
+		    <field name="view_id" ref="view_hr_payroll_employee_calendar_tree"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_employee_calendar_action"/>
+		</record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_employee_calendar_action_form_view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="view_hr_payroll_employee_calendar_form"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_employee_calendar_action"/>
+		</record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_employee_calendar_action_calendar_view">
+		    <field eval="2" name="sequence"/>
+		    <field name="view_mode">calendar</field>
+		    <field name="view_id" ref="view_hr_payroll_employee_calendar_calendar"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_employee_calendar_action"/>
+		</record>
+
+
+<!-- hr2.absence -->
+<!-- Filtr-->
+		<!--Commented 'name' fields left after the old HR - just in case -->
+        <record id="view_payroll_hr_holidays_filter" model="ir.ui.view">
+            <field name="name">hr2.absence.filter</field>
+            <field name="model">hr2.absence</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Leave">
+                    <group col='8' colspan='4'>
+                        <filter icon="terp-camera_test" domain="[('state','=','validate')]" string="Validated" name="filter_validated"/>
+                        <separator orientation="vertical"/>
+                        <filter icon="terp-check" domain="[('state','=','draft')]" string="To Confirm"/>
+                        <filter icon="terp-camera_test" domain="[('state','=','confirm')]" string="To Approve"/>
+                        <separator orientation="vertical"/>
+                        <filter string="This Month" icon="terp-go-month" name="This Month"
+                                domain="[('date_from','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date_from','&gt;=',(datetime.date.today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                        <separator orientation="vertical"/>
+                        <field name="employee_id"/>
+                        <field name="department_id" widget="selection"/>
+                        <field name="holiday_status_id" widget="selection"/>
+                    </group>
+                    <newline/>
+                    <group expand="0" string="Extended Filters...">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="appnumber"/>
+                    </group>
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter name="group_employee" string="Employee" icon="terp-personal" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Manager" icon="terp-personal" domain="[]" context="{'group_by':'manager_id'}"/>
+                        <filter string="Department" icon="terp-personal+" domain="[]" context="{'group_by':'department_id','set_visible':True}"/>
+                        <separator orientation="vertical"/>
+                        <filter name="group_type" string="Type" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'holiday_status_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="State" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+<!-- Wpisanie nieobecności -->
+<!--Form-->
+		<record model="ir.ui.view" id="payroll_zglos_moj_urlop_form_view">
+			<field name="name">Nieobecności</field>
+			<field name="model">hr2.absence</field>
+			<field name="type">form</field>
+			<field name="priority">200</field>
+			<field name="arch" type="xml">
+				<form string="Zgłoszenie urlopu">
+					<group col="8" colspan="4">
+						<!--  <field name="name"
+							attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')]}" /> -->
+					 <field name="employee_id" readonly="0" required="1" attrs="{'readonly': [(ctx_get('absences_calendar', False), '=', True)]}" on_change="onchange_date_calendar(date_to, date_from, holiday_status_id, employee_id, context)"/>
+					</group>
+					<notebook colspan="4">
+						<page string="Ogólne">
+							<field name="holiday_status_id" on_change="onchange_status_id(holiday_status_id, employee_id, date_from, date_to, context)"
+								context="{'employee_id':employee_id}" />
+							<field name="department_id" />
+							<field name="date_from" on_change="onchange_date_calendar(date_to, date_from, holiday_status_id, employee_id, context)"
+								required="1" attrs="{'invisible':[('status_pelnedni','=',True)]}" />
+							<field name="date_to" on_change="onchange_date_calendar(date_to, date_from, holiday_status_id, employee_id, context)"
+								required="1" attrs="{'invisible':[('status_pelnedni','=',True)]}"/>
+							<field name="date_from_days" attrs="{'invisible':[('status_pelnedni','!=',True)], 'required':[('status_pelnedni','=',True)]}" 
+										on_change="onchange_date_to_datetime(date_from_days, date_to_days,holiday_status_id, employee_id, context)"/>
+                            <field name="date_to_days" attrs="{'invisible':[('status_pelnedni','!=',True)], 'required':[('status_pelnedni','=',True)]}"
+                            			on_change="onchange_date_to_datetime(date_from_days, date_to_days,holiday_status_id, employee_id, context)"/>
+							<field name="number_of_days_temp" 
+										on_change="onchange_number_of_days_temp(number_of_days_temp, date_to, date_from, holiday_status_id, employee_id, context)"/>
+                            <field name="appnumber"/>
+							<field name="status_pelnedni" invisible="1"/>
+							<newline />
+							<separator string="Uwagi" colspan="4" />
+							<field name="notes" nolabel="1" colspan="4" />
+							<newline />
+							<field name="state" colspan="2" />
+							<field name="company_id" groups="base.group_multi_company"/>
+						</page>
+					</notebook>
+					<group col="6" colspan="6" attrs="{'invisible': [(ctx_get('absences_calendar', False), '=', False)]}">
+						<group col="2" colspan="2">
+							<button string="Zapisz" name='save_and_close' type="object" icon="gtk-add"/>
+							<!-- <button string="Close" special="cancel" type="object" icon="gtk-close"/> -->
+						</group>
+					</group>
+				</form>
+			</field>
+		</record>
+<!-- Tree-->
+        <record model="ir.ui.view" id="payroll_zglos_moj_urlop_tree_view">
+            <field name="name">Nieobecności</field>
+            <field name="model">hr2.absence</field>
+            <field name="type">tree</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree string="Podsumowanie urlopów">
+                    <field name="employee_id"/>
+                    <field name="department_id" invisible="1"/>
+                    <!-- <field name="name"/>  -->
+                    <field name="appnumber"/>
+                    <field name="number_of_days" string="Number of Days" sum='Remaining Days'/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="holiday_status_id"/>
+                    <field name="manager_id" invisible="1"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+<!--Action-->
+		<record model="ir.actions.act_window" id="action_payroll_zglosurlop_form_view">
+			<field name="name">Nieobecności</field>
+			<field name="res_model">hr2.absence</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="payroll_zglos_moj_urlop_tree_view" />
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_payroll_hr_holidays_filter"/>
+			<field name="context">{"hr_manager": True, "absences_payroll":True, "form_view_ref": 'hr_payroll_pl.payroll_zglos_moj_urlop_form_view', "search_default_filter_validated": 1}</field>
+			<field name="domain">[('type','=','remove')]</field>
+		</record>
+
+<!-- Typy nieobecności -->
+		<record id="view_holidays_status_payroll_filter" model="ir.ui.view">
+            <field name="name">hr2.absence.type.filter</field>
+            <field name="model">hr2.absence.type</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Leave Type">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="edit_holiday_status_payroll_form">
+            <field name="name">hr2.absence.type.form</field>
+            <field name="model">hr2.absence.type</field>
+            <field name="type">form</field>
+			<field name="priority" eval="18" />
+            <field name="arch" type="xml">
+                <form string="Leave Type">
+                    <group colspan="4" col="6">
+                        <field name="name" />
+                        <field name="color_name"/>
+                    </group>
+                    <notebook colspan="4">
+                      <page string="Details">
+					<group colspan="2">
+						<separator string="Validation" colspan="2" />
+						<newline />
+						<field name="double_validation" />
+						<newline />
+						<field name="limit" />
+						<field name="nienachodzi" attrs="{'readonly': [('type', '=', 'paid_leave')]}"/>
+						<field name="tylkopelnedni"/>
+						<field name="dnikalendarzowe" attrs="{'readonly': [('type', '=', 'paid_leave')]}"/>
+						<field name="mozezglaszacpracownik" />
+                        <field name="rate" attrs="{'readonly': [('type', '=', 'paid_leave')]}"/>
+                        <field name="kup"/>
+                        <field name="type" on_change="onchange_absence_type(type)" required="1"/>
+					</group>
+					<group colspan="2">
+						<newline />
+						<field name="company_id" groups="hr.group_hr_manager,base.group_multi_company"
+							attrs="{'invisible':[('company_id','=', False)]}" />
+						<newline />
+					</group>
+                          <group name="second" colspan="2" col="2">
+                              <separator string="Misc" colspan="2"/>
+                              <field name="active" />
+                              <field name="benefit_ids" colspan="4" />
+                          </group>
+                      </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_holiday_status_payroll_tree">
+            <field name="name">hr2.absence.type.tree</field>
+            <field name="model">hr2.absence.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Leave Type">
+                    <field name="name"/>
+                    <field name="double_validation" />
+					<field name="limit" />
+					<field name="nienachodzi" />
+					<field name="tylkopelnedni" />
+					<field name="dnikalendarzowe" />
+					<field name="mozezglaszacpracownik" />
+					<field name="color_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_holidays_status_payroll_search" model="ir.ui.view">
+            <field name="name">hr2.absence.type.search</field>
+            <field name="model">hr2.absence.type</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Leave Type">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="open_view_holiday_status_payroll" model="ir.actions.act_window">
+            <field name="name">Leave Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr2.absence.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="view_holiday_status_payroll_tree"/>
+            <field name="search_view_id" ref="view_hr_holidays_status_payroll_search"/>
+        </record>
+
+<!-- Absences list -->
+
+        <record model="ir.ui.view" id="payroll_view_absence_list_tree">
+            <field name="name">hr2.absence.payroll.list</field>
+            <field name="model">hr2.absence</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Absences">
+					<field name="employee_id"/>
+                    <field name="appnumber"/>
+					<field name="date_from"/>
+					<field name="date_to"/>
+					<field name="holiday_status_id"/>
+					<field name="number_of_days_temp"/>
+					<field name="type"/>
+                </tree>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="action_payroll_view_absence_list_tree">
+			<field name="name">Lista nieobecności</field>
+			<field name="res_model">hr2.absence</field>
+			<field name="view_type">tree</field>
+			<field name="view_id" ref="payroll_view_absence_list_tree"/>
+			<field name="view_mode">tree</field>
+			<field name="domain">[('state','=','validate')]</field>
+		</record>
+
+		<record model="ir.ui.view" id="payroll_allocation_leave_new">
+			<field name="name">Przydzielanie urlopu</field>
+			<field name="model">hr2.absence</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Przydzielanie urlopu">
+					<group col="8" colspan="4">
+						<!-- <field name="name" />  -->
+						<field name="holiday_type" on_change="onchange_type(holiday_type,context)"
+							attrs="{'readonly':[('state','!=','draft')]}" string="Allocation Type"
+							groups="hr.group_hr_manager, base.group_extended" />
+						<group attrs="{'invisible':[('holiday_type','=','category')]}">
+							<field name="employee_id"
+								attrs="{'required':[('holiday_type','=','employee')]}"/>
+						</group>
+						<group attrs="{'invisible':[('holiday_type','=','employee')]}">
+							<field name="category_id"
+								attrs="{'required':[('holiday_type','=','category')], 'readonly':[('state','!=','draft')]}" />
+						</group>
+					</group>
+					<notebook colspan="4">
+						<page string="General">
+							<field name="holiday_status_id"
+								context="{'employee_id':employee_id}" />
+							<field name="department_id" />
+							<field name="number_of_days_temp" />
+							<field name="date_from" required="1"/>
+							<field name="appnumber"/>
+							<field name="type" invisible="1"/>
+							<field name="company_id" groups="base.group_multi_company"/>
+							<newline />
+
+							<separator string="Reasons" colspan="4" />
+							<field name="notes" nolabel="1" colspan="4" />
+							<newline />
+							<field name="state" colspan="2" />
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+        <record model="ir.actions.act_window" id="open_payroll_allocation_holidays">
+            <field name="name">Przydzielanie urlopu</field>
+            <field name="res_model">hr2.absence</field>
+            <field name="view_type">form</field>
+            <field name="context">{"hr_manager": True, 'default_type':'add','allocation_holidays': True}</field>
+            <field name="domain">[('type','=','add')]</field>
+            <field name="view_id" ref="payroll_allocation_leave_new"/>
+            <field name="search_view_id" ref="view_payroll_hr_holidays_filter"/>
+        </record>
+
+
+<!--Lacan_holidays_auto views-->
+
+
+
+
+		<record model="ir.ui.view" id="payroll_doliczenie_urlopu_form_view">
+			<field name="name">doliczenie.urlopu.form</field>
+			<field name="model">doliczenie.urlopu</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Doliczenie urlopu">
+					<field name="name" select="1" />
+					<field name="holiday_status_id" select="1" />
+					<field name="liczbadni" select="1" />
+					<field name="typ" select="1" required="1"/>
+					<field name="active" select="1" />
+					<field name="company_id" groups="base.group_multi_comapny"/>
+					<notebook>
+						<page string="Pracownicy">
+							<field name="employee_ids" select="1" colspan="4" />
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="payroll_doliczenie_urlopu_tree_view">
+			<field name="name">doliczenie.urlopu.tree</field>
+			<field name="model">doliczenie.urlopu</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Doliczenia urlopów">
+					<field name="name" select="1" />
+					<field name="holiday_status_id" select="1" required="True" />
+					<field name="liczbadni" select="1" />
+					<field name="typ" select="1" />
+					<field name="active" select="1" />
+					<field name="employee_ids" select="1" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="payroll_action_doliczenie_urlopu_tree_view">
+			<field name="name">Okresowe doliczenia urlopów</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">doliczenie.urlopu</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="payroll_doliczenie_urlopu_tree_view"/>
+		</record>
+
+		<!-- Menuitems commented until problem with the design of lacan_holidays_auto is solved -->
+<!--				<menuitem id="doliczenia_urlopow_menu" name="Okresowe doliczenia urlopów"
+			parent="hr_payroll_pl.menu_hr_payroll_pl_absences" action="payroll_action_doliczenie_urlopu_tree_view" /> -->
+<!--		<menuitem action="doliczurlopywizardid" id="payroll_doliczurlopymenu"
+			parent="hr_payroll_pl.menu_hr_payroll_pl_absences" type="wizard" /> -->
+
+<!-- End of lacan_holidays_auto views -->
+
+
+
+      				<!-- menuitems -->
+        <menuitem id="menu_hr_absences" parent="menu_hr_payroll" name="Nieobecności" sequence="3" groups="hr.group_hr_manager"/>
+        <menuitem name="Przydzielanie urlopu" parent="menu_hr_absences" id="menu_payroll_open_allocation_holidays" sequence="1"
+            action="open_payroll_allocation_holidays"/>        
+		<menuitem id="zglosurlop_menu" name="Nieobecności" parent="menu_hr_absences" sequence="2"
+			action="action_payroll_zglosurlop_form_view" />
+
+		<menuitem action="base_calendar.action_calendar_calendar_tree" id="menu_hr_payroll_calendar_tree" parent="menu_hr_config_calendars"
+		    name="Calendar" sequence="1"/>
+		<menuitem action="base_calendar.action_calendar_wizard" id="menu_hr_payroll_calendar_wizard" parent="menu_hr_config_calendars"
+		    name="Create holidays in calendar" sequence="2"/>
+
+		<menuitem action="open_view_holiday_status_payroll" id="menu_hr_payroll_absence_type" parent="menu_hr_config" sequence="5"
+		    name="Typy nieobecności"/>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,1518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+		
+	<data noupdate="0">
+
+		<!-- Generowanie kalendarza na lata 2013-2015 -->
+	
+		<function model="calendar.calendar" name="stworz_swieta">
+			<value eval="[ref('hr.hr_full_time_calendar')]" />
+			<value eval="2013" /> <!-- Rok od  -->
+			<value eval="2015" /> <!-- Rok do  -->
+			<value eval="True" /> <!-- Soboty -->
+			<value eval="True" /> <!-- Niedziele -->
+			<value eval="True" /> <!-- Święta -->
+			<value eval="True" /> <!-- Godziny pracy -->
+		</function>
+
+		<!-- Działy -->
+
+        <record id="dzial_test" model="hr2.dzial">
+			<field name="name">Dział testowy</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="dzial_kup" model="hr2.dzial">
+			<field name="name">Dział kup</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="dzial_kwota_wolna" model="hr2.dzial">
+			<field name="name">Dział kwot wolnych</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="dzial_annex" model="hr2.dzial">
+			<field name="name">Dział annexów</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="dzial_potracenia" model="hr2.dzial">
+			<field name="name">Dział potrąceń</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="dzial_uzupelnienia" model="hr2.dzial">
+			<field name="name">Dział uzupełnienia</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="dzial_zwolnienia_chor" model="hr2.dzial">
+			<field name="name">Dział zwolnień chorobowych</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="dzial_prog_podatkowy" model="hr2.dzial">
+			<field name="name">Dział 2 progu</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="dzial_korekty" model="hr2.dzial">
+            <field name="name">Dział korekty</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <record id="dzial_nierezydentow" model="hr2.dzial">
+            <field name="name">Dział nierezydentów</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+		<!--  Pracownicy -->
+
+        <record id="hr_pracownik1" model="hr.employee">
+			<field name="name">pracownik etat1</field>
+            <field name="department_id" ref="dzial_test"/>
+			<field name="code">test1</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik2" model="hr.employee">
+			<field name="name">pracownik cywilnoprawna1</field>
+            <field name="department_id" ref="dzial_test"/>
+			<field name="code">test2</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik3" model="hr.employee">
+			<field name="name">pracownik cywlinoprawna2</field>
+            <field name="department_id" ref="dzial_test"/>
+			<field name="code">test3</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_kup1" model="hr.employee">
+			<field name="name">kup1</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup1</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_kup2" model="hr.employee">
+			<field name="name">kup2</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup2</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+        
+        <record id="hr_pracownik_kup3" model="hr.employee">
+			<field name="name">kup3</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup3</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_kup4" model="hr.employee">
+			<field name="name">kup4</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup4</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_kup5" model="hr.employee">
+			<field name="name">kup5</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup5</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_kup6" model="hr.employee">
+			<field name="name">kup6</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup6</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_kup7" model="hr.employee">
+			<field name="name">kup7</field>
+            <field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup7</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="pracownik_kup10" model="hr.employee">
+			<field name="name">kup10</field>
+			<field name="department_id" ref="dzial_kup"/>
+			<field name="code">kup10</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_kalendarz_pracownik1" model="hr.employee">
+			<field name="name">kalendarz 1</field>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_wolna1" model="hr.employee">
+			<field name="name">wolna1</field>
+            <field name="department_id" ref="dzial_kwota_wolna"/>
+			<field name="code">wolna1</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_wolna2" model="hr.employee">
+			<field name="name">wolna2</field>
+            <field name="department_id" ref="dzial_kwota_wolna"/>
+			<field name="code">wolna2</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_wolna3" model="hr.employee">
+			<field name="name">wolna3</field>
+            <field name="department_id" ref="dzial_kwota_wolna"/>
+			<field name="code">wolna3</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_urlop_wypoczynkowy1" model="hr.employee">
+			<field name="name">annex1</field>
+            <field name="department_id" ref="dzial_annex"/>
+			<field name="code">annex1</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_choroba1" model="hr.employee">
+			<field name="name">annex2</field>
+            <field name="department_id" ref="dzial_annex"/>
+			<field name="code">annex2</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="hr_pracownik_potracenie1" model="hr.employee">
+			<field name="name">potracenia1</field>
+            <field name="department_id" ref="dzial_potracenia"/>
+			<field name="code">potracenia1</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+		<record id="hr_pracownik_potracenie2" model="hr.employee">
+			<field name="name">potracenia2</field>
+			<field name="department_id" ref="dzial_potracenia"/>
+			<field name="code">potracenia2</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+		<record id="pracownik_uzupelnienia1" model="hr.employee">
+			<field name="name">uzupelnienia1</field>
+			<field name="department_id" ref="dzial_uzupelnienia"/>
+			<field name="code">uzupelnienia1</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+		<record id="pracownik_uzupelnienia2" model="hr.employee">
+			<field name="name">uzupelnienia2</field>
+			<field name="department_id" ref="dzial_uzupelnienia"/>
+			<field name="code">uzupelnienia2</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+		<record id="pracownik_uzupelnienia3" model="hr.employee">
+			<field name="name">uzupelnienia3</field>
+			<field name="department_id" ref="dzial_uzupelnienia"/>
+			<field name="code">uzupelnienia3</field>
+			<field name="career_start">2015-01-01</field>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+		<record id="pracownik_prog" model="hr.employee">
+			<field name="name">prog</field>
+			<field name="department_id" ref="dzial_prog_podatkowy"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+		
+		<record id="pracownik_skladki" model="hr.employee">
+			<field name="name">skladki</field>
+			<field name="department_id" ref="dzial_prog_podatkowy"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+
+        <record id="pracownik_korekty" model="hr.employee">
+            <field name="name">korekty</field>
+            <field name="department_id" ref="dzial_korekty"/>
+            <field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+        </record>
+
+		<record id="pracownik_ekwiwalent" model="hr.employee">
+			<field name="name">Ekwiwalent</field>
+			<field name="department_id" ref="dzial_uzupelnienia"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+        
+        <record id="pracownik_nierezydent1" model="hr.employee">
+            <field name="name">Nierezydent 1</field>
+            <field name="department_id" ref="dzial_nierezydentow"/>
+            <field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+        </record>
+
+		<record id="pracownik_nierezydent2" model="hr.employee">
+			<field name="name">Nierezydent 2</field>
+			<field name="department_id" ref="dzial_nierezydentow"/>
+			<field name="company_id" ref="base.main_company"/>
+			<field name="birthday">1985-01-01</field>
+		</record>
+        
+        
+		<!-- Dane pracowników -->
+
+		<record id="hr_pracownik1_data" model="hr2.employee.data">
+			<field name="employee_name">pracownik etat1</field>
+			<field name="surname">pracownik etat1</field>
+			<field name="employee_id" ref="hr_pracownik1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup1_data" model="hr2.employee.data">
+			<field name="employee_name">kup1</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup2_data" model="hr2.employee.data">
+			<field name="employee_name">kup2</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup2"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup3_data" model="hr2.employee.data">
+			<field name="employee_name">kup3</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup3"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup4_data" model="hr2.employee.data">
+			<field name="employee_name">kup4</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup4"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup5_data" model="hr2.employee.data">
+			<field name="employee_name">kup5</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup5"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup6_data" model="hr2.employee.data">
+			<field name="employee_name">kup6</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup6"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_kup7_data" model="hr2.employee.data">
+			<field name="employee_name">kup7</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_kup7"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="pracownik_kup10_data" model="hr2.employee.data">
+			<field name="employee_name">kup10</field>
+			<field name="surname">test</field>
+			<field name="employee_id" ref="pracownik_kup10"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_kalendarz_pracownik1_data" model="hr2.employee.data">
+			<field name="employee_name">kalendarz 1</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_kalendarz_pracownik1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_wolna1_data" model="hr2.employee.data">
+			<field name="employee_name">kwota wolna 1</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_wolna1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_wolna2_data" model="hr2.employee.data">
+			<field name="employee_name">kwota wolna 2</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_wolna2"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_wolna3_data" model="hr2.employee.data">
+			<field name="employee_name">kwota wolna 3</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_wolna3"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_urlop_wypoczynkowy_data" model="hr2.employee.data">
+			<field name="employee_name">annex1</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_urlop_wypoczynkowy1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_choroba_data" model="hr2.employee.data">
+			<field name="employee_name">annex2</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_choroba1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_pracownik_potracenie1_data" model="hr2.employee.data">
+			<field name="employee_name">potracenia1</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="hr_pracownik_potracenie2_data" model="hr2.employee.data">
+			<field name="employee_name">potracenia2</field>
+			<field name="surname">Fake Surname</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="hr_pracwonik_prog_data" model="hr2.employee.data">
+			<field name="employee_name">prog</field>
+			<field name="surname">BOGACZ</field>
+			<field name="employee_id" ref="pracownik_prog"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+		
+		<record id="hr_pracwonik_skladki_data" model="hr2.employee.data">
+			<field name="employee_name">skladki</field>
+			<field name="surname">BOGACZ2</field>
+			<field name="employee_id" ref="pracownik_skladki"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="pracownik_ekwiwalent_data" model="hr2.employee.data">
+			<field name="employee_name">Pracownik</field>
+			<field name="surname">Dobry</field>
+			<field name="employee_id" ref="pracownik_ekwiwalent"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+        
+        <record id="hr_pracownik_nierezydent1_data" model="hr2.employee.data">
+			<field name="employee_name">Pierwszy</field>
+			<field name="surname">Nierezydent</field>
+			<field name="employee_id" ref="pracownik_nierezydent1"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="hr_pracownik_nierezydent2_data" model="hr2.employee.data">
+			<field name="employee_name">Drugi</field>
+			<field name="surname">Nierezydent</field>
+			<field name="employee_id" ref="pracownik_nierezydent2"/>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<!-- Etaty -->
+
+		<record id="hr_etat1" model="hr2.etat">
+    		<field name="name">001</field>
+    		<field name="employee_id" ref="hr_pracownik1"/>
+    		<field name="sign_date">2014-11-01</field>
+            <field name="rozliczac_kwote_wolna">True</field>
+            <field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_kup1" model="hr2.etat">
+    		<field name="name">kup1</field>
+    		<field name="employee_id" ref="hr_pracownik_kup1"/>
+    		<field name="sign_date">2014-01-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_kup2" model="hr2.etat">
+    		<field name="name">kup2</field>
+    		<field name="employee_id" ref="hr_pracownik_kup2"/>
+    		<field name="sign_date">2014-01-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_kup3" model="hr2.etat">
+    		<field name="name">kup3</field>
+    		<field name="employee_id" ref="hr_pracownik_kup3"/>
+    		<field name="sign_date">2014-01-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_kup6" model="hr2.etat">
+    		<field name="name">kup6</field>
+    		<field name="employee_id" ref="hr_pracownik_kup6"/>
+    		<field name="sign_date">2014-01-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_kup7" model="hr2.etat">
+    		<field name="name">kup7</field>
+    		<field name="employee_id" ref="hr_pracownik_kup7"/>
+    		<field name="sign_date">2014-08-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+
+    	<record id="hr_etat_kup10" model="hr2.etat">
+    		<field name="name">kup10 aneks</field>
+    		<field name="employee_id" ref="pracownik_kup10"/>
+    		<field name="sign_date">2014-09-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_kalendarz_etat1" model="hr2.etat">
+    		<field name="name">kalendarz1</field>
+    		<field name="employee_id" ref="hr_kalendarz_pracownik1"/>
+    		<field name="sign_date">2015-01-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_wolna1" model="hr2.etat">
+    		<field name="name">hr_etat_wolna1</field>
+    		<field name="employee_id" ref="hr_pracownik_wolna1"/>
+    		<field name="sign_date">2014-11-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_wolna2" model="hr2.etat">
+    		<field name="name">hr_etat_wolna2</field>
+    		<field name="employee_id" ref="hr_pracownik_wolna2"/>
+    		<field name="sign_date">2014-11-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_wolna3" model="hr2.etat">
+    		<field name="name">hr_etat_wolna3</field>
+    		<field name="employee_id" ref="hr_pracownik_wolna3"/>
+    		<field name="sign_date">2014-11-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_urlop_wypoczynkowy1" model="hr2.etat">
+    		<field name="name">annex1</field>
+    		<field name="employee_id" ref="hr_pracownik_urlop_wypoczynkowy1"/>
+    		<field name="sign_date">2014-08-01</field>
+            <field name="rozliczac_kwote_wolna">True</field>
+            <field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_choroba1" model="hr2.etat">
+    		<field name="name">annex2</field>
+    		<field name="employee_id" ref="hr_pracownik_choroba1"/>
+    		<field name="sign_date">2014-08-01</field>
+            <field name="rozliczac_kwote_wolna">True</field>
+            <field name="company_id" ref="base.main_company"/>
+    	</record>
+
+        <record id="hr_etat_potracenie1" model="hr2.etat">
+    		<field name="name">potracenie1</field>
+    		<field name="employee_id" ref="hr_pracownik_potracenie1"/>
+    		<field name="sign_date">2014-08-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+		<record id="hr_etat_potracenie2" model="hr2.etat">
+			<field name="name">potracenie1</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+			<field name="sign_date">2014-08-01</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+		
+		<record id="hr_etat_uzupelnienia1" model="hr2.etat">
+    		<field name="name">uzupelnienia1 etat</field>
+    		<field name="employee_id" ref="pracownik_uzupelnienia1"/>
+    		<field name="sign_date">2015-08-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+    	<record id="hr_etat_uzupelnienia2" model="hr2.etat">
+    		<field name="name">uzupelnienia2 etat</field>
+    		<field name="employee_id" ref="pracownik_uzupelnienia2"/>
+    		<field name="sign_date">2015-09-07</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+    	<record id="hr_etat_uzupelnienia3" model="hr2.etat">
+    		<field name="name">uzupelnienia3 etat</field>
+    		<field name="employee_id" ref="pracownik_uzupelnienia3"/>
+    		<field name="sign_date">2015-08-01</field>
+    		<field name="company_id" ref="base.main_company"/>
+    	</record>
+
+		<record id="hr_etat_prog" model="hr2.etat">
+			<field name="name">prog etat</field>
+			<field name="employee_id" ref="pracownik_prog"/>
+			<field name="sign_date">2014-01-01</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+		
+		<record id="hr_etat_skladki" model="hr2.etat">
+			<field name="name">skladki etat</field>
+			<field name="employee_id" ref="pracownik_skladki"/>
+			<field name="sign_date">2014-01-01</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+        <record id="hr_etat_korekty" model="hr2.etat">
+            <field name="name">korekty etat</field>
+            <field name="employee_id" ref="pracownik_korekty"/>
+            <field name="sign_date">2014-01-01</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+		<record id="hr_etat_ekwiwalent" model="hr2.etat">
+			<field name="name">Uzupełnienia - ekwiwalent</field>
+			<field name="employee_id" ref="pracownik_ekwiwalent"/>
+			<field name="sign_date">2015-09-01</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<!-- Dane etatów -->
+
+        <record id="hr_etat1_data" model="hr2.etat.data">
+			<field name="name">etat1_data</field>
+			<field name="etat_id" ref="hr_etat1"/>
+    		<field name="date_from">2014-11-01</field>
+    		<field name="month_pay" eval="1985"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_kup1_data" model="hr2.etat.data">
+			<field name="name">etat_kup1_data</field>
+			<field name="etat_id" ref="hr_etat_kup1"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="12100"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_kup2_data" model="hr2.etat.data">
+			<field name="name">etat_kup2_data</field>
+			<field name="etat_id" ref="hr_etat_kup2"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="12100"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="koszty_uzyskania">podwyzszone</field>
+		</record>
+
+        <record id="hr_etat_kup3_data" model="hr2.etat.data">
+			<field name="name">etat_kup3_data</field>
+			<field name="etat_id" ref="hr_etat_kup3"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="12000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="wynagrodzenie_z_procentowym_kosztem">90</field>
+            <field name="procent_uzyskania">50</field>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_kup6_data" model="hr2.etat.data">
+			<field name="name">etat_kup6_data</field>
+			<field name="etat_id" ref="hr_etat_kup6"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="12000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="wynagrodzenie_z_procentowym_kosztem">90</field>
+            <field name="procent_uzyskania">50</field>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_kup7_data" model="hr2.etat.data">
+			<field name="name">etat_kup7_data</field>
+			<field name="etat_id" ref="hr_etat_kup7"/>
+    		<field name="date_from">2014-08-01</field>
+    		<field name="month_pay" eval="12000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="wynagrodzenie_z_procentowym_kosztem">90</field>
+            <field name="procent_uzyskania">50</field>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+
+		<record id="etat_data_kup10" model="hr2.etat.data">
+			<field name="name">Etat kup10</field>
+			<field name="etat_id" ref="hr_etat_kup10"/>
+    		<field name="date_from">2014-09-01</field>
+    		<field name="month_pay" eval="12000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="wynagrodzenie_z_procentowym_kosztem" eval="90"/>
+    		<field name="procent_uzyskania" eval ="50"/>
+    		<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_kalendarz_etat1_data" model="hr2.etat.data">
+			<field name="name">kalendarz_etat1_data</field>
+			<field name="etat_id" ref="hr_kalendarz_etat1"/>
+    		<field name="date_from">2015-01-01</field>
+    		<field name="month_pay" eval="2000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_wolna1_data" model="hr2.etat.data">
+			<field name="name">hr_etat_wolna1_data</field>
+			<field name="etat_id" ref="hr_etat_wolna1"/>
+    		<field name="date_from">2014-11-01</field>
+    		<field name="month_pay" eval="2000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_wolna2_data" model="hr2.etat.data">
+			<field name="name">hr_etat_wolna2_data</field>
+			<field name="etat_id" ref="hr_etat_wolna2"/>
+    		<field name="date_from">2014-11-01</field>
+    		<field name="month_pay" eval="2000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="False"/>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_wolna3_data" model="hr2.etat.data">
+			<field name="name">hr_etat_wolna3_data</field>
+			<field name="etat_id" ref="hr_etat_wolna3"/>
+    		<field name="date_from">2014-11-01</field>
+    		<field name="month_pay" eval="1000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+			<field name="work_time_mian" eval ="2"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_urlop_wypoczynkowy_data" model="hr2.etat.data">
+			<field name="name">annex1</field>
+			<field name="etat_id" ref="hr_urlop_wypoczynkowy1"/>
+    		<field name="date_from">2014-08-01</field>
+    		<field name="month_pay" eval="12000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_choroba_data" model="hr2.etat.data">
+			<field name="name">annex2</field>
+			<field name="etat_id" ref="hr_choroba1"/>
+    		<field name="date_from">2014-08-01</field>
+    		<field name="month_pay" eval="12000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="hr_etat_potracenie1_data" model="hr2.etat.data">
+			<field name="name">potracenie1</field>
+			<field name="etat_id" ref="hr_etat_potracenie1"/>
+    		<field name="date_from">2014-08-01</field>
+    		<field name="month_pay" eval="2500"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<record id="hr_etat_potracenie2_data" model="hr2.etat.data">
+			<field name="name">potracenie2</field>
+			<field name="etat_id" ref="hr_etat_potracenie2"/>
+    		<field name="date_from">2014-08-01</field>
+    		<field name="month_pay" eval="10000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="rozliczac_kwote_wolna" eval="True"/>
+            <field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<record id="etat_data_uzupelnienia1" model="hr2.etat.data">
+			<field name="name">Etat uzupelnienia1</field>
+			<field name="etat_id" ref="hr_etat_uzupelnienia1"/>
+    		<field name="date_from">2015-08-01</field>
+    		<field name="month_pay" eval="1500"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="1"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<record id="etat_data_uzupelnienia2" model="hr2.etat.data">
+			<field name="name">Etat uzupelnienia2</field>
+			<field name="etat_id" ref="hr_etat_uzupelnienia2"/>
+    		<field name="date_from">2015-09-07</field>
+    		<field name="month_pay" eval="700"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="2"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<record id="etat_data_uzupelnienia3" model="hr2.etat.data">
+			<field name="name">Etat uzupelnienia3</field>
+			<field name="etat_id" ref="hr_etat_uzupelnienia3"/>
+    		<field name="date_from">2015-08-01</field>
+    		<field name="month_pay" eval="1200"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="1"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<record id="etat_data_prog" model="hr2.etat.data">
+			<field name="name">Etat prog</field>
+			<field name="etat_id" ref="hr_etat_prog"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="12100"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="1"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+		
+		<record id="etat_data_skladki" model="hr2.etat.data">
+			<field name="name">Etat skladki</field>
+			<field name="etat_id" ref="hr_etat_skladki"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="11000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="1"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+        <record id="etat_data_korekty" model="hr2.etat.data">
+			<field name="name">Etat korekty</field>
+			<field name="etat_id" ref="hr_etat_korekty"/>
+    		<field name="date_from">2014-01-01</field>
+    		<field name="month_pay" eval="3600"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="1"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<record id="etat_data_ekwiwalent" model="hr2.etat.data">
+			<field name="name">Etat ekwiwalent</field>
+			<field name="etat_id" ref="hr_etat_ekwiwalent"/>
+    		<field name="date_from">2015-09-01</field>
+    		<field name="month_pay" eval="2500"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+    		<field name="rozliczac_kwote_wolna" eval="True"/>
+    		<field name="work_time_licz" eval ="1"/>
+			<field name="work_time_mian" eval="1"/>
+			<field name="koszty_uzyskania">standardowe</field>
+		</record>
+
+		<!-- Typy umów-->
+		
+		<record id="hr_contract_type" model="hr2.contract.type">
+			<field name="name">Umowa zlecenie</field>
+		</record> 
+        
+        <record id="hr_contract_type_nierezydent" model="hr2.contract.type">
+			<field name="name">Umowa zlecenie dla nierezydenta</field>
+            <field name="not_resident" eval="True"/>
+		</record>
+		
+        <!-- Umowy cywilnoprawne -->
+
+        <record id="hr_contract1" model="hr2.contract">
+			<field name="name">Fake Dzielo1</field>
+			<field name="employee_id" ref="hr_pracownik2"/>
+    		<field name="date_start">2014-11-01</field>
+            <field name="date_to">2014-12-01</field>
+            <field name="miesiac_rozliczenia">11</field>
+            <field name="rok_rozliczenia">2014</field>
+    		<field name="month_pay" eval="20000"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="True"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="czy_rozliczona" eval="False"/>
+            <field name="contract_type_id" ref="hr_contract_type"/>
+		</record>
+        
+        <record id="hr_contract2" model="hr2.contract">
+			<field name="name">Fake Dzielo2</field>
+			<field name="employee_id" ref="hr_pracownik3"/>
+    		<field name="date_start">2014-01-01</field>
+            <field name="date_to">2014-12-01</field>
+            <field name="miesiac_rozliczenia">11</field>
+            <field name="rok_rozliczenia">2014</field>
+    		<field name="month_pay" eval="20000"/>
+    		<field name="calculate_fp" eval="False"/>
+    		<field name="calculate_fgsp" eval="False"/>
+    		<field name="calculate_emr" eval="False"/>
+    		<field name="calculate_rent" eval="False"/>
+    		<field name="calculate_chor" eval="False"/>
+    		<field name="calculate_wyp" eval="False"/>
+            <field name="czy_rozliczona" eval="False"/>
+            <field name="calculate_zdr" eval="False"/>
+            <field name="contract_type_id" ref="hr_contract_type"/>
+		</record>
+
+        <record id="hr_etat_kup4" model="hr2.contract">
+			<field name="name">Fake NameChangedKup</field>
+			<field name="employee_id" ref="hr_pracownik_kup4"/>
+    		<field name="date_start">2014-01-01</field>
+            <field name="date_to">2014-12-01</field>
+            <field name="miesiac_rozliczenia">2</field>
+            <field name="rok_rozliczenia">2014</field>
+    		<field name="month_pay" eval="500"/>
+    		<field name="calculate_fp" eval="True"/>
+    		<field name="calculate_fgsp" eval="True"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="False"/>
+    		<field name="calculate_wyp" eval="False"/>
+    		<field name="contract_type_id" ref="hr_contract_type"/>
+		</record>
+
+        <record id="hr_etat_kup5" model="hr2.contract">
+			<field name="name">Fake NameChangedKup</field>
+			<field name="employee_id" ref="hr_pracownik_kup5"/>
+    		<field name="date_start">2014-01-01</field>
+            <field name="date_to">2014-12-01</field>
+            <field name="miesiac_rozliczenia">2</field>
+            <field name="rok_rozliczenia">2014</field>
+    		<field name="month_pay" eval="5000"/>
+    		<field name="calculate_fp" eval="False"/>
+    		<field name="calculate_fgsp" eval="False"/>
+    		<field name="calculate_emr" eval="False"/>
+    		<field name="calculate_rent" eval="False"/>
+    		<field name="calculate_chor" eval="False"/>
+    		<field name="calculate_wyp" eval="False"/>
+            <field name="calculate_zdr" eval="False"/>
+            <field name="procent_uzyskania">50</field>
+            <field name="contract_type_id" ref="hr_contract_type"/>
+		</record>
+        
+        <record id="hr_contract_nierezydent1" model="hr2.contract">
+			<field name="name">Umowa pierwszego nierezydenta</field>
+			<field name="employee_id" ref="pracownik_nierezydent1"/>
+    		<field name="date_start">2015-06-01</field>
+            <field name="date_to">2015-06-30</field>
+            <field name="miesiac_rozliczenia">6</field>
+            <field name="rok_rozliczenia">2015</field>
+    		<field name="month_pay" eval="4000"/>
+            <field name="procent_zaliczki_PIT" eval="20"/>
+            <field name="procent_uzyskania" eval="0"/>
+            <field name="wynagrodzenie_z_procentowym_kosztem" eval="0"/>
+    		<field name="calculate_fp" eval="False"/>
+    		<field name="calculate_fgsp" eval="False"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="False"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="calculate_zdr" eval="False"/>
+            <field name="contract_type_id" ref="hr_contract_type_nierezydent"/>
+		</record>
+        
+        <record id="hr_contract_nierezydent2" model="hr2.contract">
+			<field name="name">Umowa drugiego nierezydenta</field>
+			<field name="employee_id" ref="pracownik_nierezydent2"/>
+    		<field name="date_start">2015-06-01</field>
+            <field name="date_to">2015-06-30</field>
+            <field name="miesiac_rozliczenia">6</field>
+            <field name="rok_rozliczenia">2015</field>
+    		<field name="month_pay" eval="110"/>
+            <field name="procent_zaliczki_PIT" eval="20"/>
+            <field name="procent_uzyskania" eval="0"/>
+            <field name="wynagrodzenie_z_procentowym_kosztem" eval="0"/>
+    		<field name="calculate_fp" eval="False"/>
+    		<field name="calculate_fgsp" eval="False"/>
+    		<field name="calculate_emr" eval="True"/>
+    		<field name="calculate_rent" eval="True"/>
+    		<field name="calculate_chor" eval="False"/>
+    		<field name="calculate_wyp" eval="True"/>
+            <field name="calculate_zdr" eval="True"/>
+            <field name="contract_type_id" ref="hr_contract_type_nierezydent"/>
+		</record>
+
+
+        <!-- Konfiguracja listy płac -->
+
+        <record id="payroll_config_etaty" model="hr2.payslip.config">
+			<field name="name">Test - tylko etaty</field>
+			<field name="use_post_only" eval="True"/>
+			<field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_test'))]"/>
+		</record>
+
+        <record id="hr_etat1_config" model="hr2.payslip.config">
+    		<field name="name">Test - tylko etaty</field>
+    		<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_test'))]"/>
+		</record>
+
+        <record id="hr_contract1_config" model="hr2.payslip.config">
+    		<field name="name">Test - tylko kontrakty</field>
+    		<field name="use_contract_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_test'))]"/>
+		</record>
+
+        <record id="hr_etat_kup1_config" model="hr2.payslip.config">
+    		<field name="name">KUP - tylko etaty</field>
+    		<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_kup'))]"/>
+		</record>
+
+        <record id="hr_etat_kup2_config" model="hr2.payslip.config">
+    		<field name="name">KUP - tylko kontrakty</field>
+    		<field name="use_contract_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_kup'))]"/>
+		</record>
+
+        <record id="hr_etat_wolna1_config" model="hr2.payslip.config">
+    		<field name="name">Kwota wolna - tylko etaty</field>
+    		<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_kwota_wolna'))]"/>
+		</record>
+
+        <record id="hr_urlop_wypoczynkowy_config" model="hr2.payslip.config">
+    		<field name="name">Annex  - tylko etaty</field>
+    		<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_annex'))]"/>
+		</record>
+
+        <record id="hr_etat_potracenie1_config" model="hr2.payslip.config">
+    		<field name="name">Potracenia - tylko etaty</field>
+    		<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="department" eval="[(4, ref('dzial_potracenia'))]"/>
+		</record>
+
+		<record id="payroll_config_uzupelnienia" model="hr2.payslip.config">
+			<field name="name">Dział uzupełnienia - tylko etaty</field>
+			<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+			<field name="department" eval ="[(4, ref('dzial_uzupelnienia'))]"/>
+		</record>
+
+		<record id="hr_choroba_zwolnienie_config" model="hr2.payslip.config">
+			<field name="name">Dział uzupełnienia - tylko etaty</field>
+			<field name="use_post_only">True</field>
+            <field name="sequence" eval="seq_hr_payroll_register"/>
+			<field name="department" eval ="[(4, ref('dzial_zwolnienia_chor'))]"/>
+		</record>
+
+		<record id="hr_prog_config" model="hr2.payslip.config">
+			<field name="name">Dział prog</field>
+			<field name="use_post_only">True</field>
+			<field name="sequence" eval="seq_hr_payroll_register"/>
+			<field name="department" eval="[(4, ref('dzial_prog_podatkowy'))]"/>
+		</record>
+
+        <record id="hr_korekty_config" model="hr2.payslip.config">
+			<field name="name">Dział korekty</field>
+			<field name="use_post_only">True</field>
+			<field name="sequence" eval="seq_hr_payroll_register"/>
+			<field name="department" eval="[(4, ref('dzial_korekty'))]"/>
+		</record>
+        
+        <record id="hr_nierezydent_config" model="hr2.payslip.config">
+			<field name="name">Dział nierezydentów</field>
+			<field name="use_contract_only">True</field>
+			<field name="sequence" eval="seq_hr_payroll_register"/>
+            <field name="contract_type" eval="[(4, ref('hr_contract_type_nierezydent'))]"/>
+			<field name="department" eval="[(4, ref('dzial_nierezydentow'))]"/>
+		</record>
+
+        <!-- Przydzielanie urlopu -->
+
+        <record id="nieobecnosc_kup7_allocation" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_kup7"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopwypoczynkowy0"/>
+			<field name="number_of_days_temp">10</field>
+    		<field name="date_from">2014-09-01 00:00:00</field>
+            <field name="type">add</field>
+            <field name="state">validate</field>
+		</record>
+
+        <record id="hr_kalendarz_absence1_allocation" model="hr2.absence">
+			<field name="employee_id" ref="hr_kalendarz_pracownik1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopwypoczynkowy0"/>
+    		<field name="date_from">2015-01-01 00:00:00</field>
+    		<field name="number_of_days_temp">10</field>
+            <field name="type">add</field>
+            <field name="state">validate</field>
+		</record>
+
+        <record id="hr2_pracownik_urlop_wypoczynkowy_absence_allocation" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_urlop_wypoczynkowy1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopwypoczynkowy0"/>
+    		<field name="date_from">2014-09-01 00:00:00</field>
+			<field name="number_of_days_temp">10</field>
+            <field name="type">add</field>
+            <field name="state">validate</field>
+		</record>
+
+		<record id="nieobecnosc_uzupelnienia1_allocation" model="hr2.absence">
+			<field name="employee_id" ref="pracownik_uzupelnienia1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopbezpatny0"/>
+    		<field name="date_from">2015-09-01 00:00:00</field>
+			<field name="number_of_days_temp">10</field>
+    		<field name="type">add</field>
+    		<field name="state">validate</field>
+		</record>
+
+		<record id="nieobecnosc_uzupelnienia3_allocation" model="hr2.absence">
+			<field name="employee_id" ref="pracownik_uzupelnienia3"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopbezpatny0"/>
+    		<field name="date_from">2015-09-01 00:00:00</field>
+			<field name="number_of_days_temp">10</field>
+    		<field name="type">add</field>
+    		<field name="state">validate</field>
+		</record>
+
+
+		<!-- Nieobecności -->
+
+        <record id="nieobecnosc_kup7" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_kup7"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopwypoczynkowy0"/>
+			<field name="number_of_days_temp">5</field>
+    		<field name="date_from">2014-09-15 00:00:00</field>
+    		<field name="date_to">2014-09-19 23:59:59</field>
+            <field name="state">validate</field>
+		</record>
+
+
+        <record id="hr_kalendarz_absence1" model="hr2.absence">
+			<field name="employee_id" ref="hr_kalendarz_pracownik1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopwypoczynkowy0"/>
+    		<field name="date_from">2015-01-05 12:00:00</field>
+            <field name="date_to">2015-01-08 12:00:00</field>
+			<field name="number_of_days_temp">3</field>
+            <field name="type">remove</field>
+            <field name="state">validate</field>
+		</record>
+
+        <record id="hr2_pracownik_urlop_wypoczynkowy_absence" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_urlop_wypoczynkowy1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopwypoczynkowy0"/>
+    		<field name="date_from">2014-09-15 00:00:00</field>
+            <field name="date_to">2014-09-19 00:00:00</field>
+			<field name="number_of_days_temp">5</field>
+            <field name="state">validate</field>
+		</record>
+
+        <record id="hr2_pracownik_choroba_sick_leave_september" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_choroba1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopchorobowy0"/>
+    		<field name="date_from">2014-09-15 00:00:00</field>
+            <field name="date_to">2014-09-17 23:59:59</field>
+			<field name="number_of_days_temp">3</field>
+            <field name="state">validate</field>
+		</record>
+
+        <record id="hr2_pracownik_choroba_sick_leave_october" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_choroba1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopchorobowy0"/>
+    		<field name="date_from">2014-10-01 00:00:00</field>
+            <field name="date_to">2014-10-30 23:59:00</field>
+			<field name="number_of_days_temp">30</field>
+            <field name="state">validate</field>
+		</record>
+
+		<record id="nieobecnosc_potracenie2" model="hr2.absence">
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_child_care"/>
+    		<field name="date_from">2014-10-01 00:00:00</field>
+            <field name="date_to">2014-10-21 23:59:00</field>
+			<field name="number_of_days_temp">21</field>
+            <field name="type">remove</field>
+            <field name="state">validate</field>
+		</record>
+
+		<record id="nieobecnosc_uzupelnienia1" model="hr2.absence">
+			<field name="employee_id" ref="pracownik_uzupelnienia1"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopbezpatny0"/>
+    		<field name="date_from">2015-09-14 00:00:00</field>
+    		<field name="date_to">2015-09-18 23:59:00</field>
+			<field name="number_of_days_temp">5</field>
+    		<field name="type">remove</field>
+    		<field name="state">validate</field>
+		</record>
+
+		<record id="nieobecnosc_uzupelnienia3" model="hr2.absence">
+			<field name="employee_id" ref="pracownik_uzupelnienia3"/>
+   	 		<field name="holiday_status_id" ref="hr.hr2_absence_type_urlopbezpatny0"/>
+    		<field name="date_from">2015-09-14 00:00:00</field>
+    		<field name="date_to">2015-09-18 23:59:00</field>
+			<field name="number_of_days_temp">5</field>
+    		<field name="type">remove</field>
+    		<field name="state">validate</field>
+		</record>
+
+
+		<!-- Dodatki -->
+
+		<record id="dodatek_autorskie_kup10" model="hr2.salary.addition">
+			<field name="name">Dodatek z kupami autorskimi</field>
+			<field name="addition_type_id" ref="hr2_salary_addition_type_urlop"/>
+			<field name="etat_data_id" ref="etat_data_kup10"/>
+			<field name="kwota" eval="2000"/>
+			<field name="year_start" eval="2014"/>
+			<field name="month_start" eval="9"/>
+			<field name="year_stop" eval="0"/>
+		</record>
+		
+		<record id="dodatek_normalne_kup10" model="hr2.salary.addition">
+			<field name="name">Dodatek z kupami normalne</field>
+			<field name="addition_type_id" ref="hr2_salary_addition_type_zkup"/>
+			<field name="etat_data_id" ref="etat_data_kup10"/>
+			<field name="kwota" eval="2000"/>
+			<field name="year_start" eval="2014"/>
+			<field name="month_start" eval="10"/>
+			<field name="year_stop" eval="0"/>
+		</record>
+
+		<record id="dodatek_potracenie2" model="hr2.salary.addition">
+			<field name="name">Premia</field>
+			<field name="addition_type_id" ref="hr2_salary_addition_type_nadgodziny"/>
+			<field name="etat_data_id" ref="hr_etat_potracenie2_data"/>
+			<field name="kwota" eval="1000"/>
+			<field name="year_start" eval="2014"/>
+			<field name="month_start" eval="10"/>
+			<field name="year_stop" eval="0"/>
+		</record>
+
+        <record id="dodatek_ekwiwalent1" model="hr2.salary.addition">
+			<field name="name">Ekwiwalent</field>
+			<field name="addition_type_id" ref="hr2_salary_addition_type_ekwiwalent"/>
+			<field name="etat_data_id" ref="etat_data_ekwiwalent"/>
+			<field name="kwota" eval="200"/>
+			<field name="year_start" eval="2015"/>
+			<field name="month_start" eval="9"/>
+			<field name="year_stop" eval="0"/>
+		</record>
+
+        <record id="dodatek_ekwiwalent2" model="hr2.salary.addition">
+			<field name="name">Świadczenie</field>
+			<field name="addition_type_id" ref="hr2_salary_addition_type_swiadczenie_nieodplatne"/>
+			<field name="etat_data_id" ref="etat_data_ekwiwalent"/>
+			<field name="kwota" eval="350"/>
+			<field name="year_start" eval="2015"/>
+			<field name="month_start" eval="9"/>
+			<field name="year_stop" eval="0"/>
+		</record>
+		
+		<record id="dodatek_ekwiwalent3" model="hr2.salary.addition">
+			<field name="name">Ekwiwalent nienależny za czas choroby</field>
+			<field name="addition_type_id" ref="hr2_salary_addition_type_ekwiwalent_nienalezny"/>
+			<field name="etat_data_id" ref="hr_etat_kup1_data"/>
+			<field name="kwota" eval="60"/>
+			<field name="year_start" eval="2014"/>
+			<field name="month_start" eval="1"/>
+			<field name="year_stop" eval="0"/>
+		</record>
+
+
+        <!-- Potrącenia -->
+
+        <record id="Potracenia1_potracenie_alimenty" model="hr2.salary.deduction">
+			<field name="name">Alimenty</field>
+            <field name="employee_id" ref="hr_pracownik_potracenie1"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_alimenty"/>
+			<field name="execution_date_start">2014-08-01</field>
+            <field name="amount">300</field>
+		</record>
+
+        <record id="Potracenia1_potracenie_komornik" model="hr2.salary.deduction">
+            <field name="name">Komornik</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie1"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_komornik"/>
+			<field name="execution_date_start">2014-08-01</field>
+            <field name="amount">1000</field>
+		</record>
+
+        <record id="Potracenia1_potracenie_zaliczka" model="hr2.salary.deduction">
+            <field name="name">Zaliczka</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie1"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_zaliczka"/>
+			<field name="execution_date_start">2014-08-01</field>
+            <field name="amount">2000</field>
+		</record>
+
+		 <record id="Potracenia2_potracenie_alimenty" model="hr2.salary.deduction">
+             <field name="name">Alimenty</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_alimenty"/>
+			<field name="execution_date_start">2014-10-01</field>
+            <field name="amount">1500</field>
+            <field name="amount_type">True</field>
+		</record>
+
+        <record id="Potracenia2_potracenie_komornik" model="hr2.salary.deduction">
+            <field name="name">Komornik</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_komornik"/>
+			<field name="execution_date_start">2014-10-01</field>
+            <field name="amount">1000</field>
+		</record>
+
+        <record id="Potracenia2_potracenie_zaliczka" model="hr2.salary.deduction">
+            <field name="name">Zaliczka</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_zaliczka"/>
+			<field name="execution_date_start">2014-10-01</field>
+            <field name="amount">2000</field>
+		</record>
+
+		<record id="Potracenia2_potracenie_kara" model="hr2.salary.deduction">
+            <field name="name">Kara</field>
+			<field name="employee_id" ref="hr_pracownik_potracenie2"/>
+			<field name="deduction_type" ref="hr2_salary_deduction_type_kara"/>
+			<field name="execution_date_start">2014-10-01</field>
+            <field name="amount">100</field>
+		</record>
+		
+		<!-- Podstawy składek od innych pracodawców -->
+		<record id="Podstawa_zus_skladki" model="hr2.etat.zus.base">
+    	<field name="source">ubezpieczony</field>
+    	<field name="month">9</field>
+    	<field name="year">2014</field>
+    	<field name="employee_id" ref= "pracownik_skladki"/>
+    	<field name="amount">12000</field>
+		</record>
+	</data>
+	
+	<!-- Konta demonstarcyjne do ksiegowania wynagrodzeń -->
+	
+	<data noupdate="1">
+	
+		<record id="account_account_D_404-00" model="account.account">
+			<field name="company_id" ref="base.main_company"/>
+			<field name="name">Koszty wynagrodzeń</field>
+			<field name="code">D_404-00</field>
+			<field name="type">view</field>
+			<field name="user_type" ref="smb_main_chart_of_accounts_xml.account_type_widok_koszty"/>
+			<field name="reconcile" eval="False"/>
+			<field name="parent_id" ref="account.chart0"/>
+		</record>
+
+		<record id="account_account_D_404-01" model="account.account">
+			<field name="company_id" ref="base.main_company"/>
+			<field name="name">Wynagrodzenia umowa o pracę</field>
+			<field name="code">D_404-01</field>
+			<field name="type">other</field>
+			<field name="user_type" ref="smb_main_chart_of_accounts_xml.account_type_saldo_koszty"/>
+			<field name="reconcile" eval="False"/>
+			<field name="parent_id" ref="account_account_D_404-00"/>
+		</record>
+	
+		<record id="account_account_D_404-02" model="account.account">
+			<field name="company_id" ref="base.main_company"/>
+			<field name="name">Ubezpieczenia społeczne</field>
+			<field name="code">D_404-02</field>
+			<field name="type">other</field>
+			<field name="user_type" ref="smb_main_chart_of_accounts_xml.account_type_saldo_koszty"/>
+			<field name="reconcile" eval="False"/>
+			<field name="parent_id" ref="account_account_D_404-00"/>
+		</record>
+		
+		<record id="account_account_D_404-03" model="account.account">
+			<field name="company_id" ref="base.main_company"/>
+			<field name="name">Urząd skarbowy</field>
+			<field name="code">D_404-03</field>
+			<field name="type">other</field>
+			<field name="user_type" ref="smb_main_chart_of_accounts_xml.account_type_saldo_koszty"/>
+			<field name="reconcile" eval="False"/>
+			<field name="parent_id" ref="account_account_D_404-00"/>
+		</record>
+		
+		<record id="account_account_D_404-04" model="account.account">
+			<field name="company_id" ref="base.main_company"/>
+			<field name="name">FP FGŚP</field>
+			<field name="code">D_404-04</field>
+			<field name="type">other</field>
+			<field name="user_type" ref="smb_main_chart_of_accounts_xml.account_type_saldo_koszty"/>
+			<field name="reconcile" eval="False"/>
+			<field name="parent_id" ref="account_account_D_404-00"/>
+		</record>
+		
+		<record id="account_account_D_404-05" model="account.account">
+			<field name="company_id" ref="base.main_company"/>
+			<field name="name">Pozostałe</field>
+			<field name="code">D_404-05</field>
+			<field name="type">other</field>
+			<field name="user_type" ref="smb_main_chart_of_accounts_xml.account_type_saldo_koszty"/>
+			<field name="reconcile" eval="False"/>
+			<field name="parent_id" ref="account_account_D_404-00"/>
+		</record>
+		
+		<!-- Nowe pole na res.company -->
+		<record id="smb_account.dd_firma1" model="res.company">
+			<field name="short_name">Firma 1</field>
+		</record>		
+		<record id="smb_account.dd_firma2" model="res.company">
+			<field name="short_name">Firma 2</field>
+		</record>
+		<record id="stock.res_company_shop0" model="res.company">
+			<field name="short_name">Shop 1</field>
+		</record>
+		<record id="stock.res_company_tinyshop0" model="res.company">
+			<field name="short_name">Shop 2</field>
+		</record>
+		
+	</data>
+</openerp>

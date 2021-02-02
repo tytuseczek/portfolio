@@ -1,0 +1,378 @@
+-
+ Generuję święta
+-
+ !python {model: calendar.calendar}: |
+    full_time_calendar_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'hr', 'hr_full_time_calendar')[1]
+    self.stworz_swieta(cr, uid, full_time_calendar_id, 2013, 2013, True, True, True, True)
+-
+ Tworzę pracownika - 51 lat
+-
+ !record {model: hr.employee, id: hr_pracownik_choroba2}:
+    name: Jan2 Kowalski
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik_choroba2_data}:
+    employee_name: Jan2
+    surname: Kowalski
+    employee_id: hr_pracownik_choroba2
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie 2500 PLN
+-
+ !record {model: hr2.etat, id: hr_choroba2}:
+    name: Jan2 Kowalski
+    employee_id: hr_pracownik_choroba2
+    sign_date: "2013-02-05"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu - Pensja 2500 zł, wielkość etatu 1
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba2_data1}:
+    name: Jan2 Kowalski
+    etat_id: hr_choroba2
+    date_from: "2013-02-07"
+    month_pay: 2500
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę nieobecności na luty (urlop bezpłatny, 1 dzień)
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence1}:
+    date_from: "2013-02-08 00:00:00"
+    date_to: "2013-02-08 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopbezpatny0
+    state: validate
+-
+ Tworzę nieobecności na marzec
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence2}:
+    date_from: "2013-02-04 00:00:00"
+    date_to: "2013-02-08 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_child_care
+    state: validate
+
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence3}:
+    date_from: "2013-03-11 00:00:00"
+    date_to: "2013-03-15 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę dodatki na marzec - DO RĘCZNEJ ZMIANY PRZY WYLICZANIU WYNAGRODZENIA
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba2_salary_addition1}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_kwartalna
+    kwota: 1000
+    year_start: 2013
+    month_start: 3
+    etat_data_id: hr_etat_choroba2_data1
+-
+ Tworzę aneks do umowy na kwiecień (podwyżka do 2600 zł, podwyższone koszty KUP)
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba2_data2}:
+    name: Jan2 Kowalski
+    etat_id: hr_choroba2
+    date_from: "2013-04-10"
+    month_pay: 2600
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+    koszty_uzyskania: podwyzszone
+-
+ Tworzę nieobecności na kwiecień
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence4}:
+    date_from: "2013-04-04 00:00:00"
+    date_to: "2013-04-05 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę nieobecności na maj
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence5}:
+    date_from: "2013-05-06 00:00:00"
+    date_to: "2013-05-07 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence6}:
+    date_from: "2013-05-13 00:00:00"
+    date_to: "2013-05-19 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę aneks do umowy na czerwiec (podwyżka do 2750 zł)
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba2_data3}:
+    name: Jan2 Kowalski
+    etat_id: hr_choroba2
+    date_from: "2013-06-01"
+    month_pay: 2750
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+    koszty_uzyskania: podwyzszone
+-
+ Tworzę umowę o dzieło na czerwiec
+-
+ !record {model: hr2.contract, id: hr_etat_choroba2_contract1}:
+    name: Jan2 Kowalski
+    employee_id: hr_pracownik_choroba2
+    date_start: "2013-06-01"
+    date_stop: "2013-06-30"
+    miesiac_rozliczenia: 6
+    month_pay: 500
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+    czy_rozliczona: False
+-
+ Tworzę nieobecności na sierpień
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence7}:
+    date_from: "2013-08-05 00:00:00"
+    date_to: "2013-08-14 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę dodatki na sierpień
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba2_salary_addition2}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_zkup
+    kwota: 150
+    year_start: 2013
+    month_start: 8
+    etat_data_id: hr_etat_choroba2_data3
+
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba2_salary_addition3}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_nadgodziny
+    kwota: 75
+    year_start: 2013
+    month_start: 8
+    etat_data_id: hr_etat_choroba2_data3
+-
+ Tworzę nieobecności na listopad
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence8}:
+    date_from: "2013-11-01 00:00:00"
+    date_to: "2013-11-20 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę nieobecności na grudzień
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence8}:
+    date_from: "2013-12-02 00:00:00"
+    date_to: "2013-12-06 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence9}:
+    date_from: "2013-12-09 00:00:00"
+    date_to: "2013-12-13 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_child_care
+    state: validate
+-
+ Tworzę aneks do umowy na styczeń 2014 (podwyżka do 4500)
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba2_data4}:
+    name: Jan2 Kowalski
+    etat_id: hr_choroba2
+    date_from: "2014-02-01"
+    month_pay: 4500
+    calculate_fp: False
+    calculate_fgsp: False
+-
+ Tworzę nieobecności na styczeń
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence10}:
+    date_from: "2014-01-12 00:00:00"
+    date_to: "2014-01-23 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+-
+ Tworzę nieobecności na luty
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence11}:
+    date_from: "2014-02-12 00:00:00"
+    date_to: "2014-02-14 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę nieobecności na marzec
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence12}:
+    date_from: "2014-02-12 00:00:00"
+    date_to: "2014-02-12 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę aneks na maj (podwyżka do 5000 zł)
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba2_data4}:
+    name: Jan2 Kowalski
+    etat_id: hr_choroba2
+    date_from: "2014-05-01"
+    month_pay: 5000
+-
+ !record {model: hr2.contract, id: hr_etat_choroba2_contract2}:
+    name: Jan2 Kowalski
+    employee_id: hr_pracownik_choroba2
+    date_start: "2013-05-01"
+    date_stop: "2013-05-31"
+    miesiac_rozliczenia: 5
+    month_pay: 2600
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+    czy_rozliczona: False
+-
+ Tworzę umowę na czerwiec 2014
+-
+ !record {model: hr2.contract, id: hr_etat_choroba2_contract3}:
+    name: Jan2 Kowalski
+    employee_id: hr_pracownik_choroba2
+    date_start: "2013-06-01"
+    date_stop: "2013-06-31"
+    miesiac_rozliczenia: 6
+    month_pay: 150
+    czy_rozliczona: False
+-
+ Tworzę nieobecności na lipiec 2014
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence13}:
+    date_from: "2014-02-01 00:00:00"
+    date_to: "2014-02-16 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopwypoczynkowy0
+    state: validate
+
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence14}:
+    date_from: "2014-02-24 00:00:00"
+    date_to: "2014-02-25 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_child_care
+    state: validate
+-
+ Tworzę nieobecności na sierpień 2014
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence15}:
+    date_from: "2014-02-01 00:00:00"
+    date_to: "2014-02-20 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę dodatki na sierpień 2014
+-
+ !record {model: hr2.salary.addition, id: hr2_pracownik_choroba2_salary_addition4}:
+    name: Premia uznaniowa
+    addition_type_id: hr_payroll_pl.hr2_salary_addition_type_zkup
+    kwota: 250
+    year_start: 2014
+    month_start: 6
+    etat_data_id: hr_etat_choroba2_data4
+-
+ Tworzę nieobecności na wrzesień 2014
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence16}:
+    date_from: "2014-02-01 00:00:00"
+    date_to: "2014-02-05 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę nieobecności na październik 2014
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence17}:
+    date_from: "2014-02-01 00:00:00"
+    date_to: "2014-02-03 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence18}:
+    date_from: "2014-02-06 00:00:00"
+    date_to: "2014-02-07 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_child_care
+    state: validate
+-
+ Tworzę nieobecności na luty 2015
+-
+ !record {model: hr2.absence, id: hr2_pracownik_choroba2_absence19}:
+    date_from: "2014-02-01 00:00:00"
+    date_to: "2014-02-04 23:59:59"
+    employee_id: hr_pracownik_choroba2
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config,id: hr_choroba2_config}:
+    name: Tylko etaty
+    use_post_only: True
+    sequence: 1
+-
+ Tworzę listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba2}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2014
+    config: hr_choroba2_config
+    date: "2014-09-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba2")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba2")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba2")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 802.50, "Składka zdrowotna odliczona powinna wynosić 802,50, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert payslip_obj.emr_pracownik == 1171.20, "Składka emerytalna pracownika powinna wynosić 1 171,20, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 180.00, "Składka rentowa pracownika powinna wynosić 180,00, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 294.00, "Składka chorobowa pracownika powinna wynosić 294,00, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1797.59, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 1797,59, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    assert payslip_obj.koszty_uzyskania == 111.25, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    assert payslip_obj.do_wyplaty == 8427.87, "Wypłata powinna wynosić 8427.87, a wynosi %s" % payslip_obj.do_wyplaty
+    print "Test wykonany poprawnie. Życzymy powodzenia przy kolejnych testach."

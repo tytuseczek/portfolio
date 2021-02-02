@@ -1,0 +1,16 @@
+#Uzupełnienie
+#Ekwiwalent
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    e = 0.00001
+    employee_id = ref("hr_payroll_pl.pracownik_ekwiwalent")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id), ('register_id','=',ref("hr_payroll_pl.hr_register_uzupelnienia1"))],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 167.19, "Składka zdrowotna odliczona powinna wynosić 167.19, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert abs((payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik) - 342.75) < e, "Suma składek pracownika na ubezpieczenia emerytalne, rentowe i chorobowe powinna wynosić 342,75, a wynosi %s" % (payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik)
+    assert payslip_obj.koszty_uzyskania == 111.25, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    assert payslip_obj.do_wyplaty == 1945.10, "Wypłata powinna wynosić 1945,10 zł, a wynosi %s" % payslip_obj.do_wyplaty
+    assert payslip_obj.kwota_zaliczki_na_PIT == 384.95, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 384,95, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    print "Test zakończony powodzeniem"

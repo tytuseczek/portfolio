@@ -1,0 +1,1602 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* hr_payroll_pl
+#
+#. module: hr_payroll_pl
+#: view: hr2.absence:0
+msgid "Confirm"
+msgstr "Zatwierdź"
+
+#. module: hr_payroll_pl
+#: view: hr2.absence:0
+msgid "Refuse"
+msgstr "Odrzuć"
+
+#. module: hr_payroll_pl
+#: view: hr2.absence:0
+msgid "Cancel"
+msgstr "Anuluj"
+
+#. module: hr_payroll_pl
+#: view: hr2.absence:0
+msgid "Set to draft"
+msgstr "Ustaw na projekt"
+
+#. module: hr_payroll_pl
+#: view: hr2.absence:0
+msgid "Validate"
+msgstr "Potwierdź"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll
+msgid "Payroll"
+msgstr "Płace"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payslips_payrolls
+msgid "Payslips and payrolls"
+msgstr "Listy płac"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_pl_contracts
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_contract2
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_contract2_tree
+#: view:hr2.payslip.config:0
+msgid "Contracts"
+msgstr "Umowy cywilno-prawne"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_pl_config
+#: field:hr2.payroll.register,config:0
+msgid "Configuration"
+msgstr "Konfiguracja"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_pl_absences
+msgid "Absences"
+msgstr "Nieobecności"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_etat2
+#: view:hr2.payslip.config:0
+msgid "Posts"
+msgstr "Umowy o pracę"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payment_register
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payment_register_tree
+msgid "Payment registers"
+msgstr "Rejestry wypłat"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payment_register_employee
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payment_register_line_tree_e
+msgid "Payment registers"
+msgstr "Wypłaty"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_register
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_register_employee
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payroll_register_tree
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payroll_register_tree_e
+msgid "Payroll registers"
+msgstr "Listy płac"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payslip2
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payslip2_tree
+msgid "Payslip"
+msgstr "Paski listy płac"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.line,payslip_id:0
+#: field:hr2.payment.register.payment.line,payslip_id:0
+#: field:hr2.payslip.line,payslip_id:0
+#: view: hr2.payslip:0
+msgid "Payslip"
+msgstr "Pasek listy płac"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payslip2_config
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payslip2_config_tree
+msgid "Payslip configuration"
+msgstr "Konfiguracje list płac"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_contract_type2
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_contract_type_tree
+#: field:hr2.payslip.config,contract_type:0
+msgid "Contract type"
+msgstr "Typy umów"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_calendar_tree
+msgid "Calendar"
+msgstr "Kalendarz"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_calendar_wizard
+msgid "Create holidays in calendar"
+msgstr "Utwórz święta w kalendarzu"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,name:0
+#: field:hr2.payroll.register,name:0
+msgid "Name"
+msgstr "Numer"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,type:0
+msgid "Type"
+msgstr "Typ"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,payment_date:0
+#: view:payments.to.export:0
+msgid "Payment date"
+msgstr "Data płatności"
+
+#. module: hr_payroll_pl
+#: field:hr2.payroll.register,date:0
+msgid "Date of payment"
+msgstr "Data płatności"
+
+#. module: hr_payroll_pl
+#: field:hr2.payroll.register,register_month:0
+msgid "Month"
+msgstr "Miesiąc"
+
+#. module: hr_payroll_pl
+#: field:hr2.payroll.register,register_year:0
+msgid "Year"
+msgstr "Rok"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,planned_payment_date:0
+msgid "Planned payment date"
+msgstr "Planowana data płatności"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,bank_id:0
+msgid "Out bank"
+msgstr "Rachunek wypłat"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,payroll_register_id:0
+msgid "Payroll register"
+msgstr "Lista płac"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,state:0
+#: field:hr2.payroll.register,state:0
+msgid "State"
+msgstr "Stan"
+
+#. module: hr_payroll_pl
+#: view:hr2.payment.register:0
+msgid "Payments"
+msgstr "Należne wypłaty"
+
+#. module: hr_payroll_pl
+#: view:hr2.payment.register:0
+msgid "Paid"
+msgstr "Dokonane wypłaty"
+
+#. module: hr_payroll_pl
+#: field:hr2.payroll.register,process_prev_month:0
+msgid "Should previous month be processed?"
+msgstr "Rozliczaj poprzedni miesiąc"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Payslip list"
+msgstr "Lista płac"
+
+#. module: hr_payroll_pl
+#: view:hr.employee:0
+#: field:hr.external.elements,employee_id:0
+#: view:hr2.absence:0
+#: view:hr2.employee.date:0
+#: field:hr2.payslip,employee_id:0
+#: view:payments.to.export:0
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_payroll_employee2
+#: field:res.partner.bank,employee_id:0
+msgid "Employee"
+msgstr "Pracownik"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip,cywilnoprawna_id:0
+msgid "Contract"
+msgstr "Umowa cywilno-prawna"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip,register_id:0
+msgid "Payroll register"
+msgstr "Lista płac"
+
+#. module: hr_payroll_pl
+#: view:hr2.payslip:0
+msgid "Information"
+msgstr "Informacje"
+
+#. module: hr_payroll_pl
+#: view:hr2.payslip:0
+msgid "Elements"
+msgstr "Elementy"
+
+#. module: hr_payroll_pl
+#: field:hr2.payroll.register,name:0
+#: field:hr2.payslip.line,number:0
+#: field:hr2.payslip.line.line,number:0
+#: view:payments.to.export:0
+msgid "Number"
+msgstr "Numer"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,type_id:0
+msgid "Line type"
+msgstr "Typ"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,description:0
+#: field:hr2.payment.register.line,description:0
+msgid "Description"
+msgstr "Opis"
+
+#. module: hr_payroll_pl
+#: view:hr2.payment.register.line:0
+msgid "Description:"
+msgstr "Opis:"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,base:0
+msgid "Base"
+msgstr "Podstawa"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,number_of_days:0
+msgid "Number of days"
+msgstr "Liczba dni"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,date_start:0
+msgid "Date start"
+msgstr "Data początku"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,date_stop:0
+msgid "Date stop"
+msgstr "Data końca"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,value:0
+msgid "Value"
+msgstr "Wartość"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line,percent:0
+msgid "Percent"
+msgstr "Procent"
+
+#. module: hr_payroll_pl
+#: view:hr2.payslip.line:0
+#: field:hr2.payslip.line,payslip_line_line_ids:0
+msgid "Parts of the element"
+msgstr "Wyliczenia składników wynagrodzenia"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,name:0
+msgid "Name"
+msgstr "Nazwa"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,days:0
+msgid "Number of days"
+msgstr "Liczba dni"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,value:0
+msgid "Value"
+msgstr "Wartość"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,number:0
+msgid "Number"
+msgstr "Numer"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,hours:0
+msgid "Number of hours"
+msgstr "Liczba godzin"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,base:0
+msgid "Base"
+msgstr "Podstawa"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,payslip_line_id:0
+#: view: hr2.payslip.line:0
+msgid "Payslip line"
+msgstr "Składnik wynagrodzenia"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.config,sequence:0
+msgid "Sequence"
+msgstr "Sekwencja"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.config,name:0
+msgid "Configuration name"
+msgstr "Nazwa konfiguracji"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.config,code:0
+msgid "Configuration code"
+msgstr "Kod konfiguracji"
+
+#. module: hr_payroll_pl
+#: view:hr2.payslip.config:0
+msgid "Domain"
+msgstr "Ustawienia"
+
+#. module: hr_payroll_pl
+#: view:hr2.payslip.config:0
+#: field:hr2.payslip.config,department:0
+msgid "Department"
+msgstr "Działy"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.config,use_post_only:0
+msgid "Use posts"
+msgstr "Umowy o pracę"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.config,use_contract_only:0
+msgid "Use contracts"
+msgstr "Umowy cywilnoprawne"
+
+#. module: hr_payroll_pl
+#: field:hr2.contract.type,name:0
+msgid "Contract type"
+msgstr "Typ umowy"
+
+#. module: hr_payroll_pl
+#: field:hr2.contract.type,not_resident:0
+msgid "Not resident"
+msgstr "Nierezydent"
+
+#. module: hr_payroll_pl
+#: code:core/hr/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "Employee list"
+msgstr "Lista pracowników"
+
+#. module: hr_payroll_pl
+#: code:core/hr/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "Post list"
+msgstr "Lista umów o pracę"
+
+#. module: hr_payroll_pl
+#: field:hr2.etat.zus.base,year:0
+msgid "Year"
+msgstr "Rok"
+
+#. module: hr_payroll_pl
+#: field:hr2.etat.zus.base,month:0
+msgid "Month"
+msgstr "Miesiąc"
+
+#. module: hr_payroll_pl
+#: field:hr2.etat.zus.base,source:0
+msgid "Source"
+msgstr "Źródło"
+
+#. module: hr_payroll_pl
+#: field:hr2.etat.zus.base,amount:0
+#: field:hr2.payment.register.line,amount:0
+#: field:hr2.payment.register.payment.line,amount:0
+#: field:hr.external.elements,amount:0
+#: view:payments.to.export:0
+msgid "Amount"
+msgstr "Kwota"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.line,payment_register_id:0
+#: field:hr2.payment.register.payment.line,payment_register_id:0
+msgid "Payment register"
+msgstr "Rejestr wypłat"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.payment.line,payment_register_line_id:0
+msgid "Payment register line"
+msgstr "Należna wypłata"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.line,out_bank_id:0
+#: field:hr2.payment.register.payment.line,out_bank_id:0
+msgid "Bank"
+msgstr "Rachunek bankowy"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.line,account_number:0
+#: field:hr2.payment.register.payment.line,account_number:0
+msgid "Bank account number"
+msgstr "Numer rachunku bankowego"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.line,state:0
+msgid "State"
+msgstr "Stan"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.line,cash:0
+#: field:hr2.payment.register.payment.line,cash:0
+msgid "Cash"
+msgstr "Gotówka"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register.payment.line,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Calculate additions"
+msgstr "Oblicz dodatki"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Calculate elements"
+msgstr "Oblicz elementy"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Calculate taxes"
+msgstr "Oblicz podatki"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Validate payroll"
+msgstr "Zatwierdź listę płac"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payroll.register,state:0
+msgid "New"
+msgstr "Nowa"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payroll.register,state:0
+#: view:hr2.payroll.register:0
+msgid "Additions"
+msgstr "Dodatki"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payroll.register,state:0
+msgid "Elements"
+msgstr "Elementy"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payroll.register,state:0
+msgid "Draft"
+msgstr "Projekt"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payroll.register,state:0
+msgid "Confirmed"
+msgstr "Zatwierdzona"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payroll.register,state:0
+msgid "Closed"
+msgstr "Zamknięta"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payment.register,state:0
+msgid "Open"
+msgstr "Otwarty"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payment.register,state:0
+msgid "Closed"
+msgstr "Zamknięty"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payment.register.line,state:0
+msgid "Unpaid"
+msgstr "Do zapłacenia"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payment.register.line,state:0
+msgid "Paid"
+msgstr "Opłacono"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payslip.line.line,type:0
+msgid "Work time"
+msgstr "Czas pracy"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/hr_payroll_pl.py:0
+#: selection:hr2.payslip.line.line,type:0
+#: model:hr2.payslip.line.type,name:hr_payroll_pl.hr2_payslip_line_type_addition
+#, python-format
+msgid "Addition"
+msgstr "Dodatek"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payslip.line.line,type:0
+msgid "Deduction"
+msgstr "Potrącenie"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.line,addition_percent:0
+msgid "Percent of total addition sum"
+msgstr "Procent sumy wszystkich dodatków"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.type,application:0
+msgid "Application"
+msgstr "Typ"
+
+#. module: hr_payroll_pl
+#: field:hr2.payslip.line.type,name:0
+msgid "Name"
+msgstr "Nazwa"
+
+#. module: hr_payroll_pl
+#: model:hr2.payslip.line.type,name:hr_payroll_pl.hr2_payslip_line_type_work_time
+msgid "Work time"
+msgstr "Czas pracy"
+
+#. module: hr_payroll_pl
+#: model:hr2.payslip.line.type,name:hr_payroll_pl.hr2_payslip_line_type_absence
+msgid "Absence"
+msgstr "Nieobecność"
+
+#. module: hr_payroll_pl
+#: model:hr2.payslip.line.type,name:hr_payroll_pl.hr2_payslip_line_type_sick_pay
+msgid "Sick pay"
+msgstr "Wynagrodzenie chorobowe"
+
+#. module: hr_payroll_pl
+#: model:hr2.payslip.line.type,name:hr_payroll_pl.hr2_payslip_line_type_sick_benefit
+msgid "Sick benefit"
+msgstr "Zasiłek chorobowy"
+
+#. module: hr_payroll_pl
+#: model:hr2.payslip.line.type,name:hr_payroll_pl.hr2_payslip_line_type_child_care
+msgid "Child care"
+msgstr "Zasiłek opiekuńczy"
+
+#. module: hr_payroll_pl
+#: code:core/hr/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "Working time"
+msgstr "Czas pracy"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payment.register,type:0
+msgid "Transfer"
+msgstr "Przelew"
+
+#. module: hr_payroll_pl
+#: selection:hr2.payment.register,type:0
+msgid "Cash"
+msgstr "Gotówka"
+
+#. module: hr_payroll_pl
+#: field:hr.payroll.new_config_wizard,rok:0
+msgid "New year"
+msgstr "Nowy rok"
+
+#. module: hr_payroll_pl
+#: view:hr.payroll.new_config_wizard:0
+msgid "New parameters"
+msgstr "Nowe parametry"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,payment_register_line_id:0
+msgid "Payment register lines"
+msgstr "Należna wypłata"
+
+#. module: hr_payroll_pl
+#: field:hr2.payment.register,payment_register_payment_line_id:0
+msgid "Payment register payment lines"
+msgstr "Dokonana wypłata"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_holiday_status_payroll
+#: model:ir.actions.act_window,name:hr_payroll_pl.menu_hr_payroll_absence_type
+msgid "Leave Type"
+msgstr "Typy nieobecności"
+
+#. module: hr_payroll_pl
+#: field:hr.employee,employee_data:0
+msgid "Employee data"
+msgstr "Dane pracownika"
+
+#.module: hr_payroll_pl
+#: view:hr.job:0
+msgid "Current"
+msgstr "Aktualne"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payroll_employee_data_wizard
+msgid "View employee list"
+msgstr "Lista pracowników"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payroll_etat2_wizard
+msgid "View Post list"
+msgstr "Umowy o pracę"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "Validated"
+msgstr "Potwierdzone"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "To Confirm"
+msgstr "Do potwierdzenia"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "To Approve"
+msgstr "Do zatwierdzenia"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "This Month"
+msgstr "Bieżący miesiąc"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "This Year"
+msgstr "Bieżący rok"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "Extended Filters..."
+msgstr "Filtry..."
+
+#. module: hr_payroll_pl
+#: view:hr.employee:0
+#: view:hr2.absence:0
+#: view:payments.to.export:0
+msgid "Group By..."
+msgstr "Grupuj po..."
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "Manager"
+msgstr "Kierownik"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "Type"
+msgstr "Typ"
+
+#. module: hr_payroll_pl
+#: view:hr2.absence:0
+msgid "State"
+msgstr "Stan"
+
+#: field:hr2.payroll.register,view_month_year:0
+msgid "Month / Year"
+msgstr "Miesiąc / Rok"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Month range"
+msgstr "Zakres miesięcy"
+
+#. module: hr_payroll_pl
+#: field:hr2.config.prog.podatkowy,company_id:0
+#: field:hr2.config.prog.podatkowy.line,company_id:0
+#: field:hr2.payment.register,company_id:0
+#: field:hr2.payment.register.line,company_id:0
+#: field:hr2.payment.register.payment.line,company_id:0
+#: field:hr2.payroll.register,company_id:0
+#: field:hr2.payslip,company_id:0
+#: field:hr2.payslip.config,company_id:0
+#: field:hr2.payslip.deduction,company_id:0
+#: field:hr2.payslip.line,company_id:0
+#: field:hr2.payslip.line.line,company_id:0
+#: field:hr2.salary.addition,company_id:0
+#: field:hr2.salary.addition.type,company_id:0
+#: field:hr2.salary.deduction,company_id:0
+#: field:hr2.salary.deduction.computation.type,company_id:0
+#: field:hr2.salary.deduction.type,company_id:0
+msgid "Company"
+msgstr "Firma"
+
+#. module: hr_payroll_pl
+#: view:hr2.employee.date:0
+msgid "Are you sure you want to remove this absence?"
+msgstr "Czy na pewno chcesz usunąć tą nieobecność?"
+
+#. module: hr_payroll_pl
+#: field:hr2.etat,etat_data:0
+msgid "Post data"
+msgstr "Dane etatu"
+
+#. module: hr_payroll_pl
+#: view:res.partner.address:0
+msgid "Communication"
+msgstr "Kontakt"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.open_view_payroll_termination_tree
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_manners_of_termination
+msgid "Manners of termination"
+msgstr "Sposoby rozwiązania umowy"
+
+#. module: hr_payroll_pl
+#: field:res.partner.address,street:0
+msgid "Street"
+msgstr "           Ulica"
+
+#. module: hr_payroll_pl
+#: help:res.company,short_name:0
+msgid "Required by Płatnik app to be placed on the SII declarations"
+msgstr "Wymagane przez aplikację Płatnik do umieszczenia na deklaracjach ZUS"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "Attachments"
+msgstr "Załączniki"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "Error"
+msgstr "Błąd"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "Employee has no record in his Data History."
+msgstr "Pracownik nie ma zarejestrowanych żadnych danych w swojej Historii danych."
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "Correct the invalid data of the payer: %s.\n"
+"Correct payer's:"
+msgstr "Popraw błędne dane płatnika: %s.\n"
+"Popraw:"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "identification number"
+msgstr "numer NIP"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "REGON number"
+msgstr "numer REGON"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "short name"
+msgstr "skróconą nazwę"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid ""
+"In configuration, correct the invalid value\n"
+"for interest rate of accident insurance\n"
+"contributions and generate\n"
+"a new payroll register."
+msgstr ""
+"Popraw błędną wartość stopy procentowej\n"
+"składek na ubezpieczenie wypadkowe\n"
+"w konfiguracji i wygeneruj\n"
+"nowy rejestr list płac."
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "Correct the invalid data of the employee: %s.\n"
+"Correct employee's:"
+msgstr "Popraw błędne dane pracownika: %s.\n"
+"Popraw:"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "first name"
+msgstr "imię"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "last name"
+msgstr "nazwisko"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "insurance code"
+msgstr "kod tytułu ubezpieczenia"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "PESEL number"
+msgstr "numer PESEL"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "ID series and number"
+msgstr "serię i numer dowodu osobistego"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "pension entitlement"
+msgstr "prawo do emerytury lub renty"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "degree of disability"
+msgstr "stopień niepełnosprawności"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "There is no employee data to export."
+msgstr "Nie ma danych pracowników do wyeksportowania."
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "\n"
+"Most likely, there is no information\n"
+"about the insurance code."
+msgstr "\n"
+"Najprawdopodobniej brakuje informacji\n"
+"o kodzie tytułu ubezpieczenia."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+#: view:generate.declaration:0
+msgid "Generating a KEDU file"
+msgstr "Generuj plik KEDU"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "Report ID:"
+msgstr "Identyfikator raportu:"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "The final term for form and report delivery:"
+msgstr "Termin przysyłania deklaracji i raportów:"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_generate_kedu
+msgid "Generating a KEDU file"
+msgstr "Generowanie pliku KEDU"
+
+#. module: hr_payroll_pl
+#: field:wizard.generate.kedu,term_id:0
+msgid "The final term for form and report delivery"
+msgstr "Termin przysyłania deklaracji i raportów"
+
+#. module: hr_payroll_pl
+#: field:wizard.generate.kedu,report_id:0
+msgid "Report ID"
+msgstr "Identyfikator raportu"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "Generate"
+msgstr "Generuj"
+
+#. module: hr_payroll_pl
+#: view:generate.declaration:0
+#: view:hr2.external.elements:0
+#: view:wizard.generate.kedu:0
+msgid "Cancel"
+msgstr "Anuluj"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "THE FINAL TERM FOR FORM AND REPORT DELIVERY"
+msgstr "TERMIN PRZYSYŁANIA DEKLARACJI I RAPORTÓW"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "1 - For forms covering the previous month delivered until the 5th day of the following month"
+msgstr "1 - Dla deklaracji składanych do 5 dnia następnego miesiąca za miesiąc poprzedni"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "2 - For forms covering the previous month delivered until the 10th day of the following month"
+msgstr "2 - Dla deklaracji składanych do 10 dnia następnego miesiąca za miesiąc poprzedni"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "3 - For forms covering the previous month delivered until the 15th day of the following month (does not apply to taxpayers under the '4' code)"
+msgstr "3 - Dla deklaracji składanych do 15 dnia następnego miesiąca za miesiąc poprzedni (kodu nie stosują płatnicy, dla których ma zastosowanie kod '4')"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "4 - For forms covering the previous month delivered until the 15th day of the following month by co-owners of a partnership (sole-shareholder companies, including those of limited liability, as well as general, professional and limited partnership) whose insurance contributions cover only themselves and where the company employs workers or others, who may be granted insurance based on their employment, as well as those who are voluntarily included to use health insurance"
+msgstr "4 - Dla deklaracji składanych do 15 dnia następnego miesiąca za miesiąc poprzedni przez wspólników spółek (jednoosobowych z ograniczoną odpowiedzialnością, cywilnych, jawnych, komandytowych, partnerskich), którzy opłacają składki wyłącznie za siebie, natomiast spółka zatrudnia pracowników lub inne osoby, podlegające z tego tytułu ubezpieczeniom, oraz przez osoby podlegające dobrowolnie ubezpieczeniu zdrowotnemu"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "5 - For forms concerning judges, prosecutors, soldiers or officers, whose insurance contributions are necessary to cover."
+msgstr "5 - Dla deklaracji składanych za sędziów, prokuratorów, żołnierzy lub funkcjonariuszy, za których jest obowiązek opłacania składek na ubezpieczenia społeczne"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "Important!"
+msgstr "Uwaga!"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "In the case where the taxpayer covers the insurance contributions for the current month for voluntary health insurance, the separate form should contain '4' in the I segment, field 01."
+msgstr "W przypadku gdy płatnik składek opłaca składki za dany miesiąc na dobrowolne ubezpieczenia emerytalne i rentowe oraz na dobrowolne ubezpieczenie zdrowotne, w składanych odrębnie deklaracjach rozliczeniowych w bloku I pole 01 jako termin przesyłania deklaracji wpisuje '4'."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "REPORT ID"
+msgstr "IDENTYFIKATOR RAPORTU"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "Number - report number for the current month. Details:"
+msgstr "Numer - oznacza numer raportu za dany miesiąc, przy czym:"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "01 - monthly report,"
+msgstr "01 - oznacza raport miesięczny,"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "02 - correcting report,"
+msgstr "02 - oznacza raport korygujący,"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "03-39 - every following correcting report for the current month."
+msgstr "03-39 - oznacza każdy kolejny raport korygujący za ten miesiąc."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- Numbers within range 40-49 are connected with account documents delivered by taxpayers, who, throughout the month, have gained or lost supported employment enterprise status or employed status and who are obliged to deliver two sets of account documents for the month."
+msgstr "- Numery od 40 do 49 zostały przeznaczone dla dokumentów rozliczeniowych składanych przez płatników, którzy w trakcie miesiąca uzyskali lub utracili status zakładu pracy chronionej lub aktywności zawodowej i zobowiązani są złożyć za dany miesiąc dwa komplety dokumentów rozliczeniowych."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- Numbers within range 51-69 are connected with account documents concerning patients, delivered by District Employment Agency, Military Pension Office, Pension Office of the Ministry of Internal Affairs and Administration, Pension Office of the Prison Service, organizational units of social assistance or Wojts, mayors and presidents of cities, concerning people claiming family benefits or social assistance benefits, banks and other subjects concerned with patients, who receive life, disability or structural pension."
+msgstr "- Numery od 51 do 69 zostały przeznaczone dla dokumentów rozliczeniowych składanych za świadczeniobiorców przez powiatowe urzędy pracy, wojskowe biura emerytalne, Zakład Emerytalno-Rentowy MSWiA, Biuro Emerytalne Służby Więziennej, jednostki organizacyjne pomocy społecznej albo wójtów, burmistrzów i prezydentów miast, za osoby pobierające świadczenia rodzinne oraz za osoby korzystające ze świadczeń pomocy społecznej, banki i inne podmioty za świadczeniobiorców, którym wypłacają emerytury lub renty z zagranicy albo renty strukturalne."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "These institutions, when clearing contributions for their employees (contractors etc.), should deliver documents marked with numbers from 01 to 39."
+msgstr "Instytucje te, rozliczając składki należne za własnych pracowników (zleceniobiorców itp.), składają dokumenty oznaczone numerami od 01 do 39."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- Numbers in range 51-89 are reserved for clearing documents concerned with retirees and people claiming pre-retirement benefits from Social Insurance Institution (ZUS)."
+msgstr "- Numery od 51 do 89 zostały przeznaczone dla dokumentów rozliczeniowych składanych za emerytów i rencistów oraz osoby pobierające zasiłek przedemerytalny lub świadczenie przedemerytalne przez Zakład Ubezpieczeń Społecznych."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "When clearing contributions for one's own employees (contractors etc.), the Institution should deliver the documents marked with numbers from 01 to 39."
+msgstr "Rozliczając składki należne za własnych pracowników (zleceniobiorców itp.), Zakład składa dokumenty oznaczone numerami od 01 do 39."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- Numbers 70-79 are meant for clearing documents concerned with judges, prosecutors, soldiers and officers after termination or expiration of the employment."
+msgstr "- Numery od 70 do 79 zostały przeznaczone dla dokumentów rozliczeniowych składanych za sędziów i prokuratorów oraz za żołnierzy i funkcjonariuszy po rozwiązaniu lub wygaśnięciu stosunku służbowego."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- Numbers from 80 to 80 are reserved for clearing documents concerned with accountants in bankruptcy for the period starting from the day following the filing of a bankruptcy petition."
+msgstr "- Numery od 80 do 89 zostały przeznaczone dla dokumentów rozliczeniowych składanych przez syndyka masy upadłościowej, za okres od następnego dnia po ogłoszeniu upadłości ."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- Numbers from 90 to 99 are reserved for clearing documents delivered by ZUS concerned with people claiming maternity benefits, benefits equivalent in amount to maternity benefits or who are on a parental leave, whose benefits for the period starting from the 30th of April was paid by ZUS."
+msgstr "- Numery od 90 do 99 zostały przeznaczone dla dokumentów rozliczeniowych składanych przez ZUS za osoby pobierające zasiłek macierzyński, zasiłek w wysokości zasiłku macierzyńskiego lub przebywające na urlopach wychowawczych, którym zasiłek za okres do 30 kwietnia wypłacał ZUS."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "In the case where the taxpayer runs out of numbers for marking the clearing correction documents (forms and monthly personal reports) for a given month and there is a need to provide ZUS more corrections, the taxpayer should use the last number. For example, if a taxpayer should use numbers from 01 to 39, after running out of available numbers the taxpayer should use '39', giving full attention to correct dates when filling out the document."
+msgstr "W razie gdy płatnik składek wyczerpie numery przeznaczone do oznaczania dokumentów rozliczeniowych korygujących (deklaracji i imiennych raportów miesięcznych) za dany miesiąc, a powstanie konieczność sporządzenia i przekazania do ZUS następnych korekt, powinien używać ostatniego numeru. Np. w przypadku płatnika składek, dla którego przeznaczone są numery od 01 do 39, po ich wyczerpaniu płatnik powinien używać numeru '39', zwracając szczególną uwagę na prawidłowe wpisanie daty wypełnienia dokumentów."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "In the case where the taxpayer is covering contributions only for himself provides more than one clearing form in a given month because of various six-character security title codes or change of a six-character security title codes throughout the month, the taxpayer should mark them as follows:"
+msgstr "W przypadku gdy płatnik składek opłacający składki wyłącznie za siebie składa za dany miesiąc więcej niż jedną deklarację rozliczeniową ze względu na różne sześcioznakowe kody tytułu ubezpieczenia lub zmianę sześcioznakowego kodu tytułu ubezpieczenia w trakcie miesiąca, oznacza je odpowiednio:"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- the first one - with ID number 01,"
+msgstr "- pierwszą - numerem identyfikatora 01,"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- the second one - with ID number 40,"
+msgstr "- drugą - numerem identyfikatora 40,"
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "- the third one - with ID number 51."
+msgstr "- trzecią - numerem identyfikatora 51."
+
+#. module: hr_payroll_pl
+#: view:wizard.generate.kedu:0
+msgid "When the need for placing a correction form arises, the form should be marked with numbers from range:"
+msgstr "W razie konieczności złożenia deklaracji korygującej, należy ją oznaczyć odpowiednio numerem z przedziału:"
+
+#. module: hr_payroll_pl
+#: field:res.company,short_name:0
+msgid "Short name"
+msgstr "Nazwa skrócona"
+
+#. module: hr_payroll_pl
+#: field:wizard.generate.kedu,help:0
+msgid "Help"
+msgstr "Pomoc"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "Code"
+msgstr "Kod"
+
+#. module: hr_payroll_pl
+#: field:hr2.insurance.codes,reg_posts:0
+msgid "Regular Posts"
+msgstr "Etaty"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/hr_payroll_pl.py:0
+#: code:addons/hr_payroll_pl/report/records_of_employment.py:0
+#: code:addons/hr_payroll_pl/report/annual_salaries_card.py:0
+#, python-format
+msgid "Error"
+msgstr "Błąd"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "Correct the invalid values"
+msgstr "Popraw nieprawidłowe wartości"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "Benefit Codes"
+msgstr "Kody Świadczeń"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_view_hr_insurance_codes
+msgid "Insurance Codes"
+msgstr "Kody Ubezpieczeń"
+
+#. module: hr_payroll_pl
+#: view:hr2.payslip.config:0
+msgid "General"
+msgstr "Informacje ogólne"
+
+#. module: hr_payroll_pl
+#: view:hr2.contract:0
+#: view:hr2.etat.data:0
+#: field:hr2.etat.data,insurance_code:0
+#: view:hr2.insurance.codes:0
+#: view:hr2.payslip.config:0
+msgid "Insurance code"
+msgstr "Kod ubezpieczenia"
+
+#. module: hr_payroll_pl
+#: view:hr2.insurance.codes:0
+#: field:hr2.payslip.config,insurance_code_ids:0
+#: model:ir.model,name:hr_payroll_pl.model_hr2_insurance_codes
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_insurance_codes
+msgid "Insurance codes"
+msgstr "Kody ubezpieczeń"
+
+#. module: hr_payroll_pl
+#: view:hr2.benefit.codes:0
+msgid "Benefit code"
+msgstr "Kod świadczenia"
+
+#. module: hr_payroll_pl
+#: field:hr2.absence.type,benefit_ids:0
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_view_hr_benefit_codes
+msgid "Benefit Codes"
+msgstr "Kody Świadczeń"
+
+#. module: hr_payroll_pl
+#: view:hr2.benefit.codes:0
+#: model:ir.model,name:hr_payroll_pl.model_hr2_benefit_codes
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_benefit_codes
+msgid "Benefit codes"
+msgstr "Kody świadczeń"
+
+#. module: hr_payroll_pl
+#: view:hr2.contract:0
+#: field:hr2.insurance.codes,contracts:0
+#: view:hr2.payslip.config:0
+msgid "Contracts"
+msgstr "Umowy cywilno-prawne"
+
+#. module: hr_payroll_pl
+#: field:hr.external.elements,code:0
+#: view:hr2.benefit.codes:0
+#: field:hr2.benefit.codes,name:0
+#: view:hr2.insurance.codes:0
+#: field:hr2.insurance.codes,name:0
+#: view:hr2.nfz:0
+#: field:hr2.nfz,name:0
+#: view:hr2.obsolete.reason:0
+#: field:hr2.obsolete.reason,name:0
+msgid "Code"
+msgstr "Kod"
+
+#. module: hr_payroll_pl
+#: view:hr2.benefit.codes:0
+#: field:hr2.benefit.codes,description:0
+#: view:hr2.insurance.codes:0
+#: field:hr2.insurance.codes,description:0
+#: field:hr2.obsolete.reason,description:0
+msgid "Description"
+msgstr "Opis"
+
+#. module: hr_payroll_pl
+#: view:hr2.benefit.codes:0
+#: field:hr2.benefit.codes,is_benefit:0
+msgid "Is benefit"
+msgstr "Typ zasiłkowy"
+
+#. module: hr_payroll_pl
+#: view:hr2.benefit.codes:0
+#: field:hr2.benefit.codes,absence_ids:0
+msgid "Absence types"
+msgstr "Typy nieobecności"
+
+#. module: hr_payroll_pl
+#: view:company.configuration:0
+msgid "New company's short name"
+msgstr "Nazwa skrócona nowej firmy"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_generate_declarations_hr
+msgid "Generate declarations"
+msgstr "Generuj deklaracje"
+
+#. module: hr_payroll_pl
+#: field:tax.declaration,partner_id:0
+msgid "Taxpayer"
+msgstr "Płatnik"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_tax_declaration
+msgid "Declaration"
+msgstr "Deklaracje"
+
+#. module: hr_payroll_pl
+#: view:hr2.nfz:0
+#: model:ir.model,name:hr_payroll_pl.model_hr2_nfz
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr2_nfz_codes
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_view_hr2_nfz_codes
+msgid "NFZ codes"
+msgstr "Kody odziałów NFZ"
+
+#. module: hr_payroll_pl
+#: view:hr2.obsolete.reason:0
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_view_hr2_obsolete_reason
+#: model:ir.model,name:hr_payroll_pl.model_hr2_obsolete_reason
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr2_obsolete_reason
+msgid "Obsolete reason"
+msgstr "Kody przyczyn wyrejestrowania"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "pesel"
+msgstr "PESEL"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "postal code"
+msgstr "kod pocztowy"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "disability rate"
+msgstr "stopień niepełnosprawności"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "gender"
+msgstr "płeć"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "Missing address data:"
+msgstr "Brakujące dane adresowe:"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "municipality"
+msgstr "gmina"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "city"
+msgstr "miasto"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "street"
+msgstr "ulica"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "Missing employee data:"
+msgstr "Brakujące dane pracownika:"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "passport number"
+msgstr "numer paszportu"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "nationality"
+msgstr "narodowość"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "surname"
+msgstr "nazwisko"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "date of birth"
+msgstr "data urodzenia"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "name"
+msgstr "imię"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/generate_declaration.py:0
+#, python-format
+msgid "house number"
+msgstr "numer domu"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/hr_payroll_pl.py:0
+#, python-format
+msgid "You don't have access rights to this view."
+msgstr "Nie masz uprawnień dostępu do tego widoku."
+
+#. module: hr_payroll_pl
+#: view:hr2.employee.date:0
+msgid "Add overtime hours"
+msgstr "Dodaj godziny nadliczbowe"
+
+#. module: hr_payroll_pl
+#: view:hr2.employee.date:0
+msgid "Edit overtime"
+msgstr "Edytuj nadgodziny"
+
+#. module: hr_payroll_pl
+#: view:hr2.employee.date:0
+msgid "Remove overtime"
+msgstr "Usuń nadgodziny"
+
+#. module: hr_payroll_pl
+#: view:hr2.employee.date:0
+msgid "Are you sure you want to remove this overtime?"
+msgstr "Czy na pewno chcesz usunąć wprowadzone nadgodziny?"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.wizard_export_register_payments
+msgid "Export register payments"
+msgstr "Eksport rejestru płatności"
+
+#. module: hr_payroll_pl
+#: view:payments.to.export:0
+msgid "Search Payment"
+msgstr "Szukaj Płatności"
+
+#. module: hr_payroll_pl
+#: view:payments.to.export:0
+msgid "Filter by..."
+msgstr "Filtruj..."
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,residual:0
+msgid "Residual"
+msgstr "Kwota"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,to_export:0
+msgid "Export toggle"
+msgstr "Eksportuj"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,employee_id:0
+msgid "Employee ID"
+msgstr "Pracownik"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,line_id:0
+msgid "Payment"
+msgstr "Płatność"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,currency_id:0
+msgid "Currency"
+msgstr "Waluta"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,date_invoice:0
+msgid "Payment date"
+msgstr "Data płatności"
+
+#. module: hr_payroll_pl
+#: view:payments.to.export:0
+msgid "Payment list"
+msgstr "Lista płatności"
+
+#. module: hr_payroll_pl
+#: view:payments.to.export:0
+msgid "Payments list"
+msgstr "Lista płatności"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,account_id:0
+msgid "Account"
+msgstr "Konto"
+
+#. module: hr_payroll_pl
+#: view:payments.to.export:0
+msgid "Prepare for export"
+msgstr "Przygotuj do eksportu"
+
+#. module: hr_payroll_pl
+#: view:payments.to.export:0
+msgid "No account number"
+msgstr "Brak numeru konta"
+
+#. module: hr_payroll_pl
+#: field:payments.to.export,group_id:0
+msgid "Group to which the invoices to export belong"
+msgstr "Grupa do której należą eksportowane płatności"
+
+#. module: hr_payroll_pl
+#: view:hr2.external.elements:0
+#: view:hr2.payroll.register:0
+#: model:ir.actions.act_window,name:hr_payroll_pl.wizard_import_external_components
+msgid "Import external components"
+msgstr "Import zewnętrznych składników"
+
+#. module: hr_payroll_pl
+#: view:hr2.external.elements:0
+msgid "Lines to import"
+msgstr "Linie do importu"
+
+#. module: hr_payroll_pl
+#: field:hr.external.elements,employee_surname:0
+msgid "Surname"
+msgstr "Nazwisko"
+
+#. module: hr_payroll_pl
+#: field:hr.external.elements,employee_name:0
+msgid "Name"
+msgstr "Imię"
+
+#. module: hr_payroll_pl
+#: view:hr2.external.elements:0
+msgid "Import components"
+msgstr "Importuj składniki"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/external_elements.py:0
+#: field:hr.external.elements.csv,file:0
+#, python-format
+msgid "File"
+msgstr "Plik"
+
+#. module: hr_payroll_pl
+#: view:hr.external.elements.csv:0
+msgid "Import file"
+msgstr "Importuj plik"
+
+#. module: hr_payroll_pl
+#: view:hr.external.elements.csv:0
+#: model:ir.actions.act_window,name:hr_payroll_pl.wizard_import_external_components
+msgid "Import external components csv"
+msgstr "Import zewnętrznych składników z pliku csv"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/external_elements.py:0
+#, python-format
+msgid "Employees {list} cannot be uniquely identified"
+msgstr "Pracownicy {list} nie zostali znalezieni lub znaleziono więcej niż jeden rekord dla pracownika"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/external_elements.py:0
+#, python-format
+msgid "Insufficient data"
+msgstr "W pliku brakuje danych"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/external_elements.py:0
+#, python-format
+msgid "Bad file format."
+msgstr "Nieodpowiedni format pliku"
+
+#. module: hr_payroll_pl
+#: view:hr2.external.elements:0
+msgid "Import elements"
+msgstr "Importuj składniki"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Open"
+msgstr "Otwórz ponownie"
+
+#. module: hr_payroll_pl
+#: view:hr2.payroll.register:0
+msgid "Create account move"
+msgstr "Utwórz zapis księgowy"
+
+#. module: hr_payroll_pl
+#: model:ir.actions.act_window,name:hr_payroll_pl.wizard_update_employee_calendar
+#: view:update.employee.calendar.wizard:0
+msgid "Update Employee Calendar"
+msgstr "Odśwież Kalendarz Pracownika"
+
+#. module: hr_payroll_pl
+#: field:update.employee.calendar.wizard,employee_id:0
+msgid "Employee"
+msgstr "Pracownik"
+
+#. module: hr_payroll_pl
+#: field:update.employee.calendar.wizard,date:0
+msgid "Date"
+msgstr "Data początkowa"
+
+#. module: hr_payroll_pl
+#: field:update.employee.calendar.wizard,months:0
+msgid "Number of months"
+msgstr "Ilość miesięcy"
+
+#. module: hr_payroll_pl
+#: view:update.employee.calendar.wizard:0
+msgid "Close"
+msgstr "Anuluj"
+
+#. module: hr_payroll_pl
+#: view:update.employee.calendar.wizard:0
+msgid "Update Calendar"
+msgstr "Aktualizuj Kalendarz"
+
+#. module: hr_payroll_pl
+#: code:core/hr/hr_payroll_pl/wizard/payment_pay_wizard.py:0
+#, python-format
+msgid "Employee {company} has incomplete (no city, street or zip code) address information!"
+msgstr "Pracownik {company} ma niepełne (brak miasta, ulicy lub kodu pocztowego) dane adresowe!"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "Employee %s data valid for declaration period does not exist!"
+msgstr "Brak danych pracownika %s ważnych na okres deklaracji!"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "Register %s has not related pay slips, perhaps they were unlinked!"
+msgstr "Rejestr wypłat %s nie ma powiązanych pasków listy płac. \n"
+"Prawdopodobnie zostały usunięte z listy płac!"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/wizard/wizard_generate_kedu.py:0
+#, python-format
+msgid "no number"
+msgstr "bez numeru"
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/report/records_of_employment.py:0
+#: code:core/hr/hr_payroll_pl/report/annual_salaries_card.py:0
+#, python-format
+msgid "An error occurred! Close the form and try again."
+msgstr "Wystapił błąd! Zamknij formularz i spróbuj ponownie."
+
+#. module: hr_payroll_pl
+#: code:addons/hr_payroll_pl/report/records_of_employment.py:0
+#, python-format
+msgid "Employee {} has missing data for period before {}!"
+msgstr "Pracownik {} nie posiada danych w okresie przed {}!"
+
+#. module: hr_payroll_pl
+#: view:hr2.records.of.employment.wizard:0
+#: view:hr2.annual.salaries.card.wizard:0
+#, python-format
+msgid "Print report"
+msgstr "Drukuj raport"
+
+#. module: hr_payroll_pl
+#: view:hr2.records.of.employment.wizard:0
+#: view:hr2.annual.salaries.card.wizard:0
+msgid "Close"
+msgstr "Zamknij"
+
+#. module: hr_payroll_pl
+#: field:hr2.records.of.employment.wizard,fiscal_year:0
+#: field:hr2.annual.salaries.card.wizard,fiscal_year:0
+msgid "Fiscal year"
+msgstr "Rok podatkowy"
+
+#. module: hr_payroll_pl
+#: view:hr2.records.of.employment.wizard:0
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_records_of_employment
+msgid "Records of employment"
+msgstr "Ewidencja zatrudnienia"
+
+#. module: hr_payroll_pl
+#: model:ir.ui.menu,name:hr_payroll_pl.menu_hr_annual_salaries_card
+#: model:ir.actions.act_window,name:hr_payroll_pl.action_open_annual_salaries_card
+#: view:hr2.annual.salaries.card.wizard:0
+msgid "Annual salaries card"
+msgstr "Roczna karta wynagrodzeń"
+
+#. module: hr_payroll_pl
+#: view:hr2.annual.salaries.card.wizard:0
+msgid "Employees:"
+msgstr "Pracownicy:"
+
+#. module: hr_payroll_pl
+#: code:core/hr/hr_payroll_pl/report/annual_salaries_card.py:0
+#, python-format
+msgid "not payed"
+msgstr "nie opłacono"
+
+#. module: hr_payroll_pl
+#: code:core/hr/hr_payroll_pl/wizard/payment_pay_wizard.py:0
+#, python-format
+msgid "Bank %s has no bank_wizard_code settled to determine export format."
+msgstr "Bank %s nie ma określonego bank_wizard_code określającego format eksportu."

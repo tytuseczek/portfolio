@@ -1,0 +1,53 @@
+-
+ Tworzę listę płac na sierpień
+-
+ !record {model: hr2.payroll.register, id: hr_register_urlop_wypoczynkowy_sierpien}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2014
+    config: hr_payroll_pl.hr_urlop_wypoczynkowy_config
+    date: "2014-09-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_urlop_wypoczynkowy_sierpien")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_urlop_wypoczynkowy_sierpien")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_urlop_wypoczynkowy_sierpien")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_urlop_wypoczynkowy_sierpien")],context=context)
+-
+ Tworzę listę płac na wrzesień
+-
+ !record {model: hr2.payroll.register, id: hr_register_urlop_wypoczynkowy}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_payroll_pl.hr_urlop_wypoczynkowy_config
+    date: "2014-10-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_urlop_wypoczynkowy")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_urlop_wypoczynkowy")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_urlop_wypoczynkowy")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_urlop_wypoczynkowy")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_urlop_wypoczynkowy1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id), ('register_id','=',ref("hr_register_urlop_wypoczynkowy"))],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 802.50, "Składka zdrowotna odliczona powinna wynosić 802,50, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert payslip_obj.emr_pracownik == 1171.20, "Składka emerytalna pracownika powinna wynosić 1 171,20, a wynosi %s" % payslip_obj.emr_pracownik
+    assert payslip_obj.rent_pracownik == 180.00, "Składka rentowa pracownika powinna wynosić 180,00, a wynosi %s" % payslip_obj.rent_pracownik
+    assert payslip_obj.chor_pracownik == 294.00, "Składka chorobowa pracownika powinna wynosić 294,00, a wynosi %s" % payslip_obj.chor_pracownik
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1797.59, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 1797,59, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    assert payslip_obj.koszty_uzyskania == 111.25, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    assert payslip_obj.do_wyplaty == 8427.87, "Wypłata powinna wynosić 8427.87, a wynosi %s" % payslip_obj.do_wyplaty
+    print "Test wykonany poprawnie. Życzymy powodzenia przy kolejnych testach."

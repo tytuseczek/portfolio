@@ -1,0 +1,2124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+<!-- New HR views -->
+
+				<!-- Correct Payslip Wizard -->
+	<record model="ir.ui.view" id="wizard_correct_payslip_form">
+		<field name="name">wizard.correct.payslip.form</field>
+		<field name="model">wizard.correct.payslip</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<field name="information"/>
+				</group>
+			</form>
+		</field>
+	</record>
+
+        <!-- Filtr urzedów pracy -->
+    <record model="ir.ui.view" id="hr_payroll_taxoffice_search">
+        <field name="name">hr.payroll.taxoffice.search</field>
+        <field name="model">tax.office</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+				<!--  res.partner.bank -->
+		<record id="payroll_partner_bank_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.bank.form.inherit</field>
+            <field name="model">res.partner.bank</field>
+            <field name="inherit_id" ref="base.view_partner_bank_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            	<data>
+            		<field name="partner_id" position="replace">
+            			<field name="employee_id" invisible="True"/>
+            	 		<field name="partner_id" dialog_fullscreen="True" 
+            	 			attrs="{'required':[('employee_id','=',False)], 'invisible':['|',(ctx_get('employee_bank',False),'=',True),('employee_id','!=',False)]}"/>
+            	 	</field>
+            		<field name="state" position="replace">
+            			<field name="state" groups="base.group_extended, hr.group_hr_manager"/>
+            		</field>
+            	</data>
+        	</field>
+        </record>
+
+				<!-- Payslip -->
+
+<!--Commented 'name' fields left after the old HR - just in case -->
+       <record id="view_payslip2_tree" model="ir.ui.view">
+            <field name="name">hr2.payslip.tree</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+					<field name="employee_id"/>
+					<!-- <field name="name"/> -->
+					<field name="register_id"/>
+					<field name="cywilnoprawna_id"/>
+					<field name="etat_id"/>
+					<field name="skladki_ZUS_pracownika"/>
+					<field name="koszty_uzyskania"/>
+					<field name="do_wyplaty"/>
+					<field name='skladka_zdrowotna_odliczona'/>
+					<field name='skladka_zdrowotna_od_netto'/>
+					<field name='chor_pracownik'/>
+					<field name='emr_pracownik'/>
+					<field name='rent_pracownik'/>
+					<field name='emr_pracodawca'/>
+					<field name='rent_pracodawca'/>
+					<field name='wyp_pracodawca'/>
+					<field name='fp'/>
+					<field name='fgsp'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payslip2_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.form</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Payslip">
+					<group colspan="4" col="4" string="Dane pracownika">
+							<field name="employee_id"/>
+							<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+							<!-- <field name="name"/> -->
+							<field name="register_id"/>
+							<field name="cywilnoprawna_id"/>
+							<field name="etat_id"/>
+					</group>
+					<notebook>
+						<page string="Information">
+						<group colspan="4" col="3">
+							<group colspan="1" col="1">
+                                <field name="brutto"/>
+                                <field name='chor_pracownik'/>
+								<field name='emr_pracownik'/>
+								<field name='rent_pracownik'/>
+								<field name="skladki_ZUS_pracownika"/>
+                                <field name="koszty_uzyskania"/>
+                                <field name="zmniejszenie_zaliczki"/>
+								<field name='skladka_zdrowotna_odliczona'/>
+								<field name='skladka_zdrowotna_od_netto'/>
+								<field name='kwota_US'/>
+								<field name='wyplata_przed_potraceniami'/>
+                                <field name="do_wyplaty"/>
+							</group>
+						</group>
+						<group string="Koszty pracodawcy" colspan="4" col="2">
+							<field name='emr_pracodawca'/>
+							<field name='rent_pracodawca'/>
+							<field name='wyp_pracodawca'/>
+							<field name='fp'/>
+							<field name='fgsp'/>
+						</group>
+						</page>
+						<page string="Elements">
+							<field name="payslip_line_ids" height="500" nolabel="1" widget="one2many_list" mode="tree" 
+										context="{'tree_view_ref': 'hr_payroll_pl.view_payslip_line_tree'}"
+										save_and_close_saves="1" save_and_new_saves="1" />
+						</page>
+                        <page string="Potrącenia">
+							<field name="deductions_ids" height="500" nolabel="1" widget="one2many_list" mode="tree" 
+										context="{'tree_view_ref': 'hr_payroll_pl.view_potracenia_payslip_tree'}"
+										save_and_close_saves="1" save_and_new_saves="1" />
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_payslip2_tree" model="ir.actions.act_window">
+            <field name="name">Payslip</field>
+            <field name="res_model">hr2.payslip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payslip2_tree"/>
+        </record>
+
+         <record id="view_payslip2_filter" model="ir.ui.view">
+            <field name="name">hr2.payslip.search</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+            	<search>
+            	<group string="Filtry" expand="0">
+            		<field name="employee_id"/>
+            		<field name="register_id"/>
+            		<field name="etat_id"/>
+            	</group>
+            	<newline/>
+            	<group string="Grupuj po" expand="0">
+            		<filter string="Pracownicy" domain="[]" context="{'group_by':'employee_id'}"/>
+            		<filter string="Listy płac" domain="[]" context="{'group_by':'register_id'}"/>
+            	</group>
+            	</search>
+            </field>
+         </record>
+         
+				<!-- Payslip line type-->
+
+       <record id="view_payslip_line_type_tree" model="ir.ui.view">
+            <field name="name">hr2.payslip.line.type.tree</field>
+            <field name="model">hr2.payslip.line.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"/>
+					<field name="application"/>
+					<field name="is_benefit"/>
+                </tree>
+            </field>
+        </record>
+
+
+       <record id="view_payslip_line_type_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.line.type.form</field>
+            <field name="model">hr2.payslip.line.type</field>
+            <field name="type">form</field>
+		    <field name="priority" eval="5"/>
+            <field name="arch" type="xml">
+                <form>
+					<field name="name"/>
+					<field name="application" on_change="on_change_application(application)"/>
+					<field name="is_benefit"/>
+					<field name="company_id" groups="hr.group_hr_manager,base.group_multi_company"
+						attrs="{'invisible':[('company_id','=', False)]}" />
+                </form>
+            </field>
+        </record>
+        
+				<!-- Payslip line -->
+
+       <record id="view_payslip_line_tree" model="ir.ui.view">
+            <field name="name">hr2.payslip.line.tree</field>
+            <field name="model">hr2.payslip.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="wymaga_korekty"/>
+					<field name="type_id"/>
+					<field name="number_of_days"/>
+					<field name="date_start"/>
+					<field name="date_stop"/>
+					<field name="base" on_change="on_change_correction_line(base,value,type_id)"/>
+					<field name="value" on_change="on_change_correction_line(base,value,type_id)"/>
+					<field name="percent"/>
+					<field name="licz_KUP_jak_podstawa" attrs="{'invisible':[('type_id','=',2)]}"/>
+                </tree>
+            </field>
+        </record>
+
+
+       <record id="view_payslip_line_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.line.form</field>
+            <field name="model">hr2.payslip.line</field>
+            <field name="type">form</field>
+		    <field name="priority" eval="5"/>
+            <field name="arch" type="xml">
+                <form string="Payslip">
+					<group col="3">
+						<group col="6" colspan="3">
+							<group col="4" colspan="4">
+								<field name="date_start"/>
+								<field name="date_stop"/>
+								<field name="number_of_days"/>
+								<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+							</group>
+							<group col="2" colspan="2">
+								<field name="wymaga_korekty" readonly="1"/>
+								<button name="correct_line" type="object" string="Skoryguj" colspan="2"/>
+							</group>
+						</group>
+						<separator orientation="horizontal" colspan="3"/>
+						<group colspan="3" col="6">
+							<field name="value" on_change="on_change_correction_line(base,value,type_id)"/>
+							<field name="type_id"/>
+							<field name="addition_type" attrs="{'invisible':[(self_get('self.is_add_type_invisible(self._obj.get()[\'type_id\'])'))]}"/>
+							<field name="base" on_change="on_change_correction_line(base,value,type_id)"/>
+							<field name="percent"/>
+							<field name="licz_KUP_jak_podstawa" attrs="{'invisible':[('type_id','=',2)]}"/>
+						</group>
+					</group>
+					<group col="1" colspan="4">
+						<field name="payslip_line_line_ids" height="350" width="500" nolabel="1" editable="top" widget="one2many_list" 
+										mode="tree" context="{'tree_view_ref': 'hr_payroll_pl.view_payslip_line_line_tree'}"
+										save_and_close_saves="1" save_and_new_saves="1" />
+					</group>
+                </form>
+            </field>
+        </record>
+
+				<!-- Payslip line line -->
+
+		<record id="view_payslip_line_line_tree" model="ir.ui.view">
+            <field name="name">hr2.payslip.line.line.tree</field>
+            <field name="model">hr2.payslip.line.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+					<field name="number"/>
+					<field name="name"/>
+					<field name="base"/>
+					<field name="days"/>
+					<field name="hours"/>
+					<field name="value"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_payslip_line_line_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.line.line.tree</field>
+            <field name="model">hr2.payslip.line.line</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+					<field name="number"/>
+					<field name="name"/>
+					<field name="base"/>
+					<field name="days"/>
+					<field name="hours"/>
+					<field name="value"/>
+					<field name="addition_percent"/>
+                </form>
+            </field>
+        </record>
+
+				<!--  Sequence inherit -->
+
+		<record id="view_sequence_form_inherit" model="ir.ui.view">
+            <field name="name">ir.sequence.form.inherit</field>
+            <field name="model">ir.sequence</field>
+            <field name="inherit_id" ref="account.sequence_inherit_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="code" position="replace"/>
+                <field name="name" position="after">
+                <field name="code" attrs="{'invisible':[(ctx_get('payroll', False),'=',True)]}"/>
+                </field>
+            </field>
+        </record>
+
+				<!-- Payslip config -->
+
+		<record id="view_payslip2_config_tree" model="ir.ui.view">
+            <field name="name">hr2.payslip.config.tree</field>
+            <field name="model">hr2.payslip.config</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Payslip">
+						<field name="name"/>
+						<field name="code"/>
+                    	<field name="sequence"/>
+                </tree>
+            </field>
+        </record>
+        
+        
+        <record model="ir.ui.view" id="config_accounts_form">
+            <field name="name">Konta Ma</field>
+            <field name="model">hr2.payslip.config.accounts</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Konto">
+                	<group colspan="2" col="2">
+                    	<field name="type" attrs="{'invisible':[(ctx_get('debit', False),'=',True)]}"/>
+                    	<field name="percent" attrs="{'invisible':[(ctx_get('credit', False),'=',True)], 'readonly': [('amount', '!=', False)]}"
+                    		on_change="on_change_percent_amount('percent', 'amount', percent)"/>
+                    	<field name="amount" attrs="{'invisible':[(ctx_get('credit', False),'=',True)], 'readonly': [('percent', '!=', False)]}"
+                    		on_change="on_change_percent_amount('amount', 'percent', amount)"/>
+						<field name="debit_type" attrs="{'invisible':[(ctx_get('credit', False),'=',True)]}"/>
+                    	<field name="account_id" />
+                    </group>
+                    <group colspan="2" col="2">
+                    	<field name="adimension1_id" groups="analytic.group_analytic_accounting"/>
+                    	<field name="adimension2_id" groups="analytic.group_analytic_accounting"/>
+                    	<field name="adimension3_id" groups="analytic.group_analytic_accounting"/>
+                    	<field name="adimension4_id" groups="analytic.group_analytic_accounting"/>
+                    	<field name="adimension5_id" groups="analytic.group_analytic_accounting"/>
+                    	<field name="analytics_id" groups="smb_account_analytic.group_adv_anal_acc"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+
+        <record id="view_payslip2_config_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.config.form</field>
+            <field name="model">hr2.payslip.config</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Payslip">
+                    <notebook>
+						<page string="General">
+                            <group colspan="4" col="4">
+                                <field name="sequence" context="{'default_code':'hr2.payroll.register','payroll':True}" domain ="[('code','=','hr2.payroll.register')]">
+                                <form>
+                                <field name="code" invisible="1"/>
+                                </form>
+                                </field>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group string="Domain">
+                                <group string="Contracts" colspan="4" col="4">
+                                    <field name="use_contract_only"/>
+                                    <field name="contract_type"/>
+                                </group>
+                                <group string="Posts" colspan="4" col="4">
+                                    <field name="use_post_only"/>
+                                </group>
+                                <group string="Department" colspan="4" col="4">
+                                    <field name="department"/>
+                                </group>
+                         	</group>
+                        </page>
+                        <page string="Księgowania">
+                        	<group colspan="2">
+                        		<field name="journal_id"/>
+                        	</group>
+                        	<group string="Konta Ma" colspan="4" col="4">
+                            	<field name="credit_accounts" nolabel="1" fieldname=" " domain="[('side','=','credit')]" height="250" context="{'form_view_ref':'hr_payroll_pl.config_accounts_form', 'credit':True}" >
+                            		<tree>
+						                <field name="type"/>
+						                <field name="account_id"/>
+						                <field name="adimension1_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension2_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension3_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension4_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension5_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="analytics_id" groups="smb_account_analytic.group_adv_anal_acc"/>
+					            	</tree>
+					            </field>
+                            </group>
+                            <group string="Konta Winien" colspan="4" col="4">
+                            	<field name="debit_accounts" nolabel="1" fieldname=" " domain="[('side','=','debit')]" height="250" context="{'default_type':'cost', 'default_side':'debit', 'form_view_ref':'hr_payroll_pl.config_accounts_form', 'debit':True }" >
+                            		<tree>
+						                <field name="percent"/>
+						                <field name="amount"/>
+										<field name="debit_type"/>
+						                <field name="account_id"/>
+						                <field name="adimension1_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension2_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension3_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension4_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="adimension5_id" groups="analytic.group_analytic_accounting"/>
+						                <field name="analytics_id" groups="smb_account_analytic.group_adv_anal_acc"/>
+					            	</tree>
+					            </field>
+                           </group>
+                       </page>
+                   </notebook>
+               </form>
+           </field>
+        </record>
+
+        <record id="open_view_payslip2_config_tree" model="ir.actions.act_window">
+            <field name="name">Payslip configuration</field>
+            <field name="res_model">hr2.payslip.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payslip2_config_tree"/>
+        </record>
+
+        <record id="open_view_payslip2_config_filter" model="ir.ui.view">
+            <field name="name">hr2.payslip.config.search</field>
+            <field name="model">hr2.payslip.config</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+	            <search>
+	            	<field name="name"/>
+	            </search>
+	        </field>
+	     </record>
+
+				<!-- Payroll dodatki i payslipy -->
+
+		<record id="view_payslip_additions_line_tree" model="ir.ui.view">
+            <field name="name">hr2.payslip.additions.line.tree</field>
+            <field name="model">hr2.payslip.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Dodatki">
+                	<field name="payslip_id"/>
+					<field name="addition_type"/>
+					<field name="date_start"/>
+					<field name="date_stop"/>
+					<field name="value"/>
+					<field name="licz_KUP_jak_podstawa"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_payslip_additions_line_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.additions.line.form</field>
+            <field name="model">hr2.payslip.line</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dodatki">
+					<group col="3">
+					<group col="6" colspan="4">
+						<field name="payslip_id" required="1" domain="[('register_id','=',register_id)]"/>
+						<field name="register_id" invisible="1"/>
+						<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+					</group>
+						<newline/>
+					<group col="4" colspan="2">
+						<field name="value" required="1"/>
+						<field name="type_id"/>
+						<field name="addition_type" required="1" domain="[('okresowy','=',False)]"/>
+					</group>
+						<newline/>
+					<group col="6" colspan="2">
+						<field name="date_start"/>
+						<field name="date_stop"/>
+						<field name="licz_KUP_jak_podstawa" attrs="{'invisible':[('type_id','=',2)]}"/>
+					</group>
+					</group>
+					<group col="1" colspan="4">
+						<field name="payslip_line_line_ids" height="350" width="500" nolabel="1" widget="one2many_list" mode="tree" context="{'tree_view_ref': 'hr_payroll_pl.view_payslip_line_line_tree'}"/>
+					</group>
+                </form>
+            </field>
+        </record>
+
+         <record id="view_payslip_additions_line_form_filter" model="ir.ui.view">
+            <field name="name">hr2.payslip.additions.line.form</field>
+            <field name="model">hr2.payslip.line</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+	            <search>
+	            	<filter string="Typ dodatku" domain="[]" context="{'group_by':'addition_type'}"/>
+	            </search>
+	        </field>
+	     </record>
+
+        <record id="view_payslip2_payroll_form" model="ir.ui.view">
+            <field name="name">hr2.payslip.form</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Dodatki">
+					<group colspan="4" col="4" string="Dane pracownika">
+							<field name="employee_id"/>
+							<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+							<!-- <field name="name"/> -->
+							<field name="register_id"/>
+							<field name="cywilnoprawna_id"/>
+							<field name="etat_id"/>
+					</group>
+					<notebook>
+						<page string="Information" attrs="{'invisible':[(ctx_get('state', False),'=','additions')]}">
+						<group colspan="4" col="3">
+							<group colspan="1" col="1">
+                                <field name="brutto"/>
+                                <field name='chor_pracownik'/>
+								<field name='emr_pracownik'/>
+								<field name='rent_pracownik'/>
+								<field name="skladki_ZUS_pracownika"/>
+                                <field name="koszty_uzyskania"/>
+                                <field name="zmniejszenie_zaliczki"/>
+								<field name='skladka_zdrowotna_odliczona'/>
+								<field name='skladka_zdrowotna_od_netto'/>
+								<field name='kwota_US'/>
+								<field name='wyplata_przed_potraceniami'/>
+                                <field name="do_wyplaty"/>
+							</group>
+						</group>
+						<group string="Koszty pracodawcy" colspan="4" col="2">
+							<field name='emr_pracodawca'/>
+							<field name='rent_pracodawca'/>
+							<field name='wyp_pracodawca'/>
+							<field name='fp'/>
+							<field name='fgsp'/>
+						</group>
+						</page>
+						<page string="Elements">
+							<field name="payslip_line_ids" height="500" nolabel="1" widget="one2many_list" mode="tree"  
+								context="{'tree_view_ref': 'hr_payroll_pl.view_payslip_line_tree','form_view_ref': 'hr_payroll_pl.view_payslip_line_form'}" 
+								attrs="{'readonly':[(ctx_get('state', False),'=','draft')]}" save_and_close_saves="1" save_and_new_saves="1"/>
+						</page>
+                        <page string="Potrącenia">
+							<field name="deductions_ids" height="500" nolabel="1" widget="one2many_list" mode="tree" 
+							context="{'tree_view_ref': 'hr_payroll_pl.view_potracenia_payslip_tree'}"
+							attrs="{'readonly':[(ctx_get('state', False),'=','draft')]}" save_and_close_saves="1" save_and_new_saves="1"/>
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+
+				<!-- Payroll register -->
+
+		<record id="view_payroll_register_tree" model="ir.ui.view">
+            <field name="name">hr.payroll.register.tree</field>
+            <field name="model">hr2.payroll.register</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Registers">
+						<field name="name"/>
+						<field name="view_month_year"/>
+						<field name="register_month" invisible="1"/>
+						<field name="register_year" invisible="1"/>
+						<field name="date"/>
+						<field name="config"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payroll_register_form" model="ir.ui.view">
+            <field name="name">hr.payroll.register.form</field>
+            <field name="model">hr2.payroll.register</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Register">
+                    <group colspan="8" col="8">
+						<field name="name" colspan="4" attrs="{'readonly':['|', '|', ('name','=',False), ('state', '=', 'confirmed'), ('state', '=', 'closed')]}"/>
+                        <group colspan="4" col="10">
+                            <label string="Miesiąc rozliczany:" colspan="5"/>
+							<field name="date_computed" invisible="1"/>
+                            <field name="register_month" attrs="{'readonly':[('state','!=','new')]}" nolabel="1" colspan="2" on_change="on_change_date(register_month, register_year, context)"/>
+                            <label string="   /" />
+                            <field name="register_year" attrs="{'readonly':[('state','!=','new')]}" nolabel="1" colspan="2" on_change="on_change_date(register_month, register_year, context)"/>
+                        </group>
+						<field name="config" colspan="4" attrs="{'readonly':[('state','!=','new')]}"/>
+                        <field name="date" colspan="4"/>
+						<field name="process_prev_month" colspan="4" attrs="{'readonly':[('state','!=','new')]}"/>
+						<field name="state" readonly="1"/>
+						<field name="company_id" groups="base.group_multi_company"/>
+				   	</group>
+                    <group colspan="4" col="4">
+                   		<button name="compute_additions" string="Calculate additions" type="object" icon="gtk-execute" colspan="4" attrs="{'invisible':[('state','!=','new')]}"/>
+                   		<button name="compute_elements" string="Calculate elements" type="object" icon="gtk-execute" colspan="4" attrs="{'invisible':[('state','!=','additions')]}"/>
+						<button name="import_external_components_wiz" string="Import external components" type="object" icon="gtk-execute" colspan="4" attrs="{'invisible':[('state','!=','elements')]}"/>
+						<button name="compute_taxes" string="Calculate taxes" type="object" icon="gtk-execute" colspan="4" attrs="{'invisible':[('state','!=','elements')]}"/>
+						<button name="validate_payroll" string="Validate payroll" type="object" icon="gtk-ok" colspan="4" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    	<button name="post_payroll" string="Create account move" type="object" icon="terp-stock_format-scientific" colspan="4" attrs="{'invisible':[('state','!=','confirmed')]}"/>
+						<button name="open_payroll" string="Open" type="object" icon="terp-gtk-go-back-ltr" colspan="4" attrs="{'invisible':[('state','!=','closed')]}"/>
+                    </group>
+				    <group string="Payslip list" colspan="4" col="4" >
+						<field name="payslip_ids" height="500" nolabel="1" hide_items="add" widget="one2many_list" mode="tree" context="{'state':state, 
+									'form_view_ref': 'hr_payroll_pl.view_payslip2_payroll_form'}" save_and_close_saves="1" save_and_new_saves="1"/>
+						<button name="show_addition_lines" string="Additions" type="object" icon="gtk-ok" colspan="4" attrs="{'invisible':[('state','!=','additions')]}"/>
+					</group>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_payroll_register_tree" model="ir.actions.act_window">
+            <field name="name">Payroll registers</field>
+            <field name="res_model">hr2.payroll.register</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payroll_register_tree"/>
+        </record>
+
+        <record id="view_payroll_payroll_register_search" model="ir.ui.view">
+            <field name="name">hr2.payroll.register.search</field>
+            <field name="model">hr2.payroll.register</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="">
+                	<group string="Filtry" expand="0">
+						<field name="config"/>
+						<field name="state"/>
+						<field name="name"/>
+						<multisearch name='multisearch_hr_payroll_register_1'>
+							<field name="date_range" string="Month range" widget="date"/>
+						</multisearch>
+                	</group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Payroll register employee -->
+
+		<record id="view_payslip2_tree_e" model="ir.ui.view">
+            <field name="name">hr2.payslip.tree.e</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+					<field name="employee_id"/>
+					<!-- <field name="name"/> -->
+					<field name="register_id"/>
+					<field name="cywilnoprawna_id"/>
+					<field name="etat_id"/>
+					<field name="skladki_ZUS_pracownika"/>
+					<field name="koszty_uzyskania"/>
+					<field name='wyplata_przed_potraceniami'/>
+					<field name="do_wyplaty"/>
+					<field name='skladka_zdrowotna_odliczona'/>
+					<field name='skladka_zdrowotna_od_netto'/>
+					<field name="brutto"/>
+					<field name='chor_pracownik'/>
+					<field name='emr_pracownik'/>
+					<field name='rent_pracownik'/>
+					<field name='emr_pracodawca'/>
+					<field name='rent_pracodawca'/>
+					<field name='wyp_pracodawca'/>
+					<field name='fp'/>
+					<field name='fgsp'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payslip2_form_e" model="ir.ui.view">
+            <field name="name">hr2.payslip.form.e</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Payslip">
+					<group colspan="4" col="4" string="Dane pracownika">
+							<field name="employee_id" readonly="1"/>
+							<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+							<field name="register_id" readonly="1"/>
+							<field name="cywilnoprawna_id" readonly="1"/>
+							<field name="etat_id" readonly="1"/>
+					</group>
+					<notebook>
+						<page string="Information">
+						<group colspan="4" col="3">
+							<group colspan="1" col="1">
+                                <field name="brutto"/>
+                                <field name='chor_pracownik'/>
+								<field name='emr_pracownik'/>
+								<field name='rent_pracownik'/>
+								<field name="skladki_ZUS_pracownika"/>
+                                <field name="koszty_uzyskania"/>
+                                <field name="zmniejszenie_zaliczki"/>
+								<field name='skladka_zdrowotna_odliczona'/>
+								<field name='skladka_zdrowotna_od_netto'/>
+								<field name='kwota_US'/>
+								<field name='wyplata_przed_potraceniami'/>
+                                <field name="do_wyplaty"/>
+							</group>
+						</group>
+						<group string="Koszty pracodawcy" colspan="4" col="2">
+							<field name='emr_pracodawca' readonly="1"/>
+							<field name='rent_pracodawca' readonly="1"/>
+							<field name='wyp_pracodawca' readonly="1"/>
+							<field name='fp' readonly="1"/>
+							<field name='fgsp' readonly="1"/>
+						</group>
+						</page>
+						<page string="Elements">
+							<field name="payslip_line_ids" height="500" nolabel="1" widget="one2many_list" mode="tree" readonly="1" context="{'tree_view_ref': 'hr_payroll_pl.view_payslip_line_tree'}"/>
+						</page>
+                        <page string="Potrącenia">
+							<field name="deductions_ids" height="500" nolabel="1" widget="one2many_list" mode="tree" readonly="1" context="{'tree_view_ref': 'hr_payroll_pl.view_potracenia_payslip_tree'}"/>
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_payslip2_filter_e" model="ir.ui.view">
+            <field name="name">hr2.payslip.search</field>
+            <field name="model">hr2.payslip</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+            	<search>
+            	<group string="Filtry" expand="0">
+            		<field name="register_id"/>
+            		<field name="etat_id"/>
+            		<field name="employee_id" groups="hr.group_hr_manager"/>
+            	</group>
+            	</search>
+            </field>
+         </record>
+
+       <record id="open_view_payroll_register_tree_e" model="ir.actions.act_window">
+            <field name="name">Payroll registers</field>
+            <field name="res_model">hr2.payslip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payslip2_tree_e"/>
+            <field name="search_view_id" ref="view_payslip2_filter_e"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+   			<!-- Payroll parameters configuration-->
+
+   		<record id="view_hr_payroll_config_tree" model="ir.ui.view">
+            <field name="name">hr.payroll.config.tree</field>
+            <field name="model">lacan.configuration.value</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <tree string="Payroll">
+					<field name="config_id"/>
+					<field name="value_universal"/>
+					<field name="start" type="date" />
+					<field name="stop" type="date" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_payroll_config_form" model="ir.ui.view">
+            <field name="name">hr.payroll.config.form</field>
+            <field name="model">lacan.configuration.value</field>
+            <field name="priority" eval="20"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<form string="Wartość">
+					<group colspan="4" col="4">
+						<field name="config_id" select="1" on_change="onchange_config(config_id)"
+							domain="[('state','=','confirmed'), ('typ_id.name', '=', 'Parametry Płacowe')]" />
+						<newline />
+						<field name="start" colspan="2" select="1"/>
+						<field name="stop" colspan="2" select="1"/>
+						<field name="value_int" colspan="4"
+							attrs="{'invisible':[('type','!=','integer')],'required':[('type','==','integer')]}"
+							on_change="onchange_value(value_int, type)" />
+						<field name="value_float" colspan="4"
+							attrs="{'invisible':[('type','!=','float')],'required':[('type','==','float')]}"
+							on_change="onchange_value(value_float, type)" />
+						<field name="value_date" colspan="4"
+							attrs="{'invisible':[('type','!=','date')],'required':[('type','==','date')]}"
+							on_change="onchange_value(value_date, type)" />
+						<field name="value_datetime" colspan="4"
+							attrs="{'invisible':[('type','!=','datetime')],'required':[('type','==','datetime')]}"
+							on_change="onchange_value(value_datetime, type)" />
+						<field name="value_m2o" colspan="4"
+							attrs="{'invisible':[('type','!=','many2one')],'required':[('type','==','many2one')]}"
+							on_change="onchange_value(value_m2o, type)" />
+						<field name="value_bool" colspan="4"
+							attrs="{'invisible':[('type','!=','boolean')],'required':[('type','==','boolean')]}"
+							on_change="onchange_value(value_bool, type)" />
+						<field name="value_char" colspan="4"
+							attrs="{'invisible':[('type','!=','char')],'required':[('type','==','char')]}"
+							on_change="onchange_value(value_char, type)" />
+						<field name="value_sel" colspan="4"
+							attrs="{'invisible':[('type','!=','selection')],'required':[('type','==','selection')]}"
+							on_change="onchange_value(value_sel, type)" />
+						<field name="value_str" colspan="4" nolabel="1"
+							attrs="{'invisible':[('type','!=','text')],'required':[('type','==','text')]}"
+							on_change="onchange_value(value_str, type)" />
+						<newline />
+						<field name="company_id" colspan="2" select="1" groups="base.group_multi_company,hr.group_hr_manager"
+							attrs="{'readonly':[(ctx_get('company_id_ro',False),'=',True)]}"/>
+						<field name="type" invisible="1" select="1" />
+						<field name="value_universal" invisible="1" />
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_hr_payroll_config_search" model="ir.ui.view">
+			<field name="name">hr.payroll.config.search</field>
+			<field name="model">lacan.configuration.value</field>
+			<field name="type">search</field>
+			<field name="priority" eval="20"/>
+			<field name="arch" type="xml">
+				<search>
+					<field name="config_id" />
+					<field name="value_universal" />
+					<separator orientation="vertical"/>
+					<filter string="Today" name="today" icon="terp-go-today"
+						domain="[('start','&lt;=', time.strftime('%%Y-%%m-%%d')),('stop','&gt;=',time.strftime('%%Y-%%m-%%d'))]" />
+					<filter string="This year" icon="terp-go-year"
+						domain="[('start','&gt;=', time.strftime('%%Y-01-01')),('stop','&lt;=',time.strftime('%%Y-12-31'))]" />
+					<multisearch name='multisearch_start_stop_year'>
+						<field name="year" string="Year"/>
+					</multisearch>
+				</search>
+			</field>
+		</record>
+
+		<record id="menu_hr_payroll_config_action" model="ir.actions.act_window">
+            <field name="name">Parametry płacowe ustalane na rok</field>
+            <field name="res_model">lacan.configuration.value</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('config_id.typ_id.name', '=', 'Parametry Płacowe')]</field>
+            <field name="context">{"search_default_today":1}</field>
+            <field name="search_view_id" ref="view_hr_payroll_config_search"/>
+        </record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_config_action_tree_view">
+		    <field eval="0" name="sequence"/>
+		    <field name="view_mode">tree</field>
+		    <field name="view_id" ref="view_hr_payroll_config_tree"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_config_action"/>
+		</record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_config_action_form_view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="view_hr_payroll_config_form"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_config_action"/>
+		</record>
+
+
+
+        <record id="view_hr_payroll_config_nieokresowe_tree" model="ir.ui.view">
+            <field name="name">hr.payroll.config.tree</field>
+            <field name="model">lacan.configuration.value</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <tree string="Payroll">
+					<field name="config_id"/>
+					<field name="value_universal"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_payroll_config_nieokresowe_form" model="ir.ui.view">
+            <field name="name">hr.payroll.config.form</field>
+            <field name="model">lacan.configuration.value</field>
+            <field name="priority" eval="20"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<form string="Wartość">
+					<group colspan="4" col="4">
+						<field name="config_id" select="1" on_change="onchange_config(config_id)"
+							domain="[('state','=','confirmed'), ('typ_id.name', '=', 'Parametry Płacowe')]" />
+						<newline />
+
+						<field name="start" colspan="2" select="1"/>
+						<field name="stop" colspan="2" select="1"/>
+						<field name="value_int" colspan="4"
+							attrs="{'invisible':[('type','!=','integer')],'required':[('type','==','integer')]}"
+							on_change="onchange_value(value_int, type)" />
+						<field name="value_float" colspan="4"
+							attrs="{'invisible':[('type','!=','float')],'required':[('type','==','float')]}"
+							on_change="onchange_value(value_float, type)" />
+						<field name="value_date" colspan="4"
+							attrs="{'invisible':[('type','!=','date')],'required':[('type','==','date')]}"
+							on_change="onchange_value(value_date, type)" />
+						<field name="value_datetime" colspan="4"
+							attrs="{'invisible':[('type','!=','datetime')],'required':[('type','==','datetime')]}"
+							on_change="onchange_value(value_datetime, type)" />
+						<field name="value_m2o" colspan="4"
+							attrs="{'invisible':[('type','!=','many2one')],'required':[('type','==','many2one')]}"
+							on_change="onchange_value(value_m2o, type)" />
+						<field name="value_bool" colspan="4"
+							attrs="{'invisible':[('type','!=','boolean')],'required':[('type','==','boolean')]}"
+							on_change="onchange_value(value_bool, type)" />
+						<field name="value_char" colspan="4"
+							attrs="{'invisible':[('type','!=','char')],'required':[('type','==','char')]}"
+							on_change="onchange_value(value_char, type)" />
+						<field name="value_sel" colspan="4"
+							attrs="{'invisible':[('type','!=','selection')],'required':[('type','==','selection')]}"
+							on_change="onchange_value(value_sel, type)" />
+						<field name="value_str" colspan="4" nolabel="1"
+							attrs="{'invisible':[('type','!=','text')],'required':[('type','==','text')]}"
+							on_change="onchange_value(value_str, type)" />
+						<newline />
+						<field name="company_id" colspan="2" select="1" groups="base.group_multi_company"
+							attrs="{'readonly':[(ctx_get('company_id_ro',False),'=',True)]}"/>
+						<field name="type" invisible="1" select="1" />
+						<field name="value_universal" invisible="1" />
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="menu_hr_payroll_config_nieokresowe_action" model="ir.actions.act_window">
+            <field name="name">Parametry płacowe pozostałe</field>
+            <field name="res_model">lacan.configuration.value</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('config_id.typ_id.name', '=', 'Kadry konfiguracja')]</field>
+        </record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_config_nieokresowe_action_tree_view">
+		    <field eval="0" name="sequence"/>
+		    <field name="view_mode">tree</field>
+		    <field name="view_id" ref="view_hr_payroll_config_nieokresowe_tree"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_config_nieokresowe_action"/>
+		</record>
+
+		<record model="ir.actions.act_window.view" id="menu_hr_payroll_config_nieokresowe_action_form_view">
+		    <field eval="1" name="sequence"/>
+		    <field name="view_mode">form</field>
+		    <field name="view_id" ref="view_hr_payroll_config_nieokresowe_form"/>
+		    <field name="act_window_id" ref="menu_hr_payroll_config_nieokresowe_action"/>
+		</record>
+
+
+        		<!-- Grupa potracenia -->
+
+		<record id="view_potracenia_group_tree" model="ir.ui.view">
+            <field name="name">hr2.potracenia.group.tree</field>
+            <field name="model">hr2.salary.deduction.computation.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Typy potrąceń">
+					<field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_potracenia_group_form" model="ir.ui.view">
+            <field name="name">hr2.potracenia.group.form</field>
+            <field name="model">hr2.salary.deduction.computation.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Potrącenie">
+                    <group colspan="4" col="4">
+                    	<field name="company_id" groups="base.group_multi_company"/>
+						<field name="name"/>
+						<field name="percent_normal"/>
+						<field name="amount_free"/>
+						<field name="amount_free_proportional"/>
+					</group>
+					<group string="Ograniczenia dotyczące wynagrodzeń nie będących zasiłkami ZUS" colspan="4" col="4">
+						<field name="percent_special_1"/>
+						<field name="special_1_additions" nolabel="1" colspan="4"/>
+						<field name="percent_special_2"/>
+						<field name="special_2_additions" nolabel="1" colspan="4"/>
+
+					</group>
+					<group string="Oganiczenia dotyczące wynagrodzeń z zasiłków ZUS">
+						<field name="percent_ZUS"/>
+						<field name="percent_ZUS_free"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+		<record id="open_view_potracenia_group_tree" model="ir.actions.act_window">
+            <field name="name">Grupa potrącenia</field>
+            <field name="res_model">hr2.salary.deduction.computation.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_potracenia_group_tree"/>
+        </record>
+
+        		<!-- Typ potracenia -->
+
+        <record id="view_potracenia_type_tree" model="ir.ui.view">
+            <field name="name">hr2.potracenia.type.tree</field>
+            <field name="model">hr2.salary.deduction.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Typy potrąceń">
+					<field name="name"/>
+					<field name="priority"/>
+					<field name="deduction_computation_type_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_potracenia_type_form" model="ir.ui.view">
+            <field name="name">hr2.potracenia.type.form</field>
+            <field name="model">hr2.salary.deduction.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                	<field name="company_id" groups="base.group_multi_company"/>
+					<field name="name"/>
+					<field name="priority"/>
+					<field name="deduction_computation_type_id"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_potracenia_type_tree" model="ir.actions.act_window">
+            <field name="name">Typ potrącenia</field>
+            <field name="res_model">hr2.salary.deduction.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_potracenia_type_tree"/>
+        </record>
+
+        <record id="view_potracenia_type_filter" model="ir.ui.view">
+            <field name="name">hr2.potracenia.type.filter</field>
+            <field name="model">hr2.salary.deduction.type</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+            	<search>
+            		<filter string="Grupy potrąceń" domain="[]" context="{'group_by':'deduction_computation_type_id'}"/>
+            	</search>
+            </field>
+        </record>
+
+        		<!-- Potracenia -->
+
+		<record id="view_potracenia_tree" model="ir.ui.view">
+            <field name="name">hr2.potracenia.tree</field>
+            <field name="model">hr2.salary.deduction</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Potrącenia">
+					<field name="name"/>
+					<field name="employee_id" attrs="{'invisible':[(ctx_get('widok_pracownika', False),'=',True)]}"/>
+					<field name="deduction_type"/>
+					<field name="execution_date_start"/>
+					<field name="execution_date_stop"/>
+					<field name="account_id"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_potracenia_form" model="ir.ui.view">
+            <field name="name">hr2.potracenia.form</field>
+            <field name="model">hr2.salary.deduction</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Potrącenie">
+                    <group colspan="4">
+                    	<field name="name"/>
+						<field name="employee_id" widget="selection" attrs="{'readonly':[('amount_paid','>',0)]}"/>
+						<field name="company_id" groups="base.group_multi_company"/>
+						<field name="decision_date" attrs="{'readonly':[('amount_paid','>',0)]}"/>
+						<field name="deduction_type" widget="selection" attrs="{'readonly':[('amount_paid','>',0)]}"/>
+						<field name="account_id" />
+					</group>
+					<group>
+					<notebook>
+						<page string="Dane">
+							<group>
+								<field name="partner_id" widget="selection"/>
+								<field name="bank_account_number"/>
+							</group>
+							<group colspan="4">
+								<field name="execution_date_start" attrs="{'readonly':[('amount_paid','>',0)]}"/>
+								<field name="execution_date_stop"/>
+							</group>
+							<group colspan="6" col="6">
+								<field name="amount"/>
+								<field name="amount_type" attrs="{'readonly':[('amount_paid','>',0)]}"/>
+								<field name="amount_paid"/>
+							</group>
+							<group colspan="6" col="6">
+								<field name="execution_from_contracts"/>
+								<field name="execution_from_contracts_restrictions" attrs="{'readonly':[('execution_from_contracts','=',False)]}"/>
+								<field name="contracts_restrictions_value" nolabel="1" 
+									attrs="{'invisible':['|',('execution_from_contracts','=',False),'AND',('execution_from_contracts_restrictions','!=','wolna_kwota'),('execution_from_contracts_restrictions','!=','wolny_procent')]}"/>
+							</group>
+
+						</page>
+						<page string="Uwagi">
+							<field name="notes"/>
+						</page>
+					</notebook>
+					</group>
+                </form>
+            </field>
+        </record>
+
+		<record id="open_view_potracenia_tree" model="ir.actions.act_window">
+            <field name="name">Deklaracja potrącenia</field>
+            <field name="res_model">hr2.salary.deduction</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_potracenia_tree"/>
+        </record>
+
+		<record id="view_payroll_potracenia_search" model="ir.ui.view">
+            <field name="name">hr2.potracenia.search</field>
+            <field name="model">hr2.salary.deduction</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="">
+                	<group expand="0" string="Filtry">
+                    <field name="employee_id"/>
+                    <field name="deduction_type" widget="selection"/>
+                    <newline/>
+                    <field name="decision_date"/>
+                    <field name="execution_date_start"/>
+                    <field name="execution_date_stop"/>
+                	</group>
+                    <newline/>
+                    <group string="Grupuj po" expand="0">
+                    	<filter string="Typ potrącenia" domain="[]" context="{'group_by':'deduction_type'}"/>
+                    	<filter string="Pracownicy" domain="[]" context="{'group_by':'employee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+						<!-- Payment register -->
+
+		<record id="view_payment_register_tree" model="ir.ui.view">
+            <field name="name">hr.payment.register.tree</field>
+            <field name="model">hr2.payment.register</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Registers">
+					<field name="name"/>
+                    <field name="group"/>
+                    <field name="payroll_register_id"/>
+					<field name="type"/>
+                    <field name="planned_payment_date"/>
+					<field name="payment_date"/>
+					<field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payment_register_form" model="ir.ui.view">
+            <field name="name">hr.payment.register.form</field>
+            <field name="model">hr2.payment.register</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Payment Register">
+                    <group colspan="4" col="4">
+						<field name="name" readonly="1"/>
+                        <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                        <field name="payment_date" readonly="1"/>
+                        <field name="type" attrs="{'readonly':['|', '|', ('state','=','closed'), ('group','=','ZUS'), ('group','=','US')]}"/>
+						<field name="planned_payment_date" attrs="{'readonly':[('state','=','closed')]}"/>
+						<field name="bank_id" domain="[('type','=','partner'), ('partner_id','=',company_id)]" 
+							attrs="{'readonly':[('state','=','closed')]}"/>
+                        <field name="state" readonly="1"/>
+                        <field name="payroll_register_id" readonly="1"/>
+                        <field name="czy_zaplacono"/>
+                        <field name="czy_uwzgledniac_planowane_wyplaty" 
+                        	attrs="{'invisible':[('group','!=','ZUS'), ('group','!=','US')], 'readonly':[('state','=','closed')]}"/>
+                        <field name="group" invisible="1"/>
+				   </group>
+					<button string="Dokonaj zapłaty" name='validate_payment_register' type="object" icon="gtk-ok"
+						attrs="{'invisible':[('state','=','closed')]}" refresh="1"/>
+					<newline/>
+                    <button name="przelicz_ponownie_zus" string="Przelicz ponownie" icon="gtk-refresh" type="object"
+                    	attrs="{'invisible':[('group','!=','ZUS')]}"/>
+                    	<newline/>
+                    <button name="przelicz_ponownie_us" string="Przelicz ponownie" icon="gtk-refresh" type="object"
+                    	attrs="{'invisible':[('group','!=','US')]}"/>
+                    <newline/>
+
+                    <button name="close_payment_register" string="Zamknij rejestr" icon="gtk-close" type="object" 
+                    	attrs="{'invisible':[('state','!=','open')]}"/>
+                    <newline/>
+                    <button name="open_payment_register" string="Otwórz rejestr" icon="gtk-open" type="object"
+                    	attrs="{'invisible':[('state','!=','closed')]}"/>
+                    <newline/>
+
+					<notebook >
+						<page string="Payments">
+                            <field name="payment_register_line_id" nolabel="1" attrs="{'readonly':[('state','=','closed')]}"/>
+                            <newline/>
+                        </page>
+                        <page string="Paid">
+                            <field name="payment_register_payment_line_id" nolabel="1" attrs="{'readonly':[('state','=','closed')]}" />
+                        </page>
+                    </notebook>
+                    <newline/>
+                    <button string="Generuj plik KEDU" name='%(menu_hr_kedu_wizard_action)d' type="action" icon="gtk-print" 
+                    	attrs="{'invisible':[('group','!=','salary')]}"/>
+                    <newline/>
+                </form>
+            </field>
+        </record>
+
+         <record id="open_view_payment_register_tree" model="ir.actions.act_window">
+            <field name="name">Payment registers</field>
+            <field name="res_model">hr2.payment.register</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payment_register_tree"/>
+        </record>
+
+        <act_window
+        id="hr_payroll_payment_register"
+        name="Rejestry wypłat"
+        res_model="hr2.payment.register"
+        src_model="hr2.payroll.register"
+        view_type="form"
+        view_mode="tree,form"
+        domain="['|', ('payroll_register_id', '=', active_id),
+                '&#38;', '&#38;','|' ,('group', '=', 'US'), ('group', '=', 'ZUS'), ('month_settled', '=', payment_month), ('year_settled', '=', payment_year)],
+                "/>
+
+		 <act_window
+   		name = "Export register payments"
+   		id = "wizard_export_register_payments"
+   		res_model = "wizard.export.selected"
+   		src_model = "hr2.payment.register"
+   		view_mode = "form"
+   		key2="client_action_multi"
+   		target = "new" />
+
+		<record id="view_payroll_payment_register_search" model="ir.ui.view">
+            <field name="name">hr2.payment.register.search</field>
+            <field name="model">hr2.payment.register</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <filter string="Wypłaty" icon="terp-dolar" domain="[('group', '=', 'salary')]"/>
+                    <filter string="ZUS" icon="terp-stock_format-default" domain="[('group', '=', 'ZUS')]"/>
+                    <filter string="US" icon="terp-stock_format-default" domain="[('group', '=', 'US')]"/>
+                    <filter string="Potrącenia" icon="terp-dolar_ok!" domain="[('group', '=', 'deductions')]"/>
+                    <separator orientation="vertical"/>
+                    <field name="planned_payment_date"/>
+                    <field name="type"/>
+                	<field name="state"/>
+                </search>
+            </field>
+        </record>
+
+				<!-- Payment register line-->
+
+		<record id="view_payment_register_line_tree" model="ir.ui.view">
+            <field name="name">hr2.payment.register.line.tree</field>
+            <field name="model">hr2.payment.register.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+					<field name="payslip_id"/>
+					<field name="amount"/>
+                    <field name="account_number"/>
+					<field name="state"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payment_register_line_form" model="ir.ui.view">
+            <field name="name">hr2.payment.register.line.form</field>
+            <field name="model">hr2.payment.register.line</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <group colspan="4" col="4">
+						<field name="payslip_id"/>
+						<field name="payment_register_id"/>
+						<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+						<field name="out_bank_id" domain="[('type','=','employee'), ('owner_name','=',self.get_employee_name_domain(payslip_id))]" 
+									on_change="on_change_out_bank_id(out_bank_id, context)" attrs="{'invisible':[('cash','=',True)]}" 
+									context="self.build_context_hr(payslip_id)" gtkonly="1"/>
+                        <field name="amount"/>
+                        <field name="account_number" attrs="{'invisible':[('cash','=',True)]}"/>
+						<field name="state"/>
+                        <field name="cash"/>
+						<newline/>
+                        <label string="Description:"/>
+                        <field name="description" nolabel="1" colspan="4"/>
+                        <newline/>
+						<field name="payment_register_payment_line_id" nolabel="1" colspan="4" 
+							context="self.build_context_for_line(payslip_id, payment_register_id, amount, account_number, out_bank_id, cash, context)"/>
+				   </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_payment_register_line_search" model="ir.ui.view">
+            <field name="name">hr2.payment.register.line.search</field>
+            <field name="model">hr2.payment.register.line</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+            	<search>
+            	<group string="Filtry" expand="0">
+            		<field name="payslip_id"/>
+            		<field name="payment_register_id"/>
+            		<multisearch name='multisearch_hr_payroll_register_date'>
+						<field name="date" string="Terminy wypłat od-do" widget="date"/>
+					</multisearch>
+            	</group>
+            	</search>
+            </field>
+         </record>
+
+        <record id="open_view_payment_register_line_tree" model="ir.actions.act_window">
+            <field name="name">Payment registers line</field>
+            <field name="res_model">hr2.payment.register.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payment_register_line_tree"/>
+        </record>
+
+        <record id="open_view_payment_register_line_tree_e" model="ir.actions.act_window">
+            <field name="name">Payment registers</field>
+            <field name="res_model">hr2.payment.register.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payment_register_line_tree"/>
+            <field name="search_view_id" ref="view_payment_register_line_search"/>
+            <field name="domain">[('payslip_id.employee_id.user_id','=',uid)]</field>
+
+        </record>
+
+
+				<!-- Payment register payment line-->
+
+		<record id="view_payment_register_payment_line_tree" model="ir.ui.view">
+            <field name="name">hr.payment.register.payment.line.tree</field>
+            <field name="model">hr2.payment.register.payment.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="">
+					<field name="date"/>
+                    <field name="payslip_id"/>
+					<field name="amount"/>
+					<field name="account_number"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payment_register_payment_line_form" model="ir.ui.view">
+            <field name="name">hr.payment.register.payment.line.form</field>
+            <field name="model">hr2.payment.register.payment.line</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <group colspan="4" col="4">
+						<field name="payslip_id"/>
+						<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        <field name="date"/>
+						<field name="payment_register_id"/><newline/>
+                        <field name="payment_register_line_id"/>
+						<field name="out_bank_id" domain="[('type','=','employee'), ('owner_name','=',self.get_employee_name_domain(payslip_id))]" 
+									on_change="on_change_out_bank_id(out_bank_id, context)" attrs="{'invisible':[('cash','=',True)]}" 
+									context="self.build_context_hr(payslip_id)" gtkonly="1"/>
+						<field name="amount"/>
+                        <field name="account_number" attrs="{'invisible':[('cash','=',True)]}"/>
+                        <field name="cash"/>
+				   </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_payment_register_payment_line_tree" model="ir.actions.act_window">
+            <field name="name">Payment registers payment line</field>
+            <field name="res_model">hr2.payment.register.payment.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payment_register_payment_line_tree"/>
+        </record>
+
+        		<!-- Dodatki -->
+
+		<record id="view_dodatki_type_tree" model="ir.ui.view">
+            <field name="name">hr.dodatki.type.tree</field>
+            <field name="model">hr2.salary.addition.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Typy dodatków">
+					<field name="name"/>
+					<field name="application"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_dodatki_type_form" model="ir.ui.view">
+			<field name="name">hr.dodatki.type.form</field>
+			<field name="model">hr2.salary.addition.type</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Typ dodatku">
+					<group colspan="4" col="4">
+                        <group colspan="2" col="2">
+                            <field name="name"/>
+                            <field name='licz_kup_jak_podstawa'/>
+                            <field name='co_ile_powtarzac'/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="account_id" domain="[('type','=','cost')]"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name='application' on_change="on_change_application(application)"/>
+                            <field name='okresowy'/>
+                            <field name='nalezny_za_okres_nieobecnosci'/>
+                            <field name="calculate_zus"
+								   attrs="{'readonly': [('application', 'not in', ('ekwiwalent', 'swiadczenie'))]}"/>
+							<field name="wlicz_do_pdst_chor"
+								   attrs="{'readonly': [('application', 'not in', ('ekwiwalent', 'swiadczenie'))]}"/>
+                        </group>
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_dodatki_tree" model="ir.ui.view">
+            <field name="name">hr.dodatki.tree</field>
+            <field name="model">hr2.salary.addition</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Dodatki">
+					<field name="name"/>
+					<field name="addition_type_id"/>
+					<field name="kwota"/>
+					<field name="procent_podstawy"/>
+					<field name="month_start" string="Miesiąc początkowy"/>
+					<field name="year_start" string ="Rok początkowy"/>
+					<field name="month_stop" string="Miesiąc końcowy"/>
+					<field name="year_stop" string="Rok końcowy"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_dodatki_form" model="ir.ui.view">
+			<field name="name">hr.dodatki.form</field>
+			<field name="model">hr2.salary.addition</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Dodatek">
+					<group attrs="{'readonly':[(ctx_get('mozliwa_edycja', False),'!=',True)]}">
+						<field name="name" attrs="{'readonly':[(ctx_get('mozliwa_edycja', False),'!=',True)]}"/>
+						<field name="company_id" groups="base.group_multi_company" readonly="1"/>
+						<field name="addition_type_id" widget = "selection"/>
+						<field name="etat_data_id" attrs="{'readonly':[(ctx_get('mozliwa_edycja', False),'!=',True)],'invisible':[(ctx_get('mozliwa_edycja', False),'=',True)]}" context="{'form_view_ref':'hr_payroll_pl.view_payroll_dodatk_etat_data2_form'}"/>
+						<field name="contract_id" widget="selection" attrs="{'readonly':[(ctx_get('mozliwa_edycja', False),'!=',True)], 'invisible':[(ctx_get('mozliwa_edycja', False),'=',True)]}"/>
+						<newline/>
+						<field name="kwota" attrs="{'readonly':['|',('procent_podstawy','!=',0),(ctx_get('mozliwa_edycja', False),'!=',True)]}"/>
+						<field name="procent_podstawy" attrs="{'readonly':['|',(ctx_get('mozliwa_edycja', False),'!=',True),('kwota','!=',0)]}"/>
+						<field name="year_start"/>
+						<field name="month_start"/>
+						<field name="year_stop" attrs="{'required':[('month_stop','!=',0)]}"/>
+						<field name="month_stop" attrs="{'required':[('year_stop','!=',0)]}"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+        <record id="open_view_dodatki_tree" model="ir.actions.act_window">
+            <field name="name">Dodatki</field>
+            <field name="res_model">hr2.salary.addition</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_dodatki_tree"/>
+        </record>
+
+        <record id="open_view_dodatki_type_tree" model="ir.actions.act_window">
+            <field name="name">Typ dodatków</field>
+            <field name="res_model">hr2.salary.addition.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_dodatki_type_tree"/>
+        </record>
+
+        <record id="view_payroll_dodatki_type_search" model="ir.ui.view">
+            <field name="name">hr2.dodatki.type.search</field>
+            <field name="model">hr2.salary.addition.type</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="">
+                	<filter string="Rodzaj" domain="[]" context="{'group_by':'application'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_payroll_dodatki_search" model="ir.ui.view">
+            <field name="name">hr2.dodatki.search</field>
+            <field name="model">hr2.salary.addition</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="">
+                <group expand="0" string="Filtry">
+                    <field name="name"/>
+                	<field name="addition_type_id"/>
+                	<field name="etat_data_id"/>
+                	<field name="contract_id"/>
+                	<newline/>
+                	<field name="year_start"/>
+                	<field name="month_start"/>
+                	<newline/>
+                	<field name="year_stop"/>
+                	<field name="month_stop"/>
+                </group>
+                <newline/>
+                	<group string="Grupuj po" expand="0">
+                		<filter string="Typ" domain="[]" context="{'group_by':'addition_type_id'}"/>
+                	</group>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- Inherit res.company i e-declaration-->
+
+        <record id="view_company_form_inherit" model="ir.ui.view">
+            <field name="name">res.company.form.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="type">form</field>
+            <field name="priority">50</field>
+            <field name="arch" type="xml">
+            	<field name="tax_office_id" position="replace">
+            	</field>
+                <field name="company_registry" position="after">
+                    <field name="tax_office_id" domain="[('type','=','us')]"/>
+                    <field name="zus_id" domain="[('type','=','zus')]"/>
+                </field>
+                <field name="name" position="after">
+					<field name="short_name" />
+				</field>
+            </field>
+        </record>
+
+        <record id="edeclaration_choice_form_inherit" model="ir.ui.view">
+            <field name="name">edeclaration.choice.form.inherit</field>
+            <field name="model">edeclaration.choice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="lacan_edeclaration.edeclaration_choice_parameters_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="attributes">
+                    <attribute name="invisible">context.get('employee_declaration', False)</attribute>
+                    <attribute name="required">not context.get('employee_declaration', False)</attribute>
+
+                </field>
+                <field name="company_id" position="after">
+                    <field name="employee_id" invisible="not context.get('employee_declaration', False)"/>
+                </field>
+            </field>
+        </record>
+
+			<!-- Progi podatkowe -->
+	 	<record id="progi_configuration_line_tree" model="ir.ui.view">
+			<field name="name">progi.configuration.line.tree</field>
+			<field name="model">hr2.config.prog.podatkowy.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+			<tree string="">
+		 		<field name="value_from"/>
+		 		<field name="percent"/>
+		 	</tree>
+			</field>
+		</record>
+		<record id="progi_configuration_line_form" model="ir.ui.view">
+			<field name="name">progi.configuration.line.form</field>
+			<field name="model">hr2.config.prog.podatkowy.line</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+			<form>
+				<field name="value_from"/>
+				<field name="percent"/>
+				<field name="company_id" groups="base.group_multi_company"/>
+			</form>
+			</field>
+		</record>
+
+	 	<record id="progi_configuration_tree" model="ir.ui.view">
+			<field name="name">progi.configuration.tree</field>
+			<field name="model">hr2.config.prog.podatkowy</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+			<tree>
+				<field name="year"/>
+			</tree>
+			</field>
+		</record>
+		<record id="progi_configuration_form" model="ir.ui.view">
+			<field name="name">progi.configuration.form</field>
+			<field name="model">hr2.config.prog.podatkowy</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+			<form>
+				<group>
+				<label string = "Konfiguracja progów podatkowych"/>
+				<field name="year" nolabel="1" attrs="{'readonly':[('year','!=',0)]}"/>
+				<field name="company_id" groups="base.group_multi_company"/>
+				</group>
+				<newline/>
+				<field name="prog_line_ids" string="Progi podatkowe" height="500" nolabel="1" widget="one2many_list" mode="tree" readonly="0"/>
+			</form>
+			</field>
+		</record>
+
+		<!-- Progi kwoty wolnej -->
+		<record id="view_config_kwota_wolna_tree" model="ir.ui.view">
+			<field name="name">hr2.config.kwota.wolna.tree</field>
+			<field name="model">hr2.config.kwota.wolna</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		<record id="view_config_kwota_wolna_form" model="ir.ui.view">
+			<field name="name">hr2.config.kwota.wolna.form</field>
+			<field name="model">hr2.config.kwota.wolna</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Próg kwoty wolnej">
+					<field name="name"/>
+					<newline/>
+					<label string="Progi:" colspan="2"/>
+					<newline/>
+					<field name="prog_line_ids" nolabel="1" colspan="2"/>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_config_kwota_wolna_line_tree" model="ir.ui.view">
+			<field name="name">hr2.config.kwota.wolna.line.tree</field>
+			<field name="model">hr2.config.kwota.wolna.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="">
+					<field name="value_from"/>
+					<field name="transition"/>
+					<field name="amount"/>
+				</tree>
+			</field>
+		</record>
+		<record id="view_config_kwota_wolna_line_form" model="ir.ui.view">
+			<field name="name">hr2.config.kwota.wolna.line.form</field>
+			<field name="model">hr2.config.kwota.wolna.line</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Próg kwoty wolnej">
+					<field name="value_from"/>
+					<field name="transition"/>
+					<field name="amount" attrs="{'readonly': [('transition', '=', True)]}"/>
+				</form>
+			</field>
+		</record>
+
+		<!-- Raport różnic kwoty wolnej -->
+		<record id="open_kwota_wolna_report" model="ir.actions.act_window">
+            <field name="name">Różnice kwoty wolnej</field>
+            <field name="res_model">hr2.kwota.wolna.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+			<field name="context">{}</field>
+        </record>
+		<record id="view_kwota_wolna_report_search" model="ir.ui.view">
+			<field name="name">view.kwota.wolna.report.search</field>
+            <field name="model">hr2.kwota.wolna.report</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search>
+					<filter string="Rok" context="{'group_by': 'year'}" icon="terp-go-year"/>
+					<separator/>
+					<field name="year"/>
+					<field name="employee_id"/>
+				</search>
+			</field>
+		</record>
+		<record id="view_kwota_wolna_report_tree" model="ir.ui.view">
+			<field name="name">view.kwota.wolna.report.tree</field>
+            <field name="model">hr2.kwota.wolna.report</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Różnice kwoty wolnej">
+					<field name="year"/>
+					<field name="employee_id"/>
+					<field name="dochod"/>
+					<field name="podatek"/>
+					<field name="kwota_wolna_payslip"/>
+					<field name="kwota_wolna_calc"/>
+					<field name="diff"/>
+				</tree>
+			</field>
+        </record>
+
+        <!-- codes -->
+
+		<record model="ir.ui.view" id="hr_insurance_codes_tree_view">
+			<field name="name">hr.insurance_codes.tree</field>
+			<field name="model">hr2.insurance.codes</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Insurance codes">
+					<field name="name" string="Code" on_change="onchange_insurance_code(name)" />
+					<field name="description" string="Description" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_insurance_codes_form_view">
+			<field name="name">hr.insurance_codes.form</field>
+			<field name="model">hr2.insurance.codes</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Insurance code">
+					<field name="name" string="Code" colspan="4" on_change="onchange_insurance_code(name)" />
+					<field name="description" string="Description" colspan="4" />
+				</form>
+			</field>
+		</record>
+		
+		<!-- Nadgodziny -->
+
+		<!--Formularz -->
+		<record model="ir.ui.view" id="payroll_overtime_form_view">
+			<field name="name">Nadgodziny</field>
+			<field name="model">hr2.overtime</field>
+			<field name="type">form</field>
+			<field name="priority">10</field>
+			<field name="arch" type="xml">
+				<form string="Nadgodziny">
+					<group col="8" colspan="2" attrs="{'readonly':[self_get('self.get_user_group_or_state(self._obj.get()[\'state\'])')]}">
+						<field name="employee_id" on_change="onchange_employee(employee_id)" domain="[('id','in',self.get_employees(employee_id))]" />
+						<field name="department_id" hide_items="open,switch"/>
+					</group>
+					<notebook colspan="4">
+						<page string="Ogólne">
+							<group attrs="{'readonly':[self_get('self.get_user_group_or_state(self._obj.get()[\'state\'])')]}">
+								<field name="date_from" on_change="onchange_date(date_from, date_to, context)"/>
+								<field name="date_to" on_change="onchange_date(date_from, date_to, context)"/>
+								<field name="hours" />
+							</group>
+						</page>
+					</notebook>
+					<group>
+							<button name="overtime_hours_confirm" string="Potwierdź" icon="gtk-ok" type="object" attrs="{'invisible':[('state','!=','draft')]}"/>
+							<button name="overtime_hours_cancel" string="Anuluj" icon="gtk-cancel" type="object" attrs="{'invisible':[('state','not in',['approved','draft'])]}" groups="hr.group_hr_manager"/>
+							<button name="overtime_hours_set_to_draft" string="Ustaw na projekt" icon="gtk-convert" type="object" attrs="{'invisible':[('state','!=','cancel')]}" groups="hr.group_hr_manager"/>
+					</group>
+					<group>
+						<field name="state" />
+						<field name="company_id" groups="base.group_multi_company"/>
+					</group>
+				</form>
+			</field>
+		</record>
+		
+		<!-- Drzewo -->
+        <record model="ir.ui.view" id="payroll_overtime_tree_view">
+            <field name="name">Nadgodziny</field>
+            <field name="model">hr2.overtime</field>
+            <field name="type">tree</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Podsumowanie nadgodzin">
+                    <field name="employee_id" />
+                    <field name="hours" sum='Remaining Days'/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+		<!-- Widok wyświetlony przy dodawaniu nadgodzin przez kalendarz -->
+		<record model="ir.ui.view" id="add_overtime_form_view">
+			<field name="name">Nadgodziny</field>
+			<field name="model">hr2.overtime</field>
+			<field name="type">form</field>
+			<field name="priority">16</field>
+			<field name="arch" type="xml">
+				<form string="Nadgodziny">
+					<group col="8" colspan="4">
+					 <field name="employee_id" readonly="1"/>
+					</group>
+					<notebook colspan="4">
+						<page string="Ogólne">
+							<field name="date_from" on_change="onchange_date(date_from, date_to, context)"/>
+							<field name="date_to" on_change="onchange_date(date_from, date_to, context)"/>
+							<field name="hours" />
+						</page>
+					</notebook>
+					<group>
+						<field name="state" />
+						<field name="company_id" groups="base.group_multi_company"/>
+					</group>
+					<button string="Zapisz" name='save_and_close' type="object" icon="gtk-add"/>
+				</form>
+			</field>
+		</record>
+
+        <record id="action_view_hr_insurance_codes" model="ir.actions.act_window">
+			<field name="name">Insurance Codes</field>
+			<field name="res_model">hr2.insurance.codes</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="hr_insurance_codes_tree_view" />
+		</record>
+
+		<record model="ir.ui.view" id="hr_benefit_codes_tree_view">
+			<field name="name">hr.benefit_codes.tree</field>
+			<field name="model">hr2.benefit.codes</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Benefit codes">
+					<field name="name" string="Code" on_change="onchange_benefit_code(name)" />
+					<field name="description" string="Description" />
+					<field name="is_benefit" string="Is benefit" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hr_benefit_codes_form_view">
+			<field name="name">hr.benefit_codes.form</field>
+			<field name="model">hr2.benefit.codes</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Benefit code">
+					<field name="name"  string="Code" colspan="4" on_change="onchange_benefit_code(name)" />
+					<field name="description" string="Description" colspan="4" />
+					<field name="is_benefit" string="Is benefit" colspan="4" />
+                    <field name="absence_ids" string="Absence types" colspan="4" />
+				</form>
+			</field>
+		</record>
+
+        <record id="action_view_hr_benefit_codes" model="ir.actions.act_window">
+			<field name="name">Benefit Codes</field>
+			<field name="res_model">hr2.benefit.codes</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="hr_benefit_codes_tree_view" />
+		</record>
+		
+		<record model="ir.ui.view" id="hr2_nfz_codes_tree_view">
+			<field name="name">hr2.nfz_codes.tree</field>
+			<field name="model">hr2.nfz</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="NFZ codes">
+					<field name="name" string="Code" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="action_view_hr2_nfz_codes" model="ir.actions.act_window">
+			<field name="name">NFZ codes</field>
+			<field name="res_model">hr2.nfz</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="hr2_nfz_codes_tree_view" />
+		</record>
+		
+		<record model="ir.ui.view" id="hr2_obsolete_reason_tree_view">
+			<field name="name">hr2.obsolete.reason.tree</field>
+			<field name="model">hr2.obsolete.reason</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Obsolete reason">
+					<field name="name" string="Code" />
+					<field name="description" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="action_view_hr2_obsolete_reason" model="ir.actions.act_window">
+			<field name="name">Obsolete reason</field>
+			<field name="res_model">hr2.obsolete.reason</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="hr2_obsolete_reason_tree_view" />
+		</record>
+		
+		<!-- Akcja wywołująca wizard importu danych do umów cywilno-prawnych -->
+        
+        <record id="action_import_contract_data" model="ir.actions.act_window">
+			<field name="name">Import danych do umów cywilno-prawnych</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">import.contract.data</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_import_contract_data_form"/>
+			<field name="target">new</field>
+			<field name="multi">1</field>
+		</record>
+		
+		<record id="ir_open_action_import_contract_data" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">hr2.contract</field>
+            <field name="name">Import danych do umów cywilno-prawnych</field>
+            <field eval="'ir.actions.act_window,%d'%action_import_contract_data" name="value"/>
+            <field name="object">True</field>
+        </record>
+		
+		<!-- Akcja -->
+		<record id="open_view_payroll_overtime_tree" model="ir.actions.act_window">
+            <field name="name">Nadgodziny</field>
+            <field name="res_model">hr2.overtime</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="payroll_overtime_tree_view"/>
+        </record>
+        
+        
+        <!-- Konta konfiguracyjne -->
+        <record model="ir.ui.view" id="hr2_payslip_config_accounts_form_view">
+			<field name="name">hr2.payslip.config.accounts.form</field>
+			<field name="model">hr2.payslip.config.accounts</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Konta">
+					<field name="account_id"/>
+					<field name="adimension1_id"/>
+					<field name="adimension2_id"/>
+					<field name="adimension3_id"/>
+					<field name="adimension4_id"/>
+					<field name="adimension5_id"/>
+					<field name="adimension6_id"/>
+					<field name="adimension7_id"/>
+					<field name="adimension8_id"/>
+					<field name="adimension9_id"/>
+					<field name="adimension10_id"/>
+					<field name="analytics_id"/>
+					<!-- pola niewidoczne, ale będące w modelu, żeby widok działał na webcliencie -->
+					<field name="side" invisible="1"/>
+					<field name="type" invisible="1"/>
+					<field name="debit_type" invisible="1"/>
+					<field name="config_id" invisible="1"/>
+					<field name="amount" invisible="1"/>
+					<field name="percent" invisible="1"/>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="hr2_payslip_config_accounts_tree_view">
+			<field name="name">hr2.payslip.config.accounts.tree</field>
+			<field name="model">hr2.payslip.config.accounts</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Konta konfiguracyjne">
+					<field name="account_id"/>
+					<field name="config_id"/>
+					<field name="type"/>
+				</tree>
+			</field>
+		</record>
+
+				<!-- Contract Type -->
+
+        <record id="view_contract_type_tree" model="ir.ui.view">
+            <field name="name">hr2.contract.type.tree</field>
+            <field name="model">hr2.contract.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contract types">
+                	<field name="name"/>
+                    <field name="not_resident"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_contract_type_form" model="ir.ui.view">
+            <field name="name">hr2.contract.type.form</field>
+            <field name="model">hr2.contract.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Contract type">
+                    <group colspan="4" col="6">
+                        <field name="name" colspan="4"/>
+                        <field name="not_resident" colspan="2"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+					<group string="Domyślne wartości składek" colspan="2" col="2">
+						<field name="calculate_rent"/>
+						<field name="calculate_emr"/>
+						<field name="calculate_wyp"/>
+						<field name="calculate_chor"/>
+						<field name="calculate_fp"/>
+                        <field name="calculate_fgsp"/>
+                        <field name="calculate_zdr"/>
+					</group>
+                    <group string="Domyślne wartości kosztów" colspan="2" col="2">
+                        <field name="koszty_uzyskania"/>
+                    	<field name="procent_uzyskania" attrs="{'readonly': [('wynagrodzenie_z_procentowym_kosztem', '=', 0)]}"/>
+                    	<field name="wynagrodzenie_z_procentowym_kosztem"/>
+                    	<field name="inne_koszty" attrs="{'readonly': [('koszty_uzyskania', '!=', 'inne')]}"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_contract_type_tree" model="ir.actions.act_window">
+            <field name="name">Contract type</field>
+            <field name="res_model">hr2.contract.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_contract_type_tree"/>
+        </record>
+        
+        <!-- Manners of termination -->
+
+        <record id="view_payroll_termination_tree" model="ir.ui.view">
+            <field name="name">manner.of.termination.tree</field>
+            <field name="model">hr2.manner.of.termination</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payroll_termination_form" model="ir.ui.view">
+            <field name="name">manner.of.termination.form</field>
+            <field name="model">hr2.manner.of.termination</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="name"/>
+                    <field name="code"/>
+                </form>
+            </field>
+        </record>
+
+       <record id="open_view_payroll_termination_tree" model="ir.actions.act_window">
+            <field name="name">Manners of termination</field>
+            <field name="res_model">hr2.manner.of.termination</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+			<!-- menuitems -->
+        <menuitem id="menu_hr_payroll" parent="hr.menu_hr_root" name="Payroll" sequence="2"
+            groups="hr.group_hr_manager,hr.group_dept_manager"/>
+
+        <menuitem id="menu_hr_employees_posts" parent="menu_hr_payroll" name="Pracownicy i umowy" sequence="1"
+            groups="hr.group_hr_manager,hr.group_dept_manager"/>
+        <menuitem id="menu_hr_dodatki" name="Lista dodatków" parent="menu_hr_employees_posts" action="open_view_dodatki_tree" sequence="4"
+            groups="hr.group_hr_manager"/>
+        <menuitem id="menu_hr_potracenia" name="Potrącenia" parent="menu_hr_employees_posts" action="open_view_potracenia_tree" sequence="5"
+            groups="hr.group_hr_manager"/>
+        <menuitem id="menu_hr_payroll_overtime" name="Nadgodziny" parent="menu_hr_employees_posts" action="open_view_payroll_overtime_tree" sequence="6"/>
+
+        <menuitem id="menu_hr_payrolls_payments" parent="menu_hr_payroll" name="Listy płac i wypłaty" sequence="2"
+            groups="hr.group_hr_manager"/>
+        <menuitem id="menu_hr_payroll_register" name="Payroll registers" parent="menu_hr_payrolls_payments" sequence="1"
+            action="open_view_payroll_register_tree"/>
+        <menuitem id="menu_hr_payment_register" name="Payment registers" parent="menu_hr_payrolls_payments" sequence="2"
+            action="open_view_payment_register_tree"/>
+
+        <menuitem id="menu_hr_reports" parent="menu_hr_payroll" name="Raportowanie" sequence="4"
+            groups="hr.group_hr_manager"/>
+        <menuitem id="menu_hr_payslip2" name="Payslip" parent="menu_hr_reports" action="open_view_payslip2_tree" sequence="1"/>
+        <menuitem id="menu_hr_tax_declaration" name="Declaration" parent="menu_hr_reports"
+            action="lacan_edeclaration.open_view_tax_declaration_tree" sequence="4"/>
+        <menuitem id="menu_hr2_kwota_wolna_report" name="Różnice kwoty wolnej" parent="menu_hr_reports" action="open_kwota_wolna_report" sequence="18"/>
+
+        <menuitem id="menu_hr_config" parent="menu_hr_payroll" name="Konfiguracja" sequence="5"
+            groups="hr.group_hr_manager"/>
+
+        <menuitem id="menu_hr_config_parameters" parent="menu_hr_config" name="Parametry płacowe" sequence="1"
+            groups="hr.group_hr_manager"/>
+        <menuitem id="menu_hr_payroll_param_config2" name="Parametry płacowe ustalane na rok" parent="menu_hr_config_parameters" sequence="1"
+            action="menu_hr_payroll_config_action"/>
+        <menuitem id="menu_hr_payroll_param_config_okresowe2" name="Parametry płacowe pozostałe" parent="menu_hr_config_parameters" sequence="3"
+            action="menu_hr_payroll_config_nieokresowe_action"/>
+
+		<menuitem id="menu_hr_payslip2_config" name="Konfiguracja list płac" parent="menu_hr_config" sequence="2" 
+            action="open_view_payslip2_config_tree"/>
+        <menuitem id="menu_hr_contract_type2" name="Contract type" parent="menu_hr_config" sequence="3"
+            action="open_view_contract_type_tree"/>
+        <menuitem id="menu_hr_dodatki_type" name="Typy dodatków" parent="menu_hr_config" action="open_view_dodatki_type_tree" sequence="4"/>
+        <menuitem id="menu_hr_config_calendars" parent="menu_hr_config" name="Kalendarze" sequence="6"
+            groups="hr.group_hr_recruiter,hr.group_hr_manager"/>
+
+        <menuitem id="menu_hr_config_deductions" parent="menu_hr_config" name="Potrącenia" sequence="7"
+            groups="hr.group_hr_manager"/>
+        <menuitem id="menu_hr_potracenia_group" name="Grupy potrąceń" parent="menu_hr_config_deductions" action="open_view_potracenia_group_tree" sequence="1"/>
+        <menuitem id="menu_hr_potracenia_type" name="Typy potrąceń" parent="menu_hr_config_deductions" action="open_view_potracenia_type_tree" sequence="2"/>
+
+        <menuitem id="menu_hr_manners_of_termination" name="Manners of termination" parent="menu_hr_config" sequence="8"
+            action="open_view_payroll_termination_tree"/>
+        <menuitem id="menu_hr2_nfz_codes" name="NFZ codes" parent="menu_hr_config" sequence="9"
+            action="action_view_hr2_nfz_codes" />
+        <menuitem id="menu_hr_insurance_codes" name="Insurance codes" parent="menu_hr_config" sequence="10"
+            action="action_view_hr_insurance_codes" />
+        <menuitem id="menu_hr2_obsolete_reason" name="Obsolete reason" parent="menu_hr_config" sequence="11"
+            action="action_view_hr2_obsolete_reason" />
+        <menuitem id="menu_hr_benefit_codes" name="Benefit codes" parent="menu_hr_config" sequence="12"
+            action="action_view_hr_benefit_codes" />
+
+
+        <menuitem id="menu_hr_payrolls_payments_employee" parent="hr.menu_hr_main" name="Listy płac i wypłaty" sequence="6"
+            groups="base.group_user,hr.group_hr_recruiter,hr.group_hr_manager"/>
+        <menuitem id="menu_hr_payroll_register_employee" name="Payroll registers" parent="menu_hr_payrolls_payments_employee" sequence="1"
+            action="open_view_payroll_register_tree_e" groups="base.group_user,hr.group_hr_recruiter,hr.group_hr_manager"/>
+        <menuitem id="menu_hr_payment_register_employee" name="Payment registers" parent="menu_hr_payrolls_payments_employee" sequence="2"
+            action="open_view_payment_register_line_tree_e" groups="base.group_user,hr.group_hr_recruiter,hr.group_hr_manager"/>
+
+   </data>
+</openerp>

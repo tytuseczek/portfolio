@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="0">
+
+		<!-- Position in PIT11 e-declaration -->
+
+		<record id="pit_11_position_1" model="pit.11.positions">
+			<field name="name">Identyfikator podatkowy NIP płatnika</field>
+			<field name="number">1</field>
+		</record>
+		<record id="pit_11_position_5" model="pit.11.positions">
+			<field name="name">Urząd skarbowy, do którego adresowana jest informacja</field>
+			<field name="number">5</field>
+		</record>
+		<record id="pit_11_position_6" model="pit.11.positions">
+			<field name="name">Cel złożenia formularza</field>
+			<field name="number">6</field>
+		</record>
+		<record id="pit_11_position_8" model="pit.11.positions">
+			<field name="name">Nazwa pełna, REGON</field>
+			<field name="number">8</field>
+		</record>	
+		<record id="pit_11_position_9" model="pit.11.positions">
+			<field name="name">Nazwisko, pierwsze imię, data urodzenia</field>
+			<field name="number">9</field>
+		</record>		
+		<record id="pit_11_position_10" model="pit.11.positions">
+			<field name="name">Rodzaj obowiązku podatkowego płatnika</field>
+			<field name="number">10</field>
+		</record>
+		<record id="pit_11_position_11" model="pit.11.positions">
+			<field name="name">Identyfikator podatkowy NIP / numer PESEL</field>
+			<field name="number">11</field>
+		</record>
+		<record id="pit_11_position_12" model="pit.11.positions">
+			<field name="name">Zagraniczny numer identyfikacyjny podatnika</field>
+			<field name="number">12</field>
+		</record>	
+		<record id="pit_11_position_13" model="pit.11.positions">
+			<field name="name">Rodzaj numeru identyfikacyjnego (dokumentu potwierdzającego tożsamość)</field>
+			<field name="number">13</field>
+		</record>
+		<record id="pit_11_position_14" model="pit.11.positions">
+			<field name="name">Kraj wydania numeru identyfikacyjnego</field>
+			<field name="number">14</field>
+		</record>
+		<record id="pit_11_position_15" model="pit.11.positions">
+			<field name="name">Nazwisko</field>
+			<field name="number">15</field>
+		</record>	
+		<record id="pit_11_position_16" model="pit.11.positions">
+			<field name="name">Pierwsze imię</field>
+			<field name="number">16</field>
+		</record>
+		<record id="pit_11_position_17" model="pit.11.positions">
+			<field name="name">Data urodzenia</field>
+			<field name="number">17</field>
+		</record>
+		<record id="pit_11_position_18" model="pit.11.positions">
+			<field name="name">Kraj</field>
+			<field name="number">18</field>			
+		</record>	
+		<record id="pit_11_position_19" model="pit.11.positions">
+			<field name="name">Województwo</field>
+			<field name="number">19</field>
+		</record>	
+		<record id="pit_11_position_20" model="pit.11.positions">
+			<field name="name">Powiat</field>
+			<field name="number">20</field>
+		</record>	
+		<record id="pit_11_position_21" model="pit.11.positions">
+			<field name="name">Gmina</field>
+			<field name="number">21</field>
+		</record>	
+		<record id="pit_11_position_22" model="pit.11.positions">
+			<field name="name">Ulica</field>
+			<field name="number">22</field>
+		</record>					
+		<record id="pit_11_position_23" model="pit.11.positions">
+			<field name="name">Nr domu</field>
+			<field name="number">23</field>
+		</record>
+		<record id="pit_11_position_24" model="pit.11.positions">
+			<field name="name">Nr lokalu</field>
+			<field name="number">24</field>
+		</record>
+		<record id="pit_11_position_25" model="pit.11.positions">
+			<field name="name">Miejscowość</field>
+			<field name="number">25</field>
+		</record>							
+		<record id="pit_11_position_26" model="pit.11.positions">
+			<field name="name">Kod pocztowy</field>
+			<field name="number">26</field>
+		</record>		
+		<record id="pit_11_position_27" model="pit.11.positions">
+			<field name="name">Poczta</field>
+			<field name="number">27</field>
+		</record>		
+		<record id="pit_11_position_28" model="pit.11.positions">
+			<field name="name">Koszty uzyskania przychodów, wykazane w poz. 30, zostały uwzględnione do wysokości przysługującej podatnikowi</field>
+			<field name="number">28</field>
+		</record>
+		<record id="pit_11_position_29" model="pit.11.positions">
+			<field name="name">Przychód - należności ze stosunku: pracy, służbowego, spółdzielczego i z pracy nakładczej, a także zasiłki pieniężne
+			z ubezpieczenia społecznego wyplacone przez zakład pracy, o którym mowa w art. 31 ustawy, oraz płatników,
+			o których mowa w art. 42e ust. 1 ustawy</field>
+			<field name="number">29</field>
+		</record>
+		<record id="pit_11_position_30" model="pit.11.positions">
+			<field name="name">Koszty uzyskania przychodów - należności ze stosunku: pracy, służbowego, spółdzielczego i z pracy nakładczej,
+			a także zasiłki pieniężne z ubezpieczenia społecznego wyplacone przez zakład pracy, o którym mowa w art. 31 ustawy,
+			oraz płatników, o których mowa w art. 42e ust. 1 ustawy</field>
+			<field name="number">30</field>
+		</record>
+		<record id="pit_11_position_31" model="pit.11.positions">
+			<field name="name">Dochód - należności ze stosunku: pracy, służbowego, spółdzielczego i z pracy nakładczej,
+			a także zasiłki pieniężne z ubezpieczenia społecznego wyplacone przez zakład pracy,
+			o którym mowa w art. 31 ustawy, oraz płatników, o których mowa w art. 42e ust. 1 ustawy</field>
+			<field name="number">31</field>
+		</record>
+		<record id="pit_11_position_33" model="pit.11.positions">
+			<field name="name">Zaliczka pobrana przez płatnika - należności ze stosunku: pracy, służbowego,spółdzielczego i z pracy nakładczej,
+			a także zasiłki pieniężne z ubezpieczenia społecznego wyplacone przez zakład pracy,
+			o którym mowa w art. 31 ustawy, oraz płatników, o których mowa w art. 42e ust. 1 ustawy</field>
+			<field name="number">33</field>
+		</record>
+		<record id="pit_11_position_34" model="pit.11.positions">
+			<field name="name">Przychód do którego zastosowano odliczenie kosztów uzyskania przychodów na podstawie art. 22 ust. 9 pkt 3 ustawy</field>
+			<field name="number">34</field>
+		</record>
+		<record id="pit_11_position_35" model="pit.11.positions">
+			<field name="name">Koszty uzyskania przychodów,  do których zastosowano odliczenie kosztów uzyskania przychodów na podstawie art. 22 ust. 9 pkt 3 ustawy</field>
+			<field name="number">35</field>
+		</record>
+		<record id="pit_11_position_49" model="pit.11.positions">
+			<field name="name">Przychód - działalność wykonywana osobiście, o której mowa w art. 13 pkt 2, 4, 6
+			(z wyjatkiem czynności wymienionych w wierszu 7) i 7-9 ustawy, w tym umowy o zlecenia i dzieło</field>
+			<field name="number">49</field>
+		</record>																				
+		<record id="pit_11_position_50" model="pit.11.positions">
+			<field name="name">Koszty uzyskania przychodów - działalność wykonywana osobiście, o której mowa w art. 13 pkt 2, 4, 6
+			(z wyjatkiem czynności wymienionych w wierszu 7) i 7-9 ustawy, w tym umowy o zlecenia i dzieło</field>
+			<field name="number">50</field>
+		</record>
+		<record id="pit_11_position_51" model="pit.11.positions">
+			<field name="name">Dochód - działalność wykonywana osobiście, o której mowa w art. 13 pkt 2, 4, 6
+			(z wyjatkiem czynności wymienionych w wierszu 7) i 7-9 ustawy, w tym umowy o zlecenia i dzieło</field>
+			<field name="number">51</field>
+		</record>
+		<record id="pit_11_position_52" model="pit.11.positions">
+			<field name="name">Zaliczka pobrana przez płatnika - działalność wykonywana osobiście, o której mowa w art. 13 pkt 2, 4, 6
+			(z wyjatkiem czynności wymienionych w wierszu 7) i 7-9 ustawy, w tym umowy o zlecenia i dzieło</field>
+			<field name="number">52</field>
+		</record>
+		<record id="pit_11_position_57" model="pit.11.positions">
+			<field name="name">Przychód - prawa autorskie i inne prawa, o których mowa w art. 18 ustawy</field>
+			<field name="number">57</field>
+		</record>
+		<record id="pit_11_position_58" model="pit.11.positions">
+			<field name="name">Dochód - prawa autorskie i inne prawa, o których mowa w art. 18 ustawy</field>
+			<field name="number">58</field>
+		</record>
+		<record id="pit_11_position_59" model="pit.11.positions">
+			<field name="name">Zaliczka pobrana przez płatnika - prawa autorskie i inne prawa, o których mowa w art. 18 ustawy</field>
+			<field name="number">59</field>
+		</record>
+		<record id="pit_11_position_60" model="pit.11.positions">
+			<field name="name">Przychód - prawa autorskie i inne prawa, o których mowa w art. 18 ustawy - przychody, do których 
+			zastosowano koszty uzyskania przychodów na podstawie art. 22 ust. 9 pkt 1-3 ustawy</field>
+			<field name="number">60</field>
+		</record>
+		<record id="pit_11_position_61" model="pit.11.positions">
+			<field name="name">Koszty uzyskania przychodów - prawa autorskie i inne prawa, o których mowa w art. 18 ustawy - przychody, do których 
+			zastosowano koszty uzyskania przychodów na podstawie art. 22 ust. 9 pkt 1-3 ustawy</field>
+			<field name="number">61</field>
+		</record>
+		<record id="pit_11_position_66" model="pit.11.positions">
+			<field name="name">Inne źródła - przychód</field>
+			<field name="number">66</field>
+		</record>
+		<record id="pit_11_position_67" model="pit.11.positions">
+			<field name="name">Inne źródła - koszty uzyskania przychodów</field>
+			<field name="number">67</field>
+		</record>
+		<record id="pit_11_position_69" model="pit.11.positions">
+			<field name="name">Inne źródła - zaliczka pobrana przez płatnika</field>
+			<field name="number">69</field>
+		</record>									
+		<record id="pit_11_position_70" model="pit.11.positions">
+			<field name="name">Składki na ubezpieczenia społeczne, o których mowa w przepisach ustawy, podlegające odliczeniu od dochodu</field>
+			<field name="number">70</field>
+		</record>		
+		<record id="pit_11_position_72" model="pit.11.positions">
+			<field name="name">Składki na ubezpieczenia zdrowotne, o których mowa w przepisach ustawy,podlegające odliczeniu od podatku</field>
+			<field name="number">72</field>
+		</record>
+		<record id="pit_11_position_76" model="pit.11.positions">
+			<field name="name">Do niniejszej informacji dołączono informację PIT-R</field>
+			<field name="number">76</field>
+		</record>
+		<record id="pit_11_position_77" model="pit.11.positions">
+			<field name="name">Imię</field>
+			<field name="number">77</field>
+		</record>
+		<record id="pit_11_position_78" model="pit.11.positions">
+			<field name="name">Nazwisko</field>
+			<field name="number">78</field>
+		</record>				
+	</data>
+</openerp>

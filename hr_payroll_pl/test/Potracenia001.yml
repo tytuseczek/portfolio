@@ -1,0 +1,121 @@
+#ftp://fileserver.lacan.com.pl/department/wsparcie/ogolne/specyfikacja/poszczegolne_specyfikacje/Release_KS_2014/Kadry/Ogolne/przypadki_testowe/potracania.ods
+#Przypadek potrącenia proste
+-
+  Tworzę listę płac
+-
+  !record {model: hr2.payroll.register, id: hr_register_potracenie1}:
+    name: Payroll1
+    register_month: 8
+    register_year: 2014
+    config: hr_payroll_pl.hr_etat_potracenie1_config
+    date: "2014-08-01"
+-
+  Wyliczam listę płac
+-
+  !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_potracenie1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_potracenie1")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_potracenie1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_potracenie1")],context=context)
+-
+  Sprawdzam poprawność wyliczeń
+-
+  !python {model: hr2.payslip}: |
+    from lacan_tools.lacan_tools import lacan_round
+    employee_id = ref("hr_payroll_pl.hr_pracownik_potracenie1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    alimenty_id = self.pool.get('hr2.payslip.deduction').search(cr,uid,[('employee_id','=',employee_id),('deduction_id','=',ref("Potracenia1_potracenie_alimenty"))],context=context)[0]
+    alimenty_obj = self.pool.get('hr2.payslip.deduction').browse(cr,uid,alimenty_id,context=context)
+    komornik_id = self.pool.get('hr2.payslip.deduction').search(cr,uid,[('employee_id','=',employee_id),('deduction_id','=',ref("Potracenia1_potracenie_komornik"))],context=context)[0]
+    komornik_obj = self.pool.get('hr2.payslip.deduction').browse(cr,uid,komornik_id,context=context)
+    zaliczka_id = self.pool.get('hr2.payslip.deduction').search(cr,uid,[('employee_id','=',employee_id),('deduction_id','=',ref("Potracenia1_potracenie_zaliczka"))],context=context)[0]
+    zaliczka_obj = self.pool.get('hr2.payslip.deduction').browse(cr,uid,zaliczka_id,context=context)
+    assert payslip_obj.wyplata_przed_potraceniami == 1808.10, "Wypłata przed potrąceniami powinna wynoscić 1808.10, a wynosi %s" % wyplata_przed_potraceniami
+    assert payslip_obj.do_wyplaty == 927.9, "Wypłata powinna wynosić 927.9, a wynosi %s" % payslip_obj.do_wyplaty
+    assert alimenty_obj.amount == 300, "Potrącenie na alimenty powinno wynosić 300, a wynosi %s" %alimenty_obj.amount
+    assert komornik_obj.amount == 270.90, "Potrącenie na komornika powinno wynosić 438.08, a wynosi %s" %komornik_obj.amount
+    assert zaliczka_obj.amount == 309.3, "Potrącenie zaliczki pieniężnej powinno wynosić 309.3, a wynosi %s" %zaliczka_obj.amount
+-
+ Dodaję dziennik
+-
+  !python {model: hr2.payslip.config}: |
+    self.write(cr, uid, [ref("hr_etat_potracenie1_config")], {'journal_id':ref("account.bank_journal")}, context=context)
+-
+  Dodaję konto do potrąceń
+-
+  !python {model: hr2.salary.deduction}: |
+    self.write(cr, uid, ref("Potracenia1_potracenie_alimenty"), {'account_id':ref("account.dd_other_expanses")}, context=context)
+    self.write(cr, uid, ref("Potracenia1_potracenie_komornik"), {'account_id':ref("account.dd_other_expanses2")}, context=context)
+    self.write(cr, uid, ref("Potracenia1_potracenie_zaliczka"), {'account_id':ref("account.D_765-02")}, context=context)
+-
+ Konfiguruję konta księgowe w konfiguracji listy płac
+-
+  !python {model: hr2.payslip.config.accounts}: |
+    accounts = self.search(cr, uid, [('config_id','=',ref("hr_etat_potracenie1_config"))], context=context)
+    
+    for account in accounts:
+      type = self.read(cr, uid, account, ['type'], context=context)['type']
+      
+      if type == 'salary':
+        self.write(cr, uid, account, {'account_id': ref("account_account_D_404-01")}, context=context)
+      elif type == 'social_insurance':
+        self.write(cr, uid, account, {'account_id': ref("account_account_D_404-02")}, context=context)
+      elif type == 'tax_office':
+        self.write(cr, uid, account, {'account_id': ref("account_account_D_404-03")}, context=context)
+      elif type == 'fp_fgsp':
+        self.write(cr, uid, account, {'account_id': ref("account_account_D_404-04")}, context=context)
+      elif type == 'cost':
+        self.write(cr, uid, account, {'account_id': ref("account_account_D_404-05"), 'percent': 30}, context=context)
+-
+  Dodaję konto typu 'cost' na potrzeby testów
+-        
+  !record {model: hr2.payslip.config.accounts, id: hr_payslip_config_account1}:
+    account_id: account.a_expense
+    config_id: hr_payroll_pl.hr_etat_potracenie1_config
+    amount: 500
+    type: "cost"
+    side: "debit"
+-
+  Księguję wypłaty
+-
+  !python {model: hr2.payroll.register}: |
+    self.post_payroll(cr, uid, [ref("hr_register_potracenie1")], context=context)
+-
+  Sprawdzam rozwiązania
+-
+  !python {model: account.move.line}:  |
+
+    name = self.pool.get('hr2.payroll.register').read(cr, uid, ref("hr_register_potracenie1"), ['name'], context=context)['name']
+    move_lines = self.search(cr, uid, [('name','=',name)], context=context)
+    move_line_datas = self.read(cr, uid, move_lines, ['journal_id','account_id','debit','credit'], context=context)
+    
+    check_data = {
+                  ref("account.a_expense"): [0.0, 500.0],
+                  ref("account_account_D_404-04"): [318.75, 0.0],
+                  ref("account_account_D_404-02"): [4958.26, 0.0],
+                  ref("account_account_D_404-03"): [973.0, 0.0],
+                  ref("account_account_D_404-01"): [7962.29, 0.0],
+                  ref("account_account_D_404-05"): [0.0, 4527.75],
+                  ref("account.D_765-02"): [309.3, 0.0],
+                  ref("account.dd_other_expanses2"): [270.9, 0.0],
+                  ref("account.dd_other_expanses"): [300.0, 0.0]
+                  }
+    
+    for move_line_data in move_line_datas:
+      assert move_line_data['journal_id'] and move_line_data['journal_id'][0] == ref("account.bank_journal"), "Pozycja zapisu powstała w niewłaściwym dzienniku!"
+    
+      account_id = move_line_data['account_id'] and move_line_data['account_id'][0]
+      
+      if not account_id:
+        assert False, "Wyglada na to, że linia zapisu księgowego powstała bez podania konta - coś takiego nie powinno nigdy sie zdarzyć!"
+      
+      else:
+        if account_id in check_data.keys():
+          assert move_line_data['credit'] == check_data[account_id][0], "Strona credit pozycji zapisu nieprawidłowa: %s a powinno być %s" %(move_line_data['credit'],check_data[account_id][0])
+          assert move_line_data['debit'] == check_data[account_id][1], "Strona debit pozycji zapisu nieprawidłowa: %s a powinno być %s" %(move_line_data['debit'],check_data[account_id][1])
+        else:
+          assert False, "Linia zapisu księgowego powstała na niewłaściwym koncie: %s" %move_line_data['account_id'][1]
+   

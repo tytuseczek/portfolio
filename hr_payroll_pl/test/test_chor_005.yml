@@ -1,0 +1,159 @@
+##############################################################
+# Zatrudnienie 01.06.2015.
+# Zwolnienie chorobowe od 15.06.2015 do 17.08.2015.
+# Zwolnienie pracownika 17.08.2015.
+#
+# System nalicza wypłatę pomimo, że pracownik już nie pracuje,
+# a zasiłek wypłaca ZUS, a nie pracodawca.
+##############################################################
+-
+ Zmieniam wypłacalność zasiłków.
+-
+  !python {model: lacan.configuration.value}: |
+    self.write(cr, uid, [ref('hr_payroll_pl.Pracodawca_sam_wyplaca_zasilki_value')], {'value_bool': False})
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config, id: hr_choroba_zwolnienie_cfg}:
+    name: Etat z dużym zwolnieniem
+    use_post_only: True
+    use_contract_only: False
+    sequence: 1
+    department: [hr_payroll_pl.dzial_zwolnienia_chor]
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_choroba_zwolnienie5}:
+    name: Pan Dużochorujący
+    department_id: dzial_zwolnienia_chor
+    birthday: 1985-01-01
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik_choroba_zwolnienie5_data}:
+    employee_name: Pan
+    surname: Dużochorujący
+    employee_id: hr_pracownik_choroba_zwolnienie5
+-
+ Tworzę etat (umowa o pracę)
+-
+ !record {model: hr2.etat, id: hr_etat_choroba_zwolnienie5}:
+    name: Pan Dużochorujący
+    employee_id: hr_pracownik_choroba_zwolnienie5
+    sign_date: "2015-06-01"
+    discharge_date: "2015-08-17"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu - Pensja 5645 zł, wielkość etatu 1
+-
+ !record {model: hr2.etat.data, id: hr_etat_choroba_zwolnienie_data5}:
+    name: Pan Dużochorujący
+    etat_id: hr_etat_choroba_zwolnienie5
+    date_from: "2015-06-01"
+    month_pay: 5645
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę nieobecność
+-
+ !record {model: hr2.absence, id: hr_pracownik_choroba_absence5_1}:
+    date_from: "2015-06-15 00:00:00"
+    date_to: "2015-08-17 23:59:59"
+    number_of_days_temp: 63
+    employee_id: hr_pracownik_choroba_zwolnienie5
+    holiday_status_id: hr.hr2_absence_type_urlopchorobowy0
+    state: validate
+-
+ Tworzę listę płac na czerwiec 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie5_1}:
+    name: Payroll1
+    register_month: 6
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg
+    date: "2015-06-30"
+-
+ Wyliczam listę płac na czerwiec 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie5_1")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie5_1")],context=context)
+-
+ Wprowadzam podstawę chorobowego.
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie5")
+    register_id = ref("hr_register_choroba_zwolnienie5_1")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_line_ids = self.pool.get('hr2.payslip').read(cr,uid, payslip_id, ['payslip_line_ids'],context=context)['payslip_line_ids']
+    for line in self.pool.get('hr2.payslip.line').read(cr,uid,payslip_line_ids,context=context):
+      if line['wymaga_korekty']:
+        context['update_absences'] = True
+        self.pool.get('hr2.payslip.line').write(cr, uid, line['id'], {'base': 4871.07,
+                                                                      'wymaga_korekty': False}, context=context)
+-
+ Kończę wyliczanie listy płac na czerwiec 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie5_1")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie5_1")],context=context)
+-
+ Tworzę listę płac na lipiec 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie5_2}:
+    name: Payroll2
+    register_month: 7
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg
+    date: "2015-07-31"
+-
+ Wyliczam listę płac na lipiec 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie5_2")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie5_2")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie5_2")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie5_2")],context=context)
+-
+ Tworzę listę płac na sierpień 2015
+-
+ !record {model: hr2.payroll.register, id: hr_register_choroba_zwolnienie5_3}:
+    name: Payroll3
+    register_month: 8
+    register_year: 2015
+    config: hr_choroba_zwolnienie_cfg
+    date: "2015-08-29"
+-
+ Wyliczam listę płac na sierpień 2015
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_choroba_zwolnienie5_3")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_choroba_zwolnienie5_3")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_choroba_zwolnienie5_3")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_choroba_zwolnienie5_3")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    employee_id = ref("hr_pracownik_choroba_zwolnienie5")
+    register_id = ref("hr_register_choroba_zwolnienie5_3")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id),('register_id','=',register_id)],context=context)[0]
+    payslip_data = self.pool.get('hr2.payslip').read(cr,uid,payslip_id,context=context)
+    assert payslip_data['do_wyplaty'] == 0, "Wypłata powinna wynosić 0, a wynosi %s" % payslip_data['do_wyplaty']
+-
+ Przywracam wypłacalność zasiłków.
+-
+  !python {model: lacan.configuration.value}: |
+    self.write(cr, uid, [ref('hr_payroll_pl.Pracodawca_sam_wyplaca_zasilki_value')], {'value_bool': True})

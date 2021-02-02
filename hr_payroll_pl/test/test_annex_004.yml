@@ -1,0 +1,78 @@
+-
+ Tworzę pracownika 
+-
+ !record {model: hr.employee, id: hr_pracownik_zwolnienie}:
+    name: Jan4 Kowalski
+    department_id: dzial_annex
+    birthday: 1985-01-01
+-
+ Tworzę dane pracownika
+-
+ !record {model: hr2.employee.data, id: hr_pracownik1_zwolnienie_data}:
+    employee_name: Jan4
+    surname: Kowalski
+    employee_id: hr_pracownik_zwolnienie
+-
+ Tworzę etat (umowa o pracę), wynagrodzenie 12 000. Okres pracy od 08.09.2014 do 26.09.2014
+-
+ !record {model: hr2.etat, id: hr_zwolnienie_etat}:
+    name: Jan4 Kowalski
+    employee_id: hr_pracownik_zwolnienie
+    sign_date: "2014-09-08"
+    discharge_date: "2014-09-26"
+    rozliczac_kwote_wolna: True
+-
+ Tworze dane etatu
+-
+ !record {model: hr2.etat.data, id: hr_zwolnienie_data}:
+    name: Jan4 Kowalski
+    etat_id: hr_zwolnienie_etat
+    date_from: "2014-09-08"
+    month_pay: 12000
+    calculate_fp: True
+    calculate_fgsp: True
+    calculate_emr: True
+    calculate_rent: True
+    calculate_chor: True
+    calculate_wyp: True
+-
+ Tworzę konfigurację listy płac
+-
+ !record {model: hr2.payslip.config,id: hr_zwolnienie_config}:
+    name: Tylko etaty
+    use_post_only: True
+    department: [dzial_annex]
+    sequence: 1
+-
+ Tworzę listę płac
+-
+ !record {model: hr2.payroll.register, id: hr_register_zwolnienie}:
+    name: Payroll1
+    register_month: 9
+    register_year: 2014
+    config: hr_zwolnienie_config
+    date: "2014-10-01"
+-
+ Wyliczam listę płac
+-
+ !python {model: hr2.payroll.register}: |
+    from datetime import datetime
+    import time
+    self.compute_additions(cr,uid,[ref("hr_register_zwolnienie")],context=context)
+    self.compute_elements(cr,uid,[ref("hr_register_zwolnienie")],context=context)
+    self.compute_taxes(cr,uid,[ref("hr_register_zwolnienie")],context=context)
+    self.validate_payroll(cr, uid,[ref("hr_register_zwolnienie")],context=context)
+-
+ Sprawdzam poprawność wyliczeń
+-
+ !python {model: hr2.payslip}: |
+    e = 0.00001
+    employee_id = ref("hr_pracownik_zwolnienie")
+    payslip_id = self.pool.get('hr2.payslip').search(cr,uid,[('employee_id','=',employee_id)],context=context)[0]
+    payslip_obj = self.pool.get('hr2.payslip').browse(cr,uid,payslip_id,context=context)
+    assert payslip_obj.skladka_zdrowotna_odliczona == 547.16, "Składka zdrowotna odliczona powinna wynosić 547,16, a wynosi %s" % payslip_obj.skladka_zdrowotna_odliczona
+    assert abs((payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik) - 1121.73) < e, "Suma składek pracownika na ubezpieczenia emerytalne, rentowe i chorobowe powinna wynosić 1121.73, a wynosi %s" % (payslip_obj.emr_pracownik + payslip_obj.rent_pracownik + payslip_obj.chor_pracownik)
+    assert payslip_obj.kwota_zaliczki_na_PIT == 1204.49, "Zaliczna na podatek dochodowy przed odliczeniem składki powinna wynosić 1204,49, a wynosi %s" % payslip_obj.kwota_zaliczki_na_PIT
+    assert payslip_obj.koszty_uzyskania == 111.25, "Koszty uzyskania powinny wynosić 111,25, a wynosi %s" % payslip_obj.koszty_uzyskania
+    assert payslip_obj.do_wyplaty == 5767.68, "Wypłata powinna wynosić 5767.68, a wynosi %s" % payslip_obj.do_wyplaty
+    print "Test wykonany poprawnie. Życzymy powodzenia przy kolejnych testach."
