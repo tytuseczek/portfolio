@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "calculator"
+version = "0.1.0"
+description = "Smart Calculator for for formula manipulations"
+authors = ["devs <it@wirtualny-nauczyciel.pl>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+antlr4-python3-runtime = "4.7.2" #freezed bacause of ANTRL4 runtime version incompatibilities with sympy
+sympy = "^1.7.1"
+sortedcontainers = "^2.3.0"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.2"
+treelib = "^1.6.1"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ["py38"]
+
+[tool.isort]
+line_length = 120
+use_parentheses = true
+include_trailing_comma = true
+multi_line_output = 3
+
+[tool.coverage.run]
+branch = true
+omit = ["*/tests/*"]
+include = ["*.py"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.xml]
+output = ".coverage.xml"
